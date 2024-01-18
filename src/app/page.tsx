@@ -1,40 +1,52 @@
 "use client";
 import { LogoSvg } from "@/components/LogoSvg";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { SessionProvider } from "next-auth/react";
+import Link from "next/link";
 
 function AuthButtons() {
   const session = useSession();
   return (
     <>
-      <button
-        type="button"
-        className="rounded-md border-2 border-slate-600 p-3"
-        onClick={async () => {
-          await signIn("discord");
-        }}
-      >
-        Sign In
-      </button>
-      <button
-        type="button"
-        disabled={session.status !== "authenticated"}
-        className="rounded-md border-2 border-slate-600 p-3 disabled:bg-red-200"
-        onClick={async () => {
-          await signOut();
-        }}
-      >
-        Sign Out
-      </button>
+      {session.status !== "authenticated" ? (
+        <Button
+          type="button"
+          variant="ghost"
+          disabled={session.status === "loading"}
+          onClick={async () => {
+            await signIn("discord");
+          }}
+        >
+          Sign In
+        </Button>
+      ) : (
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={async () => {
+            await signOut();
+          }}
+        >
+          Sign Out
+        </Button>
+      )}
+      <Button type="button">Sign Up</Button>
     </>
   );
 }
 
 function NavBar() {
   return (
-    <div className="text-primary flex max-w-screen-sm items-center gap-2 px-8 py-6">
-      <LogoSvg className="size-9" />
-      <h1 className="text-3xl font-bold tracking-tight">Quorum</h1>
+    <div className="mx-auto flex max-w-screen-xl items-center justify-between gap-4 px-8 py-6">
+      <div className="text-primary flex max-w-screen-sm items-center justify-between gap-2">
+        <LogoSvg className="size-9" />
+        <h1 className="text-3xl font-bold tracking-tight">Quorum</h1>
+      </div>
+      <div className="flex gap-2">
+        <AuthButtons />
+      </div>
     </div>
   );
 }
@@ -49,6 +61,17 @@ function Hero() {
         Your homegrown, open-source platform for real-time polling, discussion,
         and visualisation.
       </p>
+      <div className="flex w-full max-w-xs items-center space-x-2 pt-6">
+        <Input type="text" placeholder="Computing ID" />
+        <Button type="button">Join Class</Button>
+      </div>
+      <small className="pt-2 text-slate-400">
+        If you're managing a class,{" "}
+        <Link href="#" className="hover:text-primary underline">
+          click here
+        </Link>{" "}
+        instead.
+      </small>
     </div>
   );
 }
