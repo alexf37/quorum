@@ -11,28 +11,35 @@ function AuthButtons() {
   return (
     <>
       {session.status !== "authenticated" ? (
-        <Button
-          type="button"
-          variant="ghost"
-          disabled={session.status === "loading"}
-          onClick={async () => {
-            await signIn("discord");
-          }}
-        >
-          Sign In
-        </Button>
+        <>
+          <Button
+            type="button"
+            variant="ghost"
+            disabled={session.status === "loading"}
+            onClick={async () => {
+              await signIn("discord", { callbackUrl: "/dashboard" });
+            }}
+          >
+            Sign In
+          </Button>
+          <Button type="button">Sign Up</Button>
+        </>
       ) : (
-        <Button
-          type="button"
-          variant="ghost"
-          onClick={async () => {
-            await signOut();
-          }}
-        >
-          Sign Out
-        </Button>
+        <>
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={async () => {
+              await signOut();
+            }}
+          >
+            Sign Out
+          </Button>
+          <Button type="button" asChild>
+            <Link href="dashboard">Dashboard</Link>
+          </Button>
+        </>
       )}
-      <Button type="button">Sign Up</Button>
     </>
   );
 }
@@ -40,7 +47,7 @@ function AuthButtons() {
 function NavBar() {
   return (
     <div className="mx-auto flex max-w-screen-xl items-center justify-between gap-4 px-8 py-6">
-      <div className="text-primary flex max-w-screen-sm items-center justify-between gap-2">
+      <div className="flex max-w-screen-sm items-center gap-2 text-primary">
         <LogoSvg className="size-9" />
         <h1 className="text-3xl font-bold tracking-tight">Quorum</h1>
       </div>
@@ -54,10 +61,10 @@ function NavBar() {
 function Hero() {
   return (
     <div className="flex flex-col items-center py-24">
-      <h1 className="text-primary text-center text-6xl font-bold drop-shadow">
+      <h1 className="text-center text-6xl font-bold text-primary drop-shadow">
         Meet Quorum
       </h1>
-      <p className="text-muted-foreground max-w-md pt-3 text-center text-lg">
+      <p className="max-w-md pt-3 text-center text-lg text-muted-foreground">
         Your homegrown, open-source platform for real-time polling, discussion,
         and visualisation.
       </p>
@@ -67,7 +74,7 @@ function Hero() {
       </div>
       <small className="pt-2 text-slate-400">
         If you're managing a class,{" "}
-        <Link href="#" className="hover:text-primary underline">
+        <Link href="#" className="underline hover:text-primary">
           click here
         </Link>{" "}
         instead.
@@ -79,7 +86,7 @@ function Hero() {
 export default function App() {
   return (
     <SessionProvider>
-      <div className="bg-background relative isolate h-full overflow-hidden">
+      <div className="relative isolate h-full overflow-hidden bg-background">
         <svg
           className="absolute inset-0 -z-10 h-full w-full stroke-slate-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
           aria-hidden="true"
