@@ -32,7 +32,7 @@ type NavItemProps = React.PropsWithChildren<{
 function NavItem({ children, active, href }: NavItemProps) {
   return (
     <Button
-      variant={active ? "default" : "ghost"}
+      variant={active ? "secondary" : "ghost"}
       className="justify-start"
       asChild
     >
