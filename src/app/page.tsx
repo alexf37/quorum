@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { getServerAuthSession } from "@/server/auth";
 import Link from "next/link";
 import { AuthButton } from "./AuthButton";
+import { Separator } from "@/components/ui/separator";
+import { GithubIcon } from "@/components/GithubIcon";
 
 async function AuthButtons() {
   const session = await getServerAuthSession();
@@ -37,7 +39,7 @@ function NavBar() {
 
 function Hero() {
   return (
-    <div className="flex flex-col items-center py-24">
+    <div className="flex flex-col items-center py-28">
       <h1 className="text-center text-6xl font-bold text-primary drop-shadow">
         Meet Quorum
       </h1>
@@ -60,9 +62,58 @@ function Hero() {
   );
 }
 
+function Footer() {
+  return (
+    <div className="mx-auto flex max-w-screen-xl items-center justify-between gap-4 bg-white px-8 py-6 text-muted-foreground">
+      <small>© 2024 Alex Foster. All rights reserved.</small>
+      <div className="flex gap-2">
+        <a href="https://github.com/alexf37" className="hover:text-primary">
+          <GithubIcon className="size-6" />
+        </a>
+      </div>
+    </div>
+  );
+}
+
+function Features() {
+  return (
+    <div className="mx-auto flex max-w-screen-lg justify-center gap-8 px-16 py-24">
+      <div className="w-full space-y-3">
+        <h2 className="text-2xl font-semibold text-primary">
+          Boost Engagement
+        </h2>
+        <p>
+          Quorum creates an interactive and dynamic learning environment,
+          helping educators and students connect more effectively, fostering
+          collaboration, and enhancing the educational experience.
+        </p>
+      </div>
+      <div className="w-full space-y-3">
+        <h2 className="text-2xl font-semibold text-primary">
+          Real-time Feedback
+        </h2>
+        <p>
+          Instant, live poll results show you how your students are doing, and
+          help you identify areas of confusion and misunderstanding.
+        </p>
+      </div>
+      <div className="w-full space-y-3">
+        <h2 className="text-2xl font-semibold text-primary">
+          Track Participation
+        </h2>
+        <p>
+          Quorum tracks student participation, helping you identify students who
+          may be struggling, and helping you understand how your students are
+          engaging with the material.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   return (
-    <div className="relative isolate h-full overflow-hidden bg-background">
+    <div className="relative isolate h-full bg-background">
       <svg
         className="absolute inset-0 -z-10 h-full w-full stroke-slate-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
         aria-hidden="true"
@@ -88,6 +139,9 @@ export default function App() {
       </svg>
       <NavBar />
       <Hero />
+      <Features />
+      <Separator />
+      <Footer />
     </div>
   );
 }
