@@ -41,7 +41,7 @@ function NavBar() {
 
 function Hero() {
   return (
-    <div className="flex flex-col items-center py-28">
+    <div className="flex flex-col items-center px-8 py-28">
       <h1 className="text-center text-6xl font-bold text-primary drop-shadow">
         Meet Quorum
       </h1>
