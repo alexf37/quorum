@@ -113,32 +113,41 @@ function Features() {
   );
 }
 
+/**
+ *  Requires a parent element with `position: relative`
+ */
+function BackgroundGraphic() {
+  return (
+    <svg
+      className="absolute inset-0 -z-10 h-full w-full stroke-slate-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
+      aria-hidden="true"
+    >
+      <defs>
+        <pattern
+          id="grid-pattern"
+          width={150}
+          height={150}
+          x="50%"
+          y={-1}
+          patternUnits="userSpaceOnUse"
+        >
+          <path d="M.5 200V.5H200" fill="none" />
+        </pattern>
+      </defs>
+      <rect
+        width="100%"
+        height="100%"
+        strokeWidth={0}
+        fill="url(#grid-pattern)"
+      />
+    </svg>
+  );
+}
+
 export default function App() {
   return (
     <div className="relative isolate h-full overflow-x-hidden bg-background">
-      <svg
-        className="absolute inset-0 -z-10 h-full w-full stroke-slate-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
-        aria-hidden="true"
-      >
-        <defs>
-          <pattern
-            id="grid-pattern"
-            width={150}
-            height={150}
-            x="50%"
-            y={-1}
-            patternUnits="userSpaceOnUse"
-          >
-            <path d="M.5 200V.5H200" fill="none" />
-          </pattern>
-        </defs>
-        <rect
-          width="100%"
-          height="100%"
-          strokeWidth={0}
-          fill="url(#grid-pattern)"
-        />
-      </svg>
+      <BackgroundGraphic />
       <NavBar />
       <Hero />
       <Features />
