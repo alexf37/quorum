@@ -28,7 +28,9 @@ function NavBar() {
     <div className="mx-auto flex max-w-screen-xl items-center justify-between gap-4 px-8 py-6">
       <div className="flex max-w-screen-sm items-center gap-2 text-primary">
         <LogoSvg className="size-9" />
-        <h1 className="text-3xl font-bold tracking-tight">Quorum</h1>
+        <h1 className="text-3xl font-bold tracking-tight max-sm:hidden">
+          Quorum
+        </h1>
       </div>
       <div className="flex gap-2">
         <AuthButtons />
@@ -77,7 +79,7 @@ function Footer() {
 
 function Features() {
   return (
-    <div className="mx-auto flex max-w-screen-lg justify-center gap-8 px-16 py-24">
+    <div className="mx-auto flex max-w-screen-lg justify-center gap-8 px-16 py-24 max-sm:flex-col">
       <div className="w-full space-y-3">
         <h2 className="text-2xl font-semibold text-primary">
           Boost Engagement
@@ -113,7 +115,7 @@ function Features() {
 
 export default function App() {
   return (
-    <div className="relative isolate h-full bg-background">
+    <div className="relative isolate h-full overflow-x-hidden bg-background">
       <svg
         className="absolute inset-0 -z-10 h-full w-full stroke-slate-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
         aria-hidden="true"
