@@ -1,44 +1,21 @@
-"use client";
 import { LogoSvg } from "@/components/LogoSvg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { SessionProvider } from "next-auth/react";
+import { getServerAuthSession } from "@/server/auth";
 import Link from "next/link";
+import { AuthButton } from "./AuthButton";
 
-function AuthButtons() {
-  const session = useSession();
+async function AuthButtons() {
+  const session = await getServerAuthSession();
   return (
     <>
-      {session.status !== "authenticated" ? (
-        <>
-          <Button
-            type="button"
-            variant="ghost"
-            disabled={session.status === "loading"}
-            onClick={async () => {
-              await signIn("discord", { callbackUrl: "/dashboard" });
-            }}
-          >
-            Sign In
-          </Button>
-          <Button type="button">Sign Up</Button>
-        </>
+      <AuthButton authed={!!session} />
+      {!session ? (
+        <Button type="button">Sign Up</Button>
       ) : (
-        <>
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={async () => {
-              await signOut();
-            }}
-          >
-            Sign Out
-          </Button>
-          <Button type="button" asChild>
-            <Link href="dashboard">Dashboard</Link>
-          </Button>
-        </>
+        <Button type="button" asChild>
+          <Link href="dashboard">Dashboard</Link>
+        </Button>
       )}
     </>
   );
@@ -85,34 +62,32 @@ function Hero() {
 
 export default function App() {
   return (
-    <SessionProvider>
-      <div className="relative isolate h-full overflow-hidden bg-background">
-        <svg
-          className="absolute inset-0 -z-10 h-full w-full stroke-slate-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
-          aria-hidden="true"
-        >
-          <defs>
-            <pattern
-              id="grid-pattern"
-              width={150}
-              height={150}
-              x="50%"
-              y={-1}
-              patternUnits="userSpaceOnUse"
-            >
-              <path d="M.5 200V.5H200" fill="none" />
-            </pattern>
-          </defs>
-          <rect
-            width="100%"
-            height="100%"
-            strokeWidth={0}
-            fill="url(#grid-pattern)"
-          />
-        </svg>
-        <NavBar />
-        <Hero />
-      </div>
-    </SessionProvider>
+    <div className="relative isolate h-full overflow-hidden bg-background">
+      <svg
+        className="absolute inset-0 -z-10 h-full w-full stroke-slate-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
+        aria-hidden="true"
+      >
+        <defs>
+          <pattern
+            id="grid-pattern"
+            width={150}
+            height={150}
+            x="50%"
+            y={-1}
+            patternUnits="userSpaceOnUse"
+          >
+            <path d="M.5 200V.5H200" fill="none" />
+          </pattern>
+        </defs>
+        <rect
+          width="100%"
+          height="100%"
+          strokeWidth={0}
+          fill="url(#grid-pattern)"
+        />
+      </svg>
+      <NavBar />
+      <Hero />
+    </div>
   );
 }
