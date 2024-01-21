@@ -46,8 +46,8 @@ function Hero() {
         Meet Quorum
       </h1>
       <p className="max-w-md pt-3 text-center text-lg text-muted-foreground">
-        Your homegrown, open-source platform for real-time polling, discussion,
-        and visualisation.
+        Your open-source platform for real-time polling, discussion, and
+        visualisation.
       </p>
       <div className="flex w-full max-w-xs items-center space-x-2 pt-6">
         <Input type="text" placeholder="Computing ID" />
