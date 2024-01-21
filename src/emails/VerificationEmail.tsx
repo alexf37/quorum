@@ -19,12 +19,8 @@ interface VerificationEmailProps {
   verificationLink: string;
 }
 
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3001";
-
-export default function VerificationEmail({
-  verificationLink = `${baseUrl}/api/verify`,
+export function VerificationEmail({
+  verificationLink,
 }: VerificationEmailProps) {
   return (
     <Html>

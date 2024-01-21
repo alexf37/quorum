@@ -106,7 +106,8 @@ export function AccountForm({
                 <Input placeholder="xrk4np" {...field} />
               </FormControl>
               <FormDescription>
-                We'll send an email to your university email to verify this.
+                We'll send an email to your university email to verify this. It
+                won't update here until it's verified.
               </FormDescription>
               <FormMessage />
             </FormItem>
