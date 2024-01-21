@@ -10,6 +10,11 @@ import { redirect } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { Nav } from "@/components/Nav";
 import { AccountDropdown } from "@/components/AccountDropdown";
+import { db } from "@/server/db";
+
+export const metadata = {
+  title: "Dashboard",
+};
 
 export default async function DashboardLayout({ children }: PropsWithChildren) {
   const session = await getServerAuthSession();
@@ -42,7 +47,9 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
                     />
                     <AvatarFallback>AF</AvatarFallback>
                   </Avatar>
-                  <div className="text-primary">{session?.user.name}</div>
+                  <div className="text-primary">
+                    {session?.user.displayName ?? session?.user.email}
+                  </div>
                 </div>
                 <ChevronDown className="h-4 w-4 text-muted-foreground" />
               </Button>

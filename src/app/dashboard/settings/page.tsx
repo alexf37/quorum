@@ -1,6 +1,10 @@
 import { Separator } from "@/components/ui/separator";
 import { AccountForm } from "./AccountForm";
 
+export const metadata = {
+  title: "Settings",
+};
+
 export default function Settings() {
   return (
     <div className="h-full flex-1 bg-slate-50">
