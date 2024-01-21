@@ -1,11 +1,17 @@
 import { Separator } from "@/components/ui/separator";
 import { AccountForm } from "./AccountForm";
+import { api } from "@/trpc/server";
 
 export const metadata = {
   title: "Settings",
 };
 
-export default function Settings() {
+export default async function Settings() {
+  const user = await api.settings.getExistingFormData.query();
+  const defaultValues = {
+    name: user?.displayName ?? "",
+    computingId: user?.computingId ?? "",
+  };
   return (
     <div className="h-full flex-1 bg-slate-50">
       <div className="flex items-center gap-2 bg-white px-8 pb-5 pt-6 text-primary">
@@ -24,7 +30,7 @@ export default function Settings() {
                 </p>
               </div>
               <Separator />
-              <AccountForm />
+              <AccountForm defaultValues={defaultValues} />
             </div>
           </div>
         </div>

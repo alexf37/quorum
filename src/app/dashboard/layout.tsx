@@ -10,7 +10,6 @@ import { redirect } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { Nav } from "@/components/Nav";
 import { AccountDropdown } from "@/components/AccountDropdown";
-import { db } from "@/server/db";
 
 export const metadata = {
   title: "Dashboard",
