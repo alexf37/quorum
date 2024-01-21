@@ -50,7 +50,7 @@ function Hero() {
         visualisation.
       </p>
       <div className="flex w-full max-w-xs items-center space-x-2 pt-6">
-        <Input type="text" placeholder="Computing ID" />
+        <Input type="text" placeholder="Class Code" />
         <Button type="button">Join Class</Button>
       </div>
       <small className="pt-2 text-slate-400">
