@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { type PropsWithChildren } from "react";
 
@@ -21,7 +20,7 @@ export default function VerifyWithIdLayout({ children }: PropsWithChildren) {
         <CardContent className="flex flex-col gap-4">
           <div className="font-medium text-primary">{children}</div>
           <Button asChild>
-            <Link href="/dashboard">Go to Dashboard</Link>
+            <Link href="/">Go to Homepage</Link>
           </Button>
         </CardContent>
       </Card>
