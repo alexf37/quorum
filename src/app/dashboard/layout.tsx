@@ -19,7 +19,7 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
   return (
     <>
       <div className="flex h-full">
-        <div className="flex h-full w-64 flex-col items-stretch gap-2 border-r py-6 shadow">
+        <div className="flex w-64 flex-col gap-2 border-r py-6">
           <Link
             href="/"
             className="flex max-w-screen-sm items-center gap-2 px-8 pb-3 text-primary"
