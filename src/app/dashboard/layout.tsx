@@ -39,7 +39,7 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
                 variant="outline"
                 className="mb-2 flex justify-between gap-4"
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 overflow-hidden">
                   <Avatar className="size-6">
                     <AvatarImage
                       src={session?.user.image ?? ""}
@@ -47,7 +47,7 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
                     />
                     <AvatarFallback>AF</AvatarFallback>
                   </Avatar>
-                  <div className="text-primary">
+                  <div className="basis-full overflow-hidden overflow-ellipsis whitespace-nowrap text-primary">
                     {session?.user.displayName ?? session?.user.email}
                   </div>
                 </div>
