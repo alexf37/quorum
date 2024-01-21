@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { getServerAuthSession } from "@/server/auth";
 import Link from "next/link";
-import { AuthButton } from "./AuthButton";
+import { AuthButton } from "@/components/AuthButton";
 import { Separator } from "@/components/ui/separator";
 import { GithubIcon } from "@/components/GithubIcon";
 
