@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { api } from "@/trpc/react";
+import { useRouter } from "next/navigation";
 
 const accountFormSchema = z.object({
   name: z
@@ -44,6 +45,7 @@ export function AccountForm({
 }: {
   defaultValues?: Partial<AccountFormValues>;
 }) {
+  const router = useRouter();
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
     defaultValues,
@@ -56,11 +58,15 @@ export function AccountForm({
         title: "Success!",
         description: "Your account details have been updated.",
       });
+      router.refresh();
     },
   });
 
   function onSubmit(data: AccountFormValues) {
-    settingsMutation.mutate(data);
+    settingsMutation.mutate({
+      displayName: data.name,
+      computingId: data.computingId,
+    });
     // toast({
     //   title: "Verification email sent.",
     //   description:
