@@ -34,22 +34,22 @@ export const settingsRouter = createTRPCRouter({
         },
       });
       if (user.computingId === input.computingId) return user;
-      if (!input.computingId) return user;
+      // if user submits empty or nulling computingId, just remove it (no effect if already null in db)
+      if (!input.computingId) {
+        const userWithoutComputingId = await ctx.db.user.update({
+          where: {
+            id: ctx.session.user.id,
+          },
+          data: {
+            computingId: null,
+          },
+        });
+        return userWithoutComputingId;
+      }
 
       // only if computingId is nonempty and has changed
-      const now = Date.now();
-      const verificationRecord = await ctx.db.computingIdVerification.create({
-        data: {
-          user: {
-            connect: {
-              id: user.id,
-            },
-          },
-          computingId: input.computingId,
-          expires: new Date(now + 1000 * 60 * 60 * 24), // 24 hours
-        },
-      });
       // expire all other verification records for this user
+      const now = Date.now();
       const expiredRecords = await ctx.db.computingIdVerification.updateMany({
         where: {
           userId: user.id,
@@ -61,6 +61,20 @@ export const settingsRouter = createTRPCRouter({
           expires: new Date(now),
         },
       });
+      //create new verification record
+      const verificationRecord = await ctx.db.computingIdVerification.create({
+        data: {
+          user: {
+            connect: {
+              id: user.id,
+            },
+          },
+          computingId: input.computingId,
+          expires: new Date(now + 1000 * 60 * 60 * 24), // 24 hours
+        },
+      });
+
+      // send verification email
       const resend = new Resend(env.RESEND_API_KEY);
       const baseHref =
         env.NODE_ENV === "production"
