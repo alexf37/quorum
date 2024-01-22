@@ -35,7 +35,9 @@ const accountFormSchema = z.object({
     })
     .max(7, {
       message: "Computing ID must be at most 7 characters.",
-    }),
+    })
+    .or(z.string().min(0).max(0))
+    .optional(),
 });
 
 type AccountFormValues = z.infer<typeof accountFormSchema>;
