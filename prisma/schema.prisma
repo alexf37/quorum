@@ -62,13 +62,13 @@ model ComputingIdVerification {
 }
 
 model Class {
-    id          String  @id @default(cuid())
-    name        String
-    description String?
-    code        String  @unique
-    ownerUser   User    @relation(fields: [ownerUserId], references: [id], onDelete: Cascade)
+    id          String @id @default(cuid())
+    courseCode  String
+    title       String
+    code        String @unique
+    ownerUser   User   @relation(fields: [ownerUserId], references: [id], onDelete: Cascade)
     ownerUserId String
-    students    User[]  @relation("ClassStudents")
+    students    User[] @relation("ClassStudents")
 }
 
 model VerificationToken {

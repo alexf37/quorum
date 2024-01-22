@@ -18,6 +18,10 @@ const navItems: NavItem[] = [
     href: "/dashboard/classes",
   },
   {
+    title: "Manage",
+    href: "/dashboard/manage",
+  },
+  {
     title: "Settings",
     href: "/dashboard/settings",
   },
