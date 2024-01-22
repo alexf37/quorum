@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
 import { api } from "@/trpc/react";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   courseCode: z.string().min(4, {
@@ -39,6 +40,7 @@ const FormSchema = z.object({
 });
 
 export function CreateClassModal({ children }: PropsWithChildren) {
+  const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -54,6 +56,7 @@ export function CreateClassModal({ children }: PropsWithChildren) {
         title: "Success!",
         description: "You have successfully created a class.",
       });
+      router.refresh();
     },
     onError: (err) => {
       toast({
