@@ -87,8 +87,8 @@ export default function Classes() {
               <CardDescription>{clazz.description}</CardDescription>
             </CardHeader>
             <CardFooter className="mt-auto grid w-full grid-cols-2 gap-2">
-              <Button variant="outline">View</Button>
-              <Button>Join</Button>
+              <Button variant="secondary">View</Button>
+              <Button variant="outline">Join</Button>
             </CardFooter>
           </Card>
         ))}
