@@ -23,7 +23,18 @@ export default async function VerifyWithId({
   }
   // if verification record is expired, say so
   if (verificationRecord.expires < new Date()) {
-    return <p>Verification expired</p>;
+    return (
+      <>
+        <p>Verification expired</p>
+        <p className="pt-2 text-sm text-muted-foreground">
+          If you're using Outlook or your email provider pre-checks links for
+          security reasons, this page may show that your verification expired
+          even if it was successful.
+          <br /> Check your settings page (refresh it if it's already open) to
+          see if your verification was successful.
+        </p>
+      </>
+    );
   }
 
   // removing computing id from any existing users, since latest user is the last to verify it
