@@ -26,7 +26,7 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Plus, MoreHorizontal } from "lucide-react";
+import { Plus, MoreHorizontal, LogOut } from "lucide-react";
 
 const twRainbow = [
   "bg-red-500",
@@ -77,7 +77,10 @@ export default function Classes() {
                 <DropdownMenuContent>
                   <DropdownMenuLabel>Options</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Leave</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <LogOut className="mr-2 size-4" />
+                    Leave
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
