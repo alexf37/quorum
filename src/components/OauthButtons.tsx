@@ -27,6 +27,7 @@ export function OauthButtons() {
         Discord
       </Button>
       <Button
+        disabled
         variant="outline"
         onClick={async () => {
           await signIn("github", { callbackUrl: "/dashboard" });

@@ -33,7 +33,9 @@ export function SignUpModal({ children }: PropsWithChildren) {
           <Label htmlFor="password">Password</Label>
           <Input disabled id="password" type="password" />
         </div>
-        <Button className="w-full">Create account</Button>
+        <Button disabled className="w-full">
+          Create account
+        </Button>
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />
