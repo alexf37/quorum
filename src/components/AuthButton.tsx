@@ -1,6 +1,7 @@
 "use client";
-import { signIn, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
+import { LoginModal } from "./LoginModal";
 
 export function AuthButton({ authed }: { authed: boolean }) {
   if (authed) {
@@ -17,14 +18,10 @@ export function AuthButton({ authed }: { authed: boolean }) {
     );
   }
   return (
-    <Button
-      type="button"
-      variant="ghost"
-      onClick={async () => {
-        await signIn("discord", { callbackUrl: "/dashboard" });
-      }}
-    >
-      Sign In
-    </Button>
+    <LoginModal>
+      <Button type="button" variant="ghost">
+        Sign In
+      </Button>
+    </LoginModal>
   );
 }

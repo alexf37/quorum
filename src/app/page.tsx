@@ -5,7 +5,8 @@ import { getServerAuthSession } from "@/server/auth";
 import Link from "next/link";
 import { AuthButton } from "@/components/AuthButton";
 import { Separator } from "@/components/ui/separator";
-import { GithubIcon } from "@/components/GithubIcon";
+import { GithubIcon } from "@/components/icons/GithubIcon";
+import { SignUpModal } from "@/components/SignUpModal";
 
 async function AuthButtons() {
   const session = await getServerAuthSession();
@@ -13,7 +14,9 @@ async function AuthButtons() {
     <>
       <AuthButton authed={!!session} />
       {!session ? (
-        <Button type="button">Sign Up</Button>
+        <SignUpModal>
+          <Button type="button">Sign Up</Button>
+        </SignUpModal>
       ) : (
         <Button type="button" asChild>
           <Link href="dashboard">Dashboard</Link>
