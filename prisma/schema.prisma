@@ -65,7 +65,7 @@ model Class {
     id          String  @id @default(cuid())
     name        String
     description String?
-    code        String
+    code        String  @unique
     ownerUser   User    @relation(fields: [ownerUserId], references: [id], onDelete: Cascade)
     ownerUserId String
     students    User[]  @relation("ClassStudents")
