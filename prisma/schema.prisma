@@ -48,6 +48,8 @@ model User {
     accounts                 Account[]
     sessions                 Session[]
     computingIdVerifications ComputingIdVerification[]
+    ownedClasses             Class[]
+    classes                  Class[]                   @relation("ClassStudents")
 }
 
 model ComputingIdVerification {
@@ -56,6 +58,16 @@ model ComputingIdVerification {
     computingId String
     user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId      String
+}
+
+model Class {
+    id          String  @id @default(cuid())
+    name        String
+    description String?
+    code        String
+    ownerUser   User    @relation(fields: [ownerUserId], references: [id], onDelete: Cascade)
+    ownerUserId String
+    students    User[]  @relation("ClassStudents")
 }
 
 model VerificationToken {
