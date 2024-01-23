@@ -22,7 +22,10 @@ function AccountDropdownButton({ session }: { session: Session }) {
     <Button variant="outline" className="mb-2 flex justify-between gap-4">
       <div className="flex items-center gap-2 overflow-hidden">
         <Avatar className="size-6">
-          <AvatarImage src={session?.user.image ?? ""} alt="@alexf37" />
+          <AvatarImage
+            src={session?.user.image ?? ""}
+            alt={session?.user.name ?? "Profile image"}
+          />
           <AvatarFallback>AF</AvatarFallback>
         </Avatar>
         <div className="basis-full overflow-hidden overflow-ellipsis whitespace-nowrap text-primary">
