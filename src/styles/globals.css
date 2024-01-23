@@ -51,7 +51,7 @@
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
+    --muted: 217.2 42.6% 10.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
     --accent: 217.2 32.6% 17.5%;
@@ -70,6 +70,9 @@
   * {
     @apply border-border;
     @apply selection:bg-slate-900 selection:text-white;
+  }
+  .dark {
+    @apply selection:bg-white selection:text-slate-900;
   }
   html,
   body,

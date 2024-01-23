@@ -14,7 +14,7 @@ export default async function Settings() {
   };
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-2 rounded-lg border border-slate-200 bg-white px-8 py-6">
+      <div className="flex flex-col gap-2 rounded-lg border border-border bg-background px-8 py-6">
         <div className="space-y-6">
           <div>
             <h3 className="text-lg font-medium">Account</h3>

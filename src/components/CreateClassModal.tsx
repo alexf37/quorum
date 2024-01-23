@@ -17,7 +17,6 @@ import * as z from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -62,7 +61,7 @@ export function CreateClassModal({ children }: PropsWithChildren) {
       toast({
         title: "Error",
         description: err.message,
-        className: "border-red-500",
+        className: "border-destructive",
       });
     },
   });

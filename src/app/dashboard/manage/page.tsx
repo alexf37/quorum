@@ -69,7 +69,7 @@ export default async function Manage() {
       <CreateClassModal>
         <button
           type="button"
-          className="grid basis-full flex-col place-content-center rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 p-4 hover:bg-slate-100 max-sm:h-48 sm:aspect-square sm:h-full sm:max-w-56"
+          className="grid basis-full flex-col place-content-center rounded-lg border-2 border-dashed border-slate-300 bg-muted p-4 hover:opacity-50 max-sm:h-48 sm:aspect-square sm:h-full sm:max-w-56"
         >
           <div className="flex flex-col items-center text-center">
             <Plus strokeWidth={1.5} className="mb-1 size-7" />

@@ -52,7 +52,7 @@ export function JoinClassModal({ children }: PropsWithChildren) {
       toast({
         title: "Error",
         description: err.message,
-        className: "border-red-500",
+        className: "border-destructive",
       });
     },
   });

@@ -58,7 +58,7 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
             <Nav />
           </div>
         </div>
-        <div className="h-full flex-1 bg-slate-50">
+        <div className="h-full flex-1 bg-muted">
           <DashboardPageHead />
           <Separator />
           <div className="px-8 py-6">{children}</div>

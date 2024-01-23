@@ -7,6 +7,7 @@ import { AuthButton } from "@/components/AuthButton";
 import { Separator } from "@/components/ui/separator";
 import { GithubIcon } from "@/components/icons/GithubIcon";
 import { SignUpModal } from "@/components/SignUpModal";
+import { ModeToggle } from "@/components/ModeToggle";
 
 async function AuthButtons() {
   const session = await getServerAuthSession();
@@ -22,6 +23,7 @@ async function AuthButtons() {
           <Link href="dashboard">Dashboard</Link>
         </Button>
       )}
+      <ModeToggle />
     </>
   );
 }
@@ -69,7 +71,7 @@ function Hero() {
 
 function Footer() {
   return (
-    <div className="mx-auto flex max-w-screen-xl items-center justify-between gap-4 bg-white px-8 py-6 text-muted-foreground">
+    <div className="mx-auto flex max-w-screen-xl items-center justify-between gap-4 bg-background px-8 py-6 text-muted-foreground">
       <small>© 2024 Alex Foster. All rights reserved.</small>
       <div className="flex gap-2">
         <a href="https://github.com/alexf37" className="hover:text-primary">
@@ -122,7 +124,7 @@ function Features() {
 function BackgroundGraphic() {
   return (
     <svg
-      className="absolute inset-0 -z-10 h-full w-full stroke-slate-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
+      className="absolute inset-0 -z-10 h-full w-full stroke-border [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
       aria-hidden="true"
     >
       <defs>
