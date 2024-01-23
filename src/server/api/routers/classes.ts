@@ -146,11 +146,18 @@ export const classesRouter = createTRPCRouter({
   deleteClass: protectedProcedure
     .input(z.object({ classId: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      const deletedClass = await ctx.db.class.delete({
-        where: {
-          id: input.classId,
-        },
-      });
-      return deletedClass;
+      try {
+        const deletedClass = await ctx.db.class.delete({
+          where: {
+            id: input.classId,
+          },
+        });
+        return deletedClass;
+      } catch (e) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Something went wrong.",
+        });
+      }
     }),
 });

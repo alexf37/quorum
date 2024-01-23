@@ -1,4 +1,5 @@
 import { CreateClassModal } from "@/components/CreateClassModal";
+import { OwnedClassCardDropdown } from "@/components/OwnedClassCardDropdown";
 import {
   Card,
   CardDescription,
@@ -6,18 +7,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/trpc/server";
-import { Plus, MoreHorizontal, Trash2 } from "lucide-react";
+import { Plus, MoreHorizontal } from "lucide-react";
 
 export const metadata = {
   title: "Manage Classes",
@@ -54,19 +46,9 @@ export default async function Manage() {
           <div
             className={`flex h-10 items-center justify-end rounded-t-lg px-4 text-secondary ${twRainbow[idx % twRainbow.length]}`}
           >
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <MoreHorizontal />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>Options</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Trash2 className="mr-2 size-4" />
-                  Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <OwnedClassCardDropdown classId={clazz.id}>
+              <MoreHorizontal className="" />
+            </OwnedClassCardDropdown>
           </div>
           <Separator />
           <CardHeader>
