@@ -26,8 +26,8 @@ import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
-  classCode: z.string().min(2, {
-    message: "Code must be at least 1 character long",
+  classCode: z.string().min(4, {
+    message: "Code must be at least 4 characters long",
   }),
 });
 
