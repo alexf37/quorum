@@ -7,6 +7,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import { api } from "@/trpc/react";
 import { Trash2 } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
@@ -39,23 +51,44 @@ export function OwnedClassCardDropdown({
     },
   });
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>Options</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          onClick={() =>
-            deleteMutation.mutate({
-              classId,
-            })
-          }
-          disabled={deleteMutation.isLoading}
-        >
-          <Trash2 className="mr-2 size-4" />
-          Leave
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <AlertDialog>
+      <DropdownMenu>
+        <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>Options</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <AlertDialogTrigger asChild>
+            <DropdownMenuItem>
+              <Trash2 className="mr-2 size-4" />
+              Delete
+            </DropdownMenuItem>
+          </AlertDialogTrigger>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete this
+            class and remove all of its data from our servers.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <Button
+            onClick={() =>
+              deleteMutation.mutate({
+                classId,
+              })
+            }
+            disabled={deleteMutation.isLoading}
+            variant="destructive"
+            asChild
+          >
+            <AlertDialogAction>Delete Class</AlertDialogAction>
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
