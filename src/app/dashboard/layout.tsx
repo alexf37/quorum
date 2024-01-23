@@ -10,10 +10,29 @@ import { redirect } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { Nav } from "@/components/Nav";
 import { AccountDropdown } from "@/components/AccountDropdown";
+import { type Session } from "next-auth";
+import { DashboardPageHead } from "@/components/DashboardPageHead";
 
 export const metadata = {
   title: "Dashboard",
 };
+
+function AccountDropdownButton({ session }: { session: Session }) {
+  return (
+    <Button variant="outline" className="mb-2 flex justify-between gap-4">
+      <div className="flex items-center gap-2 overflow-hidden">
+        <Avatar className="size-6">
+          <AvatarImage src={session?.user.image ?? ""} alt="@alexf37" />
+          <AvatarFallback>AF</AvatarFallback>
+        </Avatar>
+        <div className="basis-full overflow-hidden overflow-ellipsis whitespace-nowrap text-primary">
+          {session?.user.displayName ?? session?.user.email}
+        </div>
+      </div>
+      <ChevronDown className="h-4 w-4 text-muted-foreground" />
+    </Button>
+  );
+}
 
 export default async function DashboardLayout({ children }: PropsWithChildren) {
   const session = await getServerAuthSession();
@@ -34,29 +53,16 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
           <Separator className="mb-1" />
           <div className="flex h-full flex-col items-stretch gap-2 px-6">
             <AccountDropdown>
-              <Button
-                variant="outline"
-                className="mb-2 flex justify-between gap-4"
-              >
-                <div className="flex items-center gap-2 overflow-hidden">
-                  <Avatar className="size-6">
-                    <AvatarImage
-                      src={session?.user.image ?? ""}
-                      alt="@alexf37"
-                    />
-                    <AvatarFallback>AF</AvatarFallback>
-                  </Avatar>
-                  <div className="basis-full overflow-hidden overflow-ellipsis whitespace-nowrap text-primary">
-                    {session?.user.displayName ?? session?.user.email}
-                  </div>
-                </div>
-                <ChevronDown className="h-4 w-4 text-muted-foreground" />
-              </Button>
+              <AccountDropdownButton session={session} />
             </AccountDropdown>
             <Nav />
           </div>
         </div>
-        {children}
+        <div className="h-full flex-1 bg-slate-50">
+          <DashboardPageHead />
+          <Separator />
+          <div className="px-8 py-6">{children}</div>
+        </div>
       </div>
     </>
   );
