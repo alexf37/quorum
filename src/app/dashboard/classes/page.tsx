@@ -26,6 +26,15 @@ const twRainbow = [
   "bg-purple-500",
 ];
 
+const twDarkRainbow = [
+  "bg-red-500 dark:bg-red-700",
+  "bg-orange-500 dark:bg-orange-700",
+  "bg-yellow-500 dark:bg-yellow-700",
+  "bg-green-500 dark:bg-green-700",
+  "bg-blue-500 dark:bg-blue-700",
+  "bg-purple-500 dark:bg-purple-700",
+];
+
 export default async function Classes() {
   const classes = await api.classes.getJoinedClasses.query();
   return (
@@ -39,7 +48,7 @@ export default async function Classes() {
             className={`flex h-10 items-center justify-end rounded-t-lg px-4 text-secondary ${twRainbow[idx % twRainbow.length]}`}
           >
             <ClassCardDropdown classId={clazz.id}>
-              <MoreHorizontal />
+              <MoreHorizontal className="" />
             </ClassCardDropdown>
           </div>
           <Separator />
