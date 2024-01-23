@@ -19,6 +19,10 @@ import { Separator } from "@/components/ui/separator";
 import { api } from "@/trpc/server";
 import { Plus, MoreHorizontal, Trash2 } from "lucide-react";
 
+export const metadata = {
+  title: "Manage Classes",
+};
+
 const twRainbow = [
   "bg-red-500",
   "bg-orange-500",

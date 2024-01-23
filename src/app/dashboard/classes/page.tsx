@@ -13,6 +13,10 @@ import { Plus, MoreHorizontal } from "lucide-react";
 import { api } from "@/trpc/server";
 import { ClassCardDropdown } from "@/components/ClassCardDropdown";
 
+export const metadata = {
+  title: "Classes",
+};
+
 const twRainbow = [
   "bg-red-500",
   "bg-orange-500",
