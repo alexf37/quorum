@@ -11,7 +11,7 @@ import { type PropsWithChildren } from "react";
 
 export default function VerifyWithIdLayout({ children }: PropsWithChildren) {
   return (
-    <div className="grid h-full w-full place-content-center bg-slate-50">
+    <div className="bg-backround grid h-full w-full place-content-center">
       <Card className="w-[380px]">
         <CardHeader>
           <CardTitle>Quorum Verification</CardTitle>
