@@ -38,7 +38,7 @@ export function AccountDropdown({ children }: PropsWithChildren) {
         </DropdownMenuItem>
         <DropdownMenuItem>
           <LifeBuoy className="mr-2 h-4 w-4" />
-          <span>Support</span>
+          <a href="mailto:xrk4np@virginia.edu">Support</a>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
