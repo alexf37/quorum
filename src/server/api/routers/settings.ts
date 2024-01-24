@@ -2,7 +2,7 @@ import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { z } from "zod";
 import { env } from "@/env";
 import { Resend } from "resend";
-import { VerificationEmail } from "@/emails/VerificationEmail";
+import { VerificationEmail } from "emails/VerificationEmail";
 
 export const settingsRouter = createTRPCRouter({
   getExistingFormData: protectedProcedure.query(async ({ ctx }) => {
