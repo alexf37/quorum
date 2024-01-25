@@ -61,9 +61,30 @@ export const classesRouter = createTRPCRouter({
   createClass: protectedProcedure
     .input(
       z.object({
-        courseCode: z.string(),
-        joinCode: z.string(),
-        title: z.string(),
+        courseCode: z
+          .string()
+          .min(4, {
+            message: "Course code must be at least 4 characters long",
+          })
+          .max(12, {
+            message: "Course code must be at most 12 characters long",
+          }),
+        joinCode: z
+          .string()
+          .min(4, {
+            message: "Join code must be at least 4 characters long",
+          })
+          .max(12, {
+            message: "Join code must be at most 12 characters long",
+          }),
+        title: z
+          .string()
+          .min(4, {
+            message: "Title must be at least 4 characters long",
+          })
+          .max(50, {
+            message: "Title must be at most 50 characters long",
+          }),
       }),
     )
     .mutation(async ({ ctx, input }) => {

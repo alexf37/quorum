@@ -27,15 +27,30 @@ import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
-  courseCode: z.string().min(4, {
-    message: "Name must be at least 4 characters long",
-  }),
-  joinCode: z.string().min(4, {
-    message: "Code must be at least 4 characters long",
-  }),
-  title: z.string().min(4, {
-    message: "Description must be at least 4 characters long",
-  }),
+  courseCode: z
+    .string()
+    .min(4, {
+      message: "Course code must be at least 4 characters long",
+    })
+    .max(12, {
+      message: "Course code must be at most 12 characters long",
+    }),
+  joinCode: z
+    .string()
+    .min(4, {
+      message: "Join code must be at least 4 characters long",
+    })
+    .max(12, {
+      message: "Join code must be at most 12 characters long",
+    }),
+  title: z
+    .string()
+    .min(4, {
+      message: "Title must be at least 4 characters long",
+    })
+    .max(50, {
+      message: "Title must be at most 50 characters long",
+    }),
 });
 
 export function CreateClassModal({ children }: PropsWithChildren) {
