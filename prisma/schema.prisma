@@ -51,6 +51,8 @@ model User {
     computingIdVerifications ComputingIdVerification[]
     ownedClasses             Class[]
     classes                  Class[]                   @relation("ClassStudents")
+    hostedClassSessions      ClassSession[]
+    classSessions            ClassSession[]            @relation("ClassSessionStudents")
 }
 
 model ComputingIdVerification {
@@ -62,13 +64,14 @@ model ComputingIdVerification {
 }
 
 model Class {
-    id          String @id @default(cuid())
-    courseCode  String
-    title       String
-    code        String @unique
-    ownerUser   User   @relation(fields: [ownerUserId], references: [id], onDelete: Cascade)
-    ownerUserId String
-    students    User[] @relation("ClassStudents")
+    id            String         @id @default(cuid())
+    courseCode    String
+    title         String
+    code          String         @unique
+    ownerUser     User           @relation(fields: [ownerUserId], references: [id], onDelete: Cascade)
+    ownerUserId   String
+    students      User[]         @relation("ClassStudents")
+    classSessions ClassSession[]
 }
 
 model VerificationToken {
@@ -77,4 +80,14 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model ClassSession {
+    id         String   @id @default(cuid())
+    createdAt  DateTime
+    hostUser   User     @relation(fields: [hostUserId], references: [id], onDelete: Cascade)
+    hostUserId String
+    class      Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+    classId    String
+    students   User[]   @relation("ClassSessionStudents")
 }
