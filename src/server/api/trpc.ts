@@ -10,9 +10,11 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import type { CreateWSSContextFnOptions } from "@trpc/server/adapters/ws";
 
 import { getServerAuthSession } from "@/server/auth";
 import { db } from "@/server/db";
+import { getSession } from "next-auth/react";
 
 /**
  * 1. CONTEXT
@@ -26,8 +28,10 @@ import { db } from "@/server/db";
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const session = await getServerAuthSession();
+export const createTRPCContext = async (
+  opts: { headers: Headers } | CreateWSSContextFnOptions,
+) => {
+  const session = await getSession();
 
   return {
     db,

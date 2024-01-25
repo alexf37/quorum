@@ -9,8 +9,8 @@ export function AuthButton({ authed }: { authed: boolean }) {
       <Button
         type="button"
         variant="ghost"
-        onClick={async () => {
-          await signOut();
+        onClick={() => {
+          void signOut();
         }}
       >
         Sign Out

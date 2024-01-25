@@ -10,8 +10,8 @@ export function OauthButtons() {
     <>
       <Button
         variant="outline"
-        onClick={async () => {
-          await signIn("google", { callbackUrl: "/dashboard" });
+        onClick={() => {
+          void signIn("google", { callbackUrl: "/dashboard" });
         }}
       >
         <GoogleIcon className="mr-2 h-4 w-4" />
