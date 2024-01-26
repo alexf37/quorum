@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { type PropsWithChildren } from "react";
+import { useState, type PropsWithChildren } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -63,6 +63,7 @@ export function CreateClassModal({ children }: PropsWithChildren) {
       title: "",
     },
   });
+  const [open, setOpen] = useState(false);
 
   const registerMutation = api.classes.createClass.useMutation({
     onSuccess: () => {
@@ -71,6 +72,8 @@ export function CreateClassModal({ children }: PropsWithChildren) {
         description: "You have successfully created a class.",
       });
       router.refresh();
+      setOpen(false);
+      form.reset();
     },
     onError: (err) => {
       toast({
@@ -85,7 +88,7 @@ export function CreateClassModal({ children }: PropsWithChildren) {
     registerMutation.mutate(data);
   }
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
