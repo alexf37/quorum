@@ -181,4 +181,18 @@ export const classesRouter = createTRPCRouter({
         });
       }
     }),
+  getClassById: protectedProcedure
+    .input(z.object({ classId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const classObj = await ctx.db.class.findUnique({
+        where: {
+          id: input.classId,
+        },
+      });
+      return {
+        title: classObj?.title,
+        courseCode: classObj?.courseCode,
+        code: classObj?.code,
+      };
+    }),
 });

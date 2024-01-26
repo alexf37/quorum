@@ -1,8 +1,10 @@
 import { CreateClassModal } from "@/components/CreateClassModal";
 import { OwnedClassCardDropdown } from "@/components/OwnedClassCardDropdown";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -10,6 +12,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/trpc/server";
 import { Plus, MoreHorizontal } from "lucide-react";
+import Link from "next/link";
 
 export const metadata = {
   title: "Manage Classes",
@@ -40,21 +43,23 @@ export default async function Manage() {
     <div className="flex w-full flex-wrap gap-4 max-sm:justify-center">
       {classes.map((clazz, idx) => (
         <Card
-          className="flex basis-full flex-col sm:aspect-square sm:h-full sm:max-w-56"
-          key={idx}
+          key={clazz.id}
+          className="flex basis-full flex-col transition-all hover:-translate-y-1 hover:cursor-pointer hover:opacity-70 sm:aspect-square sm:h-full sm:max-w-56"
         >
-          <div
-            className={`flex h-10 items-center justify-end rounded-t-lg px-4 text-secondary ${twRainbow[idx % twRainbow.length]}`}
-          >
-            <OwnedClassCardDropdown classId={clazz.id}>
-              <MoreHorizontal className="" />
-            </OwnedClassCardDropdown>
-          </div>
-          <Separator />
-          <CardHeader>
-            <CardTitle>{clazz.courseCode}</CardTitle>
-            <CardDescription>{clazz.title}</CardDescription>
-          </CardHeader>
+          <Link className="h-full w-full" href={`/manage/${clazz.id}`}>
+            <div
+              className={`flex h-10 items-center justify-end rounded-t-lg px-4 text-secondary ${twRainbow[idx % twRainbow.length]}`}
+            >
+              <OwnedClassCardDropdown classId={clazz.id}>
+                <MoreHorizontal className="" />
+              </OwnedClassCardDropdown>
+            </div>
+            <Separator />
+            <CardHeader>
+              <CardTitle>{clazz.courseCode}</CardTitle>
+              <CardDescription>{clazz.title}</CardDescription>
+            </CardHeader>
+          </Link>
         </Card>
       ))}
       <CreateClassModal>

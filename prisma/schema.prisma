@@ -53,6 +53,7 @@ model User {
     classes                  Class[]                   @relation("ClassStudents")
     hostedClassSessions      ClassSession[]
     classSessions            ClassSession[]            @relation("ClassSessionStudents")
+    freeResponseAnswers      FreeResponseAnswer[]
 }
 
 model ComputingIdVerification {
@@ -82,12 +83,32 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
+model FreeResponseQuestion {
+    id             String               @id @default(cuid())
+    ClassSession   ClassSession         @relation(fields: [classSessionId], references: [id], onDelete: Cascade)
+    classSessionId String
+    index          Int
+    question       String
+    answers        FreeResponseAnswer[]
+}
+
+model FreeResponseAnswer {
+    id                     String               @id @default(cuid())
+    freeResponseQuestion   FreeResponseQuestion @relation(fields: [freeResponseQuestionId], references: [id], onDelete: Cascade)
+    freeResponseQuestionId String
+    user                   User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId                 String
+    answer                 String
+    createdAt              DateTime
+}
+
 model ClassSession {
-    id         String   @id @default(cuid())
+    id         String                 @id @default(cuid())
     createdAt  DateTime
-    hostUser   User     @relation(fields: [hostUserId], references: [id], onDelete: Cascade)
+    hostUser   User                   @relation(fields: [hostUserId], references: [id], onDelete: Cascade)
     hostUserId String
-    class      Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+    class      Class                  @relation(fields: [classId], references: [id], onDelete: Cascade)
     classId    String
-    students   User[]   @relation("ClassSessionStudents")
+    students   User[]                 @relation("ClassSessionStudents")
+    questions  FreeResponseQuestion[]
 }
