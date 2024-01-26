@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export function DashboardButton() {
   return (
-    <Button className="group" variant="ghost" asChild>
+    <Button className="group px-2" variant="ghost" asChild>
       <Link href="/dashboard/manage">
         <ChevronLeft />
         <div className="w-0 overflow-hidden transition-all group-hover:w-20">

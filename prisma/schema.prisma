@@ -104,6 +104,7 @@ model FreeResponseAnswer {
 
 model ClassSession {
     id         String                 @id @default(cuid())
+    title      String
     createdAt  DateTime
     hostUser   User                   @relation(fields: [hostUserId], references: [id], onDelete: Cascade)
     hostUserId String

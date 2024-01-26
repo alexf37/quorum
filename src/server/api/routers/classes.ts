@@ -190,6 +190,7 @@ export const classesRouter = createTRPCRouter({
         },
       });
       return {
+        id: classObj?.id,
         title: classObj?.title,
         courseCode: classObj?.courseCode,
         code: classObj?.code,
