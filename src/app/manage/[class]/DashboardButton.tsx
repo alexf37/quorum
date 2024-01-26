@@ -8,9 +8,7 @@ export function DashboardButton() {
     <Button className="group px-2" variant="ghost" asChild>
       <Link href="/dashboard/manage">
         <ChevronLeft />
-        <div className="w-0 overflow-hidden transition-all group-hover:w-20">
-          Dashboard
-        </div>
+        <div className="w-0 overflow-hidden transition-all">Dashboard</div>
       </Link>
     </Button>
   );

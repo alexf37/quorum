@@ -44,22 +44,25 @@ export default async function Manage() {
       {classes.map((clazz, idx) => (
         <Card
           key={clazz.id}
-          className="flex basis-full flex-col transition-all hover:-translate-y-1 hover:cursor-pointer hover:opacity-70 sm:aspect-square sm:h-full sm:max-w-56"
+          className="flex basis-full flex-col sm:aspect-square sm:h-full sm:max-w-56"
         >
-          <Link className="h-full w-full" href={`/manage/${clazz.id}`}>
-            <div
-              className={`flex h-10 items-center justify-end rounded-t-lg px-4 text-secondary ${twRainbow[idx % twRainbow.length]}`}
-            >
-              <OwnedClassCardDropdown classId={clazz.id}>
-                <MoreHorizontal className="" />
-              </OwnedClassCardDropdown>
-            </div>
-            <Separator />
-            <CardHeader>
-              <CardTitle>{clazz.courseCode}</CardTitle>
-              <CardDescription>{clazz.title}</CardDescription>
-            </CardHeader>
-          </Link>
+          <div
+            className={`flex h-10 items-center justify-end rounded-t-lg px-4 text-secondary ${twRainbow[idx % twRainbow.length]}`}
+          >
+            <OwnedClassCardDropdown classId={clazz.id}>
+              <MoreHorizontal className="" />
+            </OwnedClassCardDropdown>
+          </div>
+          <Separator />
+          <CardHeader>
+            <CardTitle>{clazz.courseCode}</CardTitle>
+            <CardDescription>{clazz.title}</CardDescription>
+          </CardHeader>
+          <CardFooter className="mt-auto grid w-full grid-cols-2 gap-2">
+            <Button variant="secondary" className="col-span-2" asChild>
+              <Link href={`/manage/${clazz.id}`}>Manage sessions</Link>
+            </Button>
+          </CardFooter>
         </Card>
       ))}
       <CreateClassModal>

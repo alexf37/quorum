@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import { api } from "@/trpc/server";
 import { DashboardButton } from "./DashboardButton";
 import { Button } from "@/components/ui/button";
-import { Plus, MoreVertical } from "lucide-react";
+import { Plus, MoreVertical, CalendarOff } from "lucide-react";
 import { NewSessionModal } from "@/components/NewSessionModal";
 import { SessionListItemDropdown } from "@/components/SessionListItemDropdown";
 
@@ -76,21 +76,41 @@ export default async function ManageClass({
             </h2>
           </div>
           <NewSessionModal classId={clazz.id}>
-            <Button className="group">
+            <Button>
               <Plus className="mr-2 size-4" />
               New
             </Button>
           </NewSessionModal>
         </div>
-        <ul className="flex flex-col gap-2">
-          {sessions.map((session) => (
-            <SessionListItem
-              key={session.id}
-              title={session.title}
-              id={session.id}
-            />
-          ))}
-        </ul>
+        {sessions.length > 0 ? (
+          <ul className="flex flex-col gap-2">
+            {sessions.map((session) => (
+              <SessionListItem
+                key={session.id}
+                title={session.title}
+                id={session.id}
+              />
+            ))}
+          </ul>
+        ) : (
+          <div className="flex min-h-[400px] flex-col items-center justify-center rounded-md border border-dashed p-8 text-center animate-in fade-in-50">
+            <div className="mx-auto flex max-w-[420px] flex-col items-center justify-center text-center">
+              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted">
+                <CalendarOff className="h-10 w-10" />
+              </div>
+              <h2 className="mt-6 text-xl font-semibold">No sessions</h2>
+              <p className="mb-8 mt-2 text-center text-sm font-normal leading-6 text-muted-foreground">
+                You haven't created any sessions for this class yet.
+              </p>
+              <NewSessionModal classId={clazz.id}>
+                <Button variant="outline">
+                  <Plus className="mr-2 size-4" />
+                  New session
+                </Button>
+              </NewSessionModal>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
