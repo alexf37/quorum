@@ -49,4 +49,44 @@ export const sessionsRouter = createTRPCRouter({
       });
       return session;
     }),
+  getFreeResponseQuestionsBySessionId: protectedProcedure
+    .input(
+      z.object({
+        sessionId: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const freeResponseQuestions = await ctx.db.freeResponseQuestion.findMany({
+        where: {
+          classSessionId: input.sessionId,
+        },
+      });
+      return freeResponseQuestions;
+    }),
+  addFreeResponseQuestion: protectedProcedure
+    .input(
+      z.object({
+        sessionId: z.string(),
+        prompt: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const existingFreeResponseQuestions =
+        await ctx.db.freeResponseQuestion.findMany({
+          where: {
+            classSessionId: input.sessionId,
+          },
+          orderBy: {
+            index: "desc",
+          },
+        });
+      const freeResponseQuestion = await ctx.db.freeResponseQuestion.create({
+        data: {
+          question: input.prompt,
+          classSessionId: input.sessionId,
+          index: (existingFreeResponseQuestions[0]?.index ?? 0) + 1,
+        },
+      });
+      return freeResponseQuestion;
+    }),
 });
