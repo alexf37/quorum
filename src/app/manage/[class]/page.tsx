@@ -3,40 +3,9 @@ import { Separator } from "@/components/ui/separator";
 import { api } from "@/trpc/server";
 import { DashboardButton } from "./DashboardButton";
 import { Button } from "@/components/ui/button";
-import { Plus, MoreVertical, CalendarOff } from "lucide-react";
+import { Plus, CalendarOff } from "lucide-react";
 import { NewSessionModal } from "@/components/NewSessionModal";
-import { SessionListItemDropdown } from "@/components/SessionListItemDropdown";
-
-type SessionListItemProps = {
-  id: string;
-  title: string;
-  date?: string;
-};
-
-function SessionListItem({
-  id,
-  title,
-  date = "Undated",
-}: SessionListItemProps) {
-  return (
-    <li className="flex items-center justify-between rounded-lg border border-border p-4">
-      <div className="flex items-center gap-4">
-        <div className="h-3 w-3 rounded-full bg-green-500" />
-        <div>
-          <h3 className="text-md font-medium">{title}</h3>
-          <p className="text-xs text-muted-foreground">{date}</p>
-        </div>
-      </div>
-      <div className="flex items-center gap-2">
-        <Button variant="secondary">View</Button>
-        <Button variant="secondary">Edit</Button>
-        <SessionListItemDropdown sessionId={id}>
-          <MoreVertical className="size-5 text-muted-foreground" />
-        </SessionListItemDropdown>
-      </div>
-    </li>
-  );
-}
+import { SessionList } from "./SessionList";
 
 export default async function ManageClass({
   params,
@@ -83,15 +52,7 @@ export default async function ManageClass({
           </NewSessionModal>
         </div>
         {sessions.length > 0 ? (
-          <ul className="flex flex-col gap-2">
-            {sessions.map((session) => (
-              <SessionListItem
-                key={session.id}
-                title={session.title}
-                id={session.id}
-              />
-            ))}
-          </ul>
+          <SessionList sessions={sessions} />
         ) : (
           <div className="flex min-h-[400px] flex-col items-center justify-center rounded-md border border-dashed p-8 text-center animate-in fade-in-50">
             <div className="mx-auto flex max-w-[420px] flex-col items-center justify-center text-center">
