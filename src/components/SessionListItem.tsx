@@ -35,7 +35,7 @@ export function SessionListItem({
   date = "Undated",
 }: SessionListItemProps) {
   const [expanded, setExpanded] = useState(false);
-  const { data, isLoading, isSuccess, isError, error } =
+  const { data, refetch, isLoading, isSuccess, isError, error } =
     api.sessions.getFreeResponseQuestionsBySessionId.useQuery(
       { sessionId: id },
       {
@@ -53,7 +53,13 @@ export function SessionListItem({
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="secondary" onClick={() => setExpanded(!expanded)}>
+          <Button
+            variant="secondary"
+            onMouseOver={() => {
+              if (!expanded && !data) void refetch();
+            }}
+            onClick={() => setExpanded(!expanded)}
+          >
             {expanded ? "Close" : "View"}
           </Button>
           <Button variant="secondary">Edit</Button>
@@ -118,29 +124,45 @@ export function SessionListItem({
                       <p className="pb-2 text-lg text-muted-foreground">
                         No questions yet
                       </p>
-                      <AddQuestionModal sessionId={id}>
-                        <Button variant="outline">Add a question</Button>
-                      </AddQuestionModal>
+                      <div className="flex justify-end gap-2">
+                        <AddQuestionModal sessionId={id}>
+                          <Button variant="outline">Add a question</Button>
+                        </AddQuestionModal>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <Button disabled variant="outline">
+                                Import questions
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Not yet implemented</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
                     </div>
                   ))}
               </div>
-              <div className="flex justify-end gap-2">
-                <AddQuestionModal sessionId={id}>
-                  <Button variant="outline">Add a question</Button>
-                </AddQuestionModal>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <Button disabled variant="outline">
-                        Import questions
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Not yet implemented</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
+              {isSuccess && data.length > 0 && (
+                <div className="flex justify-end gap-2">
+                  <AddQuestionModal sessionId={id}>
+                    <Button variant="outline">Add a question</Button>
+                  </AddQuestionModal>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Button disabled variant="outline">
+                          Import questions
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Not yet implemented</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+              )}
             </div>
           </motion.div>
         )}
