@@ -89,4 +89,22 @@ export const sessionsRouter = createTRPCRouter({
       });
       return freeResponseQuestion;
     }),
+  editSession: protectedProcedure
+    .input(
+      z.object({
+        sessionId: z.string(),
+        title: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const session = await ctx.db.classSession.update({
+        where: {
+          id: input.sessionId,
+        },
+        data: {
+          title: input.title,
+        },
+      });
+      return session;
+    }),
 });

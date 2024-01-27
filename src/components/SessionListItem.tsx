@@ -8,9 +8,7 @@ import { api } from "@/trpc/react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -22,6 +20,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { EditSessionModal } from "@/components/EditSessionModal";
 
 type SessionListItemProps = {
   id: string;
@@ -35,7 +34,7 @@ export function SessionListItem({
   date = "Undated",
 }: SessionListItemProps) {
   const [expanded, setExpanded] = useState(false);
-  const { data, refetch, isLoading, isSuccess, isError, error } =
+  const { data, refetch, isLoading, isSuccess } =
     api.sessions.getFreeResponseQuestionsBySessionId.useQuery(
       { sessionId: id },
       {
@@ -62,7 +61,9 @@ export function SessionListItem({
           >
             {expanded ? "Close" : "View"}
           </Button>
-          <Button variant="secondary">Edit</Button>
+          <EditSessionModal sessionId={id} currentName={title}>
+            <Button variant="secondary">Edit</Button>
+          </EditSessionModal>
           <SessionListItemDropdown sessionId={id}>
             <MoreVertical className="size-5 text-muted-foreground" />
           </SessionListItemDropdown>
