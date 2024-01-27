@@ -18,7 +18,7 @@ export function SessionListItem({
 }: SessionListItemProps) {
   const [expanded, setExpanded] = useState(false);
   return (
-    <motion.li className="flex flex-col rounded-lg border border-border p-4">
+    <li className="flex flex-col rounded-lg border border-border p-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="h-3 w-3 rounded-full bg-green-500" />
@@ -51,6 +51,6 @@ export function SessionListItem({
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.li>
+    </li>
   );
 }
