@@ -3,40 +3,9 @@ import { Separator } from "@/components/ui/separator";
 import { api } from "@/trpc/server";
 import { DashboardButton } from "./DashboardButton";
 import { Button } from "@/components/ui/button";
-import { Plus, MoreVertical, CalendarOff } from "lucide-react";
+import { Plus, CalendarOff } from "lucide-react";
 import { NewSessionModal } from "@/components/NewSessionModal";
-import { SessionListItemDropdown } from "@/components/SessionListItemDropdown";
-
-type SessionListItemProps = {
-  id: string;
-  title: string;
-  date?: string;
-};
-
-function SessionListItem({
-  id,
-  title,
-  date = "Undated",
-}: SessionListItemProps) {
-  return (
-    <li className="flex items-center justify-between rounded-lg border border-border p-4">
-      <div className="flex items-center gap-4">
-        <div className="h-3 w-3 rounded-full bg-green-500" />
-        <div>
-          <h3 className="text-md font-medium">{title}</h3>
-          <p className="text-xs text-muted-foreground">{date}</p>
-        </div>
-      </div>
-      <div className="flex items-center gap-2">
-        <Button variant="secondary">View</Button>
-        <Button variant="secondary">Edit</Button>
-        <SessionListItemDropdown sessionId={id}>
-          <MoreVertical className="size-5 text-muted-foreground" />
-        </SessionListItemDropdown>
-      </div>
-    </li>
-  );
-}
+import { SessionListItem } from "@/components/SessionListItem";
 
 export default async function ManageClass({
   params,
