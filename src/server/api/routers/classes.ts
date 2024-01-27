@@ -167,6 +167,27 @@ export const classesRouter = createTRPCRouter({
   deleteClass: protectedProcedure
     .input(z.object({ classId: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const clazz = await ctx.db.class.findUnique({
+        where: {
+          id: input.classId,
+        },
+        select: {
+          ownerUserId: true,
+        },
+      });
+      if (!clazz) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "No such class.",
+        });
+      }
+      if (clazz.ownerUserId !== userId) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "You are not the owner of this class.",
+        });
+      }
       try {
         const deletedClass = await ctx.db.class.delete({
           where: {

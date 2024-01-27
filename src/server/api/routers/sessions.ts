@@ -1,6 +1,54 @@
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { TRPCError } from "@trpc/server";
+import { db } from "@/server/db";
+
+async function checkClassOwnership(classId: string, userId: string) {
+  const clazz = await db.class.findUnique({
+    where: {
+      id: classId,
+    },
+    select: {
+      ownerUserId: true,
+    },
+  });
+  if (!clazz) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "No such class exists.",
+    });
+  }
+  if (clazz.ownerUserId !== userId) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "You are not the owner of this class.",
+    });
+  }
+}
+
+async function checkSessionOwnership(sessionId: string, userId: string) {
+  const session = await db.classSession.findUnique({
+    where: {
+      id: sessionId,
+    },
+    select: {
+      hostUserId: true,
+    },
+  });
+  if (!session) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "No such session exists.",
+    });
+  }
+  if (session.hostUserId !== userId) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "You are not the owner of this session.",
+    });
+  }
+}
 
 export const sessionsRouter = createTRPCRouter({
   createSession: protectedProcedure
@@ -11,6 +59,7 @@ export const sessionsRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      await checkClassOwnership(input.classId, ctx.session.user.id);
       const classSession = await ctx.db.classSession.create({
         data: {
           title: input.title,
@@ -42,6 +91,7 @@ export const sessionsRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      await checkSessionOwnership(input.sessionId, ctx.session.user.id);
       const session = await ctx.db.classSession.delete({
         where: {
           id: input.sessionId,
@@ -56,6 +106,7 @@ export const sessionsRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx, input }) => {
+      await checkSessionOwnership(input.sessionId, ctx.session.user.id);
       const freeResponseQuestions = await ctx.db.freeResponseQuestion.findMany({
         where: {
           classSessionId: input.sessionId,
@@ -71,6 +122,7 @@ export const sessionsRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      await checkSessionOwnership(input.sessionId, ctx.session.user.id);
       const existingFreeResponseQuestions =
         await ctx.db.freeResponseQuestion.findMany({
           where: {
@@ -97,6 +149,7 @@ export const sessionsRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      await checkSessionOwnership(input.sessionId, ctx.session.user.id);
       const session = await ctx.db.classSession.update({
         where: {
           id: input.sessionId,
