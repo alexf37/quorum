@@ -1,7 +1,7 @@
 import { ModeToggle } from "@/components/ModeToggle";
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/trpc/server";
-import { DashboardButton } from "./DashboardButton";
+import { DashboardButton } from "@/components/DashboardButton";
 import { Button } from "@/components/ui/button";
 import { Plus, CalendarOff } from "lucide-react";
 import { NewSessionModal } from "@/components/NewSessionModal";
