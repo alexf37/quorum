@@ -37,7 +37,7 @@ export default async function ManageClass({
     <div>
       <div className="mx-auto flex h-20 max-w-screen-lg items-center gap-2 bg-background px-8 pb-5 pt-6 text-primary max-sm:hidden">
         <div className="flex items-center gap-4">
-          <DashboardButton />
+          <DashboardButton href="/dashboard/manage" />
           <h1 className="text-2xl font-bold tracking-tight">{clazz.title}</h1>
         </div>
         <div className="ml-auto">
