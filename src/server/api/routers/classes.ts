@@ -215,6 +215,7 @@ export const classesRouter = createTRPCRouter({
         title: classObj?.title,
         courseCode: classObj?.courseCode,
         code: classObj?.code,
+        ownerUserId: classObj?.ownerUserId,
       };
     }),
 });

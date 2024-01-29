@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, CalendarOff } from "lucide-react";
 import { NewSessionModal } from "@/components/NewSessionModal";
 import { SessionListItem } from "@/components/SessionListItem";
+import { getServerAuthSession } from "@/server/auth";
 
 export default async function ManageClass({
   params,
@@ -24,6 +25,14 @@ export default async function ManageClass({
         <h1>Class not found</h1>
       </div>
     );
+  const session = await getServerAuthSession();
+  if (session?.user?.id !== clazz.ownerUserId) {
+    return (
+      <div>
+        <h1>Not authorized</h1>
+      </div>
+    );
+  }
   return (
     <div>
       <div className="mx-auto flex h-20 max-w-screen-lg items-center gap-2 bg-background px-8 pb-5 pt-6 text-primary max-sm:hidden">
