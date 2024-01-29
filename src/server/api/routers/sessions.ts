@@ -163,4 +163,36 @@ export const sessionsRouter = createTRPCRouter({
       });
       return session;
     }),
+  getCurrentFreeResponseQuestion: protectedProcedure
+    .input(
+      z.object({
+        sessionId: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      await checkSessionOwnership(input.sessionId, ctx.session.user.id);
+      const currentQuestion = await ctx.db.classSession.findUnique({
+        where: {
+          id: input.sessionId,
+        },
+        select: {
+          currentQuestion: true,
+        },
+      });
+      return currentQuestion?.currentQuestion ?? null;
+    }),
+  getSessionInfo: protectedProcedure
+    .input(
+      z.object({
+        sessionId: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const session = await ctx.db.classSession.findUnique({
+        where: {
+          id: input.sessionId,
+        },
+      });
+      return session;
+    }),
 });
