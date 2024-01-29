@@ -115,8 +115,25 @@ export const classesRouter = createTRPCRouter({
           },
         },
       },
+      include: {
+        classSessions: {
+          where: {
+            status: "ONGOING",
+          },
+          select: {
+            id: true,
+            status: true,
+          },
+        },
+      },
     });
-    return classes;
+    const filteredClasses = classes.map((c) => {
+      return {
+        ...c,
+        classSession: c.classSessions.length ? c.classSessions[0] : undefined,
+      };
+    });
+    return filteredClasses;
   }),
   getOwnedClasses: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session.user.id;
@@ -209,13 +226,27 @@ export const classesRouter = createTRPCRouter({
         where: {
           id: input.classId,
         },
+        include: {
+          classSessions: {
+            select: {
+              id: true,
+            },
+          },
+        },
       });
+      if (!classObj) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "No such class.",
+        });
+      }
       return {
-        id: classObj?.id,
-        title: classObj?.title,
-        courseCode: classObj?.courseCode,
-        code: classObj?.code,
-        ownerUserId: classObj?.ownerUserId,
+        id: classObj.id,
+        title: classObj.title,
+        courseCode: classObj.courseCode,
+        code: classObj.code,
+        ownerUserId: classObj.ownerUserId,
+        classSessions: classObj.classSessions,
       };
     }),
 });

@@ -12,6 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { Plus, MoreHorizontal } from "lucide-react";
 import { api } from "@/trpc/server";
 import { ClassCardDropdown } from "@/components/ClassCardDropdown";
+import Link from "next/link";
 
 export const metadata = {
   title: "Classes",
@@ -48,8 +49,17 @@ export default async function Classes() {
             <CardDescription>{clazz.title}</CardDescription>
           </CardHeader>
           <CardFooter className="mt-auto grid w-full grid-cols-2 gap-2">
-            <Button variant="secondary">View</Button>
-            <Button variant="outline">Join</Button>
+            {clazz.classSession ? (
+              <Button variant="outline" className="col-span-2" asChild>
+                <Link href={`/session/${clazz.classSession.id}`}>
+                  Join Session
+                </Link>
+              </Button>
+            ) : (
+              <Button disabled variant="ghost" className="col-span-2">
+                No Ongoing Session
+              </Button>
+            )}
           </CardFooter>
         </Card>
       ))}
