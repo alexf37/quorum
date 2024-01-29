@@ -27,6 +27,34 @@ async function checkClassOwnership(classId: string, userId: string) {
   }
 }
 
+async function checkClassMembership(classId: string, userId: string) {
+  const clazz = await db.class.findUnique({
+    where: {
+      id: classId,
+    },
+    select: {
+      ownerUserId: true,
+      students: {
+        where: {
+          id: userId,
+        },
+      },
+    },
+  });
+  if (!clazz) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "No such class exists.",
+    });
+  }
+  if (clazz.ownerUserId !== userId && clazz.students.length === 0) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "You are not a member of this class.",
+    });
+  }
+}
+
 async function checkSessionOwnership(sessionId: string, userId: string) {
   const session = await db.classSession.findUnique({
     where: {
@@ -170,7 +198,21 @@ export const sessionsRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx, input }) => {
-      await checkSessionOwnership(input.sessionId, ctx.session.user.id);
+      const classFromSession = await ctx.db.classSession.findUnique({
+        where: {
+          id: input.sessionId,
+        },
+        select: {
+          classId: true,
+        },
+      });
+      if (!classFromSession) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "No such session exists.",
+        });
+      }
+      await checkClassMembership(classFromSession.classId, ctx.session.user.id);
       const currentQuestion = await ctx.db.classSession.findUnique({
         where: {
           id: input.sessionId,
