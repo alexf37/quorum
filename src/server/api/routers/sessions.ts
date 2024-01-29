@@ -111,6 +111,9 @@ export const sessionsRouter = createTRPCRouter({
         where: {
           classSessionId: input.sessionId,
         },
+        orderBy: {
+          index: "asc",
+        },
       });
       return freeResponseQuestions;
     }),
