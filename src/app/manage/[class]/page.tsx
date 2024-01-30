@@ -13,6 +13,14 @@ export default async function ManageClass({
 }: {
   params: { class: string };
 }) {
+  const authSession = await getServerAuthSession();
+  if (!authSession) {
+    return (
+      <div>
+        <h1>Not authorized</h1>
+      </div>
+    );
+  }
   const clazz = await api.classes.getClassById.query({
     classId: params.class,
   });
@@ -25,8 +33,7 @@ export default async function ManageClass({
         <h1>Class not found</h1>
       </div>
     );
-  const session = await getServerAuthSession();
-  if (session?.user?.id !== clazz.ownerUserId) {
+  if (authSession?.user?.id !== clazz.ownerUserId) {
     return (
       <div>
         <h1>Not authorized</h1>

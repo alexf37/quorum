@@ -3,8 +3,17 @@ import { ModeToggle } from "@/components/ModeToggle";
 import { Separator } from "@/components/ui/separator";
 import { Question } from "./Question";
 import { api } from "@/trpc/server";
+import { getServerAuthSession } from "@/server/auth";
 
 export default async function Session({ params }: { params: { id: string } }) {
+  const authSession = await getServerAuthSession();
+  if (!authSession) {
+    return (
+      <div>
+        <h1>Not authorized</h1>
+      </div>
+    );
+  }
   const sessionId = params.id;
   const data = await api.sessions.getSessionInfo.query({
     sessionId: sessionId,
