@@ -60,7 +60,7 @@ function Hero() {
       </div>
       <small className="pt-2 text-slate-400">
         If you're managing a class,{" "}
-        <Link href="#" className="underline hover:text-primary">
+        <Link href="/dashboard/manage" className="underline hover:text-primary">
           click here
         </Link>{" "}
         instead.
