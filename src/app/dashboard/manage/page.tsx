@@ -1,6 +1,7 @@
 import { CreateClassModal } from "@/components/CreateClassModal";
 import { OwnedClassCardDropdown } from "@/components/OwnedClassCardDropdown";
 import { Button } from "@/components/ui/button";
+import { StartClassSessionModal } from "@/components/StartClassSessionModal";
 import {
   Card,
   CardDescription,
@@ -50,9 +51,12 @@ export default async function Manage() {
             <CardDescription>{clazz.title}</CardDescription>
           </CardHeader>
           <CardFooter className="mt-auto grid w-full grid-cols-2 gap-2">
-            <Button variant="secondary" className="col-span-2" asChild>
-              <Link href={`/manage/${clazz.id}`}>Manage sessions</Link>
+            <Button variant="secondary" asChild>
+              <Link href={`/manage/${clazz.id}`}>Manage</Link>
             </Button>
+            <StartClassSessionModal classId={clazz.id}>
+              <Button variant="outline">Start</Button>
+            </StartClassSessionModal>
           </CardFooter>
         </Card>
       ))}
