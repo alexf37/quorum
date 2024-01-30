@@ -35,25 +35,31 @@ export async function StartClassSessionModal({
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="max-h-72 rounded-md border">
-          <ul className="divide-y">
-            {sessions.map((session) => (
-              <li key={session.id} className="group py-3 hover:bg-muted">
-                <div className="flex items-center justify-between gap-4 px-4">
-                  <div>{session.title}</div>
-                  <Button
-                    variant="link"
-                    className="hidden h-min p-0 group-hover:flex"
-                    asChild
-                  >
-                    <Link href={`/session/${session.id}`}>
-                      Start
-                      <ChevronRight className="ml-2 size-4" />
-                    </Link>
-                  </Button>
-                </div>
-              </li>
-            ))}
-          </ul>
+          {sessions.length > 0 ? (
+            <ul className="divide-y">
+              {sessions.map((session) => (
+                <li key={session.id} className="group py-3 hover:bg-muted">
+                  <div className="flex items-center justify-between gap-4 px-4">
+                    <div>{session.title}</div>
+                    <Button
+                      variant="link"
+                      className="hidden h-min p-0 group-hover:flex"
+                      asChild
+                    >
+                      <Link href={`/session/${session.id}`}>
+                        Start
+                        <ChevronRight className="ml-2 size-4" />
+                      </Link>
+                    </Button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="p-8 text-center text-muted-foreground">
+              No sessions found
+            </div>
+          )}
         </ScrollArea>
       </DialogContent>
     </Dialog>

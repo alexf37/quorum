@@ -30,7 +30,7 @@ async function AuthButtons() {
 
 function NavBar() {
   return (
-    <div className="mx-auto flex max-w-screen-xl items-center justify-between gap-4 px-8 py-6">
+    <div className="mx-auto flex w-full max-w-screen-xl items-center justify-between gap-4 px-8 py-6">
       <div className="flex max-w-screen-sm items-center gap-2 text-primary">
         <LogoSvg className="size-9" />
         <h1 className="text-3xl font-bold tracking-tight max-sm:hidden">
@@ -71,7 +71,7 @@ function Hero() {
 
 function Footer() {
   return (
-    <div className="mx-auto flex max-w-screen-xl items-center justify-between gap-4 bg-background px-8 py-6 text-muted-foreground">
+    <div className="mx-auto flex w-full max-w-screen-xl items-center justify-between gap-4 bg-background px-8 py-6 text-muted-foreground">
       <small>© 2024 Alex Foster. All rights reserved.</small>
       <div className="flex gap-2">
         <a href="https://github.com/alexf37" className="hover:text-primary">
@@ -151,12 +151,12 @@ function BackgroundGraphic() {
 
 export default function App() {
   return (
-    <div className="relative isolate h-full overflow-x-hidden bg-background">
+    <div className="relative isolate flex h-full flex-col overflow-x-hidden bg-background">
       <BackgroundGraphic />
       <NavBar />
       <Hero />
       <Features />
-      <Separator />
+      <Separator className="mt-auto" />
       <Footer />
     </div>
   );
