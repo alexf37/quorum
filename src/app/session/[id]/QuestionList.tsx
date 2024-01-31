@@ -19,6 +19,32 @@ import { Input } from "@/components/ui/input";
 import { api } from "@/trpc/react";
 import io from "socket.io-client";
 
+function sendSocketMessage({
+  room,
+  name,
+  value,
+}: {
+  room: string;
+  name: string;
+  value: string;
+}) {
+  const socket = io("https://connect.xsschat.com");
+  socket.on("connect", () => {
+    socket.emit("join", {
+      room,
+      name,
+    });
+    socket.emit("message", {
+      value,
+      name,
+      type: "message",
+    });
+    setTimeout(() => {
+      socket.disconnect();
+    }, 500);
+  });
+}
+
 export function QuestionList({ sessionId }: { sessionId: string }) {
   const { data } = api.sessions.getFreeResponseQuestionsBySessionId.useQuery({
     sessionId,
@@ -33,23 +59,12 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
   });
   const setCurrentQuestionMutation =
     api.sessions.setCurrentFreeResponseQuestion.useMutation({
-      onSuccess: () => {
-        void refetchCurrentQuestion().then(() => {
-          const socket = io("https://connect.xsschat.com");
-          socket.on("connect", () => {
-            socket.emit("join", {
-              room: `quorum-listen-${sessionId ?? "waiting"}`,
-              name: "quorumhost",
-            });
-            socket.emit("message", {
-              value: "Question changed",
-              name: "quorumhost",
-              type: "message",
-            });
-            setTimeout(() => {
-              socket.disconnect();
-            }, 500);
-          });
+      onSuccess: async () => {
+        await refetchCurrentQuestion();
+        sendSocketMessage({
+          room: `quorum-listen-${sessionId ?? "waiting"}`,
+          name: "quorumhost",
+          value: "Question changed",
         });
       },
     });
