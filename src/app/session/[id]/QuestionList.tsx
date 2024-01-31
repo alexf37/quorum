@@ -82,7 +82,10 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
                     onClick={() => {
                       setCurrentQuestionMutation.mutate({
                         sessionId,
-                        questionId: question.id,
+                        questionId:
+                          question.id === currentQuestion?.id
+                            ? undefined
+                            : question.id,
                       });
                     }}
                   >
