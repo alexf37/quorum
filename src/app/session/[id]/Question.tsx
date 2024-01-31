@@ -18,7 +18,7 @@ export function Question({ sessionId }: { sessionId: string }) {
     api.sessions.getCurrentFreeResponseQuestion.useQuery({
       sessionId: sessionId,
     });
-  useXssSocketListener({
+  const { latestData } = useXssSocketListener({
     channel: `quorum-listen-${sessionId ?? "waiting"}`,
     onData: (sender, data) => {
       console.log("Received data from", sender, ":", data);
@@ -44,6 +44,7 @@ export function Question({ sessionId }: { sessionId: string }) {
             </CardContent>
             <CardFooter>
               <Button>Submit Answer</Button>
+              {latestData?.value}
             </CardFooter>
           </Card>
         ) : (
