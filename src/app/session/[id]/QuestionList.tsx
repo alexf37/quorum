@@ -60,7 +60,7 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
   const setCurrentQuestionMutation =
     api.sessions.setCurrentFreeResponseQuestion.useMutation({
       onSuccess: async () => {
-        await refetchCurrentQuestion();
+        void refetchCurrentQuestion();
         sendSocketMessage({
           room: `quorum-listen-${sessionId ?? "waiting"}`,
           name: "quorumhost",

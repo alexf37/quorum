@@ -24,7 +24,7 @@ export default async function Session({ params }: { params: { id: string } }) {
   return (
     <div className="flex h-full flex-col items-center">
       <div className="grid h-20 w-full grid-cols-12 items-center gap-2 bg-background px-8 pb-5 pt-6 text-primary max-sm:hidden">
-        <div className=" col-span-6 col-start-4 flex items-center gap-4 lg:col-start-3">
+        <div className=" col-span-6 flex items-center gap-4">
           <DashboardButton href="/dashboard" />
           <h1 className="text-2xl font-bold tracking-tight">{data?.title}</h1>
         </div>
