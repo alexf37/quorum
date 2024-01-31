@@ -327,7 +327,7 @@ export const sessionsRouter = createTRPCRouter({
           status: "ONGOING",
         },
       });
-      const closedSessions = await ctx.db.classSession.updateMany({
+      await ctx.db.classSession.updateMany({
         where: {
           classId: session.classId,
           status: "ONGOING",
@@ -398,5 +398,47 @@ export const sessionsRouter = createTRPCRouter({
         },
       });
       return answer;
+    }),
+  getCurrentAnswerCount: protectedProcedure
+    .input(
+      z.object({
+        sessionId: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      await checkSessionExists(input.sessionId);
+      await checkSessionOwnership(input.sessionId, ctx.session.user.id);
+      const answerCount = await ctx.db.freeResponseAnswer.count({
+        where: {
+          freeResponseQuestion: {
+            currentInClassSession: {
+              currentQuestion: {
+                classSessionId: input.sessionId,
+              },
+            },
+          },
+        },
+      });
+      return answerCount;
+    }),
+  getCurrentStudentCount: protectedProcedure
+    .input(
+      z.object({
+        sessionId: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      await checkSessionExists(input.sessionId);
+      await checkSessionOwnership(input.sessionId, ctx.session.user.id);
+      const studentCount = await ctx.db.user.count({
+        where: {
+          classSessions: {
+            some: {
+              id: input.sessionId,
+            },
+          },
+        },
+      });
+      return studentCount;
     }),
 });

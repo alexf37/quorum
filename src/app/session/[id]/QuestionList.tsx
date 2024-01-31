@@ -18,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { api } from "@/trpc/react";
 import io from "socket.io-client";
+import { useEffect } from "react";
 
 function sendSocketMessage({
   room,
@@ -46,9 +47,10 @@ function sendSocketMessage({
 }
 
 export function QuestionList({ sessionId }: { sessionId: string }) {
-  const { data } = api.sessions.getFreeResponseQuestionsBySessionId.useQuery({
-    sessionId,
-  });
+  const { data: questions } =
+    api.sessions.getFreeResponseQuestionsBySessionId.useQuery({
+      sessionId,
+    });
   const {
     data: currentQuestion,
     isSuccess: currentQuestionIsSuccess,
@@ -68,7 +70,20 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
         });
       },
     });
-
+  const {
+    data: currentAnswerCount,
+    isSuccess: currentAnswerIsSuccess,
+    refetch: refetchAnswerCount,
+  } = api.sessions.getCurrentAnswerCount.useQuery({ sessionId });
+  const {
+    data: currentStudentCount,
+    isSuccess: currentStudentCountIsSuccess,
+    refetch: refetchStudentCount,
+  } = api.sessions.getCurrentStudentCount.useQuery({ sessionId });
+  useEffect(() => {
+    void refetchAnswerCount();
+    void refetchStudentCount();
+  }, [currentQuestion?.id, refetchAnswerCount, refetchStudentCount]);
   return (
     <TooltipProvider>
       <div className="grid h-full w-full grid-cols-12">
@@ -80,7 +95,7 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
             </h2>
           </div>
           <ul className="flex flex-col gap-2 px-2">
-            {data?.map((question) => (
+            {questions?.map((question) => (
               <Tooltip key={question.id}>
                 <TooltipTrigger asChild>
                   <Button
@@ -127,6 +142,16 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
               </CardHeader>
               <CardContent>
                 <Input disabled type="text" placeholder="Answer here..." />
+                {currentStudentCountIsSuccess && currentAnswerIsSuccess && (
+                  <div className="mt-2 rounded-full bg-muted-foreground">
+                    <div
+                      className="h-2 w-56 rounded-full bg-blue-500"
+                      style={{
+                        width: `${(currentAnswerCount / currentStudentCount) * 100}%`,
+                      }}
+                    ></div>
+                  </div>
+                )}
               </CardContent>
               <CardFooter>
                 <Button disabled>Submit Answer</Button>
