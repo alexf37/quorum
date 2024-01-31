@@ -21,11 +21,38 @@ export default async function Session({ params }: { params: { id: string } }) {
   });
   if (!data) return <div>Session not found</div>;
   const isSessionHost = data.hostUserId === authSession.user?.id;
+  if (!isSessionHost) {
+    try {
+      await api.sessions.joinSessionAsStudent.mutate({
+        sessionId: sessionId,
+      });
+    } catch (e) {
+      return (
+        <div>
+          <div>Failed to join session. Try again.</div>
+        </div>
+      );
+    }
+  } else {
+    try {
+      await api.sessions.startSession.mutate({
+        sessionId: sessionId,
+      });
+    } catch (e) {
+      return (
+        <div>
+          <div>Failed to start session. Try again.</div>
+        </div>
+      );
+    }
+  }
   return (
     <div className="flex h-full flex-col items-center">
       <div className="grid h-20 w-full grid-cols-12 items-center gap-2 bg-background px-8 pb-5 pt-6 text-primary max-sm:hidden">
-        <div className=" col-span-6 flex items-center gap-4">
-          <DashboardButton href="/dashboard" />
+        <div className=" col-span-10 flex items-center gap-4">
+          <DashboardButton
+            href={isSessionHost ? "/dashboard/manage" : "/dashboard"}
+          />
           <h1 className="text-2xl font-bold tracking-tight">{data?.title}</h1>
         </div>
         <div className="col-start-12 ml-auto">

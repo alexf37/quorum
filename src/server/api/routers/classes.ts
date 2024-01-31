@@ -28,6 +28,26 @@ export const classesRouter = createTRPCRouter({
           message: "Invalid or unauthorised user.",
         });
       }
+      const clazz = await ctx.db.class.findUnique({
+        where: {
+          code: classCode,
+        },
+        select: {
+          ownerUserId: true,
+        },
+      });
+      if (!clazz) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: `Invalid class code: ${classCode}`,
+        });
+      }
+      if (clazz.ownerUserId === userId) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "You are the owner of this class.",
+        });
+      }
       if (user.classes.map((c) => c.code).includes(classCode)) {
         // tell user they are already registered for this class
         throw new TRPCError({

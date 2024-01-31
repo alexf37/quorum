@@ -101,6 +101,8 @@ model FreeResponseAnswer {
     userId                 String
     answer                 String
     createdAt              DateTime
+
+    @@unique([freeResponseQuestionId, userId])
 }
 
 enum ClassSessionStatus {

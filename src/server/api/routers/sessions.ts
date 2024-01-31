@@ -4,6 +4,47 @@ import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import { db } from "@/server/db";
 
+async function checkSessionExists(sessionId: string) {
+  const session = await db.classSession.findUnique({
+    where: {
+      id: sessionId,
+    },
+  });
+  if (!session) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "No such session exists.",
+    });
+  }
+  return session;
+}
+async function checkSessionMembership(sessionId: string, userId: string) {
+  const session = await db.classSession.findUnique({
+    where: {
+      id: sessionId,
+    },
+    select: {
+      hostUserId: true,
+      students: {
+        where: {
+          id: userId,
+        },
+      },
+    },
+  });
+  if (!session) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "No such session exists.",
+    });
+  }
+  if (session.hostUserId !== userId && session.students.length === 0) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "You are not a member of this session.",
+    });
+  }
+}
 async function checkClassOwnership(classId: string, userId: string) {
   const clazz = await db.class.findUnique({
     where: {
@@ -74,6 +115,23 @@ async function checkSessionOwnership(sessionId: string, userId: string) {
     throw new TRPCError({
       code: "BAD_REQUEST",
       message: "You are not the owner of this session.",
+    });
+  }
+}
+
+async function checkSessionOngoing(sessionId: string) {
+  const session = await db.classSession.findUnique({
+    where: {
+      id: sessionId,
+    },
+    select: {
+      status: true,
+    },
+  });
+  if (session?.status !== "ONGOING") {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "The session is not ongoing.",
     });
   }
 }
@@ -195,33 +253,29 @@ export const sessionsRouter = createTRPCRouter({
     .input(
       z.object({
         sessionId: z.string(),
+        includeAnswer: z.boolean().optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
-      const classFromSession = await ctx.db.classSession.findUnique({
+      await checkSessionMembership(input.sessionId, ctx.session.user.id);
+      await checkSessionOngoing(input.sessionId);
+      const sessionWithCurrentQuestion = await ctx.db.classSession.findUnique({
         where: {
           id: input.sessionId,
         },
         select: {
-          classId: true,
+          currentQuestion: {
+            include: {
+              answers: input.includeAnswer && {
+                where: {
+                  userId: ctx.session.user.id,
+                },
+              },
+            },
+          },
         },
       });
-      if (!classFromSession) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "No such session exists.",
-        });
-      }
-      await checkClassMembership(classFromSession.classId, ctx.session.user.id);
-      const currentQuestion = await ctx.db.classSession.findUnique({
-        where: {
-          id: input.sessionId,
-        },
-        select: {
-          currentQuestion: true,
-        },
-      });
-      return currentQuestion?.currentQuestion ?? null;
+      return sessionWithCurrentQuestion?.currentQuestion ?? null;
     }),
   getSessionInfo: protectedProcedure
     .input(
@@ -246,6 +300,7 @@ export const sessionsRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       await checkSessionOwnership(input.sessionId, ctx.session.user.id);
+      await checkSessionOngoing(input.sessionId);
       const session = await ctx.db.classSession.update({
         where: {
           id: input.sessionId,
@@ -255,5 +310,93 @@ export const sessionsRouter = createTRPCRouter({
         },
       });
       return session;
+    }),
+  startSession: protectedProcedure
+    .input(
+      z.object({
+        sessionId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await checkSessionOwnership(input.sessionId, ctx.session.user.id);
+      const session = await ctx.db.classSession.update({
+        where: {
+          id: input.sessionId,
+        },
+        data: {
+          status: "ONGOING",
+        },
+      });
+      const closedSessions = await ctx.db.classSession.updateMany({
+        where: {
+          classId: session.classId,
+          status: "ONGOING",
+          id: {
+            not: input.sessionId,
+          },
+        },
+        data: {
+          status: "CLOSED",
+        },
+      });
+      return session;
+    }),
+  joinSessionAsStudent: protectedProcedure
+    .input(
+      z.object({
+        sessionId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const sessionThatExists = await checkSessionExists(input.sessionId);
+      await checkClassMembership(
+        sessionThatExists.classId,
+        ctx.session.user.id,
+      );
+      await checkSessionOngoing(input.sessionId);
+      const updatedSession = await ctx.db.classSession.update({
+        where: {
+          id: input.sessionId,
+        },
+        data: {
+          students: {
+            connect: {
+              id: ctx.session.user.id,
+            },
+          },
+        },
+      });
+      return updatedSession;
+    }),
+  submitFreeResponseAnswer: protectedProcedure
+    .input(
+      z.object({
+        sessionId: z.string(),
+        questionId: z.string(),
+        answer: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await checkSessionOngoing(input.sessionId);
+      await checkSessionMembership(input.sessionId, ctx.session.user.id);
+      const answer = await ctx.db.freeResponseAnswer.upsert({
+        where: {
+          freeResponseQuestionId_userId: {
+            freeResponseQuestionId: input.questionId,
+            userId: ctx.session.user.id,
+          },
+        },
+        update: {
+          answer: input.answer,
+          createdAt: new Date(),
+        },
+        create: {
+          answer: input.answer,
+          createdAt: new Date(),
+          freeResponseQuestionId: input.questionId,
+          userId: ctx.session.user.id,
+        },
+      });
+      return answer;
     }),
 });

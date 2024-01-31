@@ -9,7 +9,6 @@ import {
   CardTitle,
   CardContent,
   CardHeader,
-  CardFooter,
   CardDescription,
 } from "@/components/ui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,6 +23,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
+import { useEffect } from "react";
 
 const FormSchema = z.object({
   answer: z.string().min(1, {
@@ -35,6 +35,16 @@ export function Question({ sessionId }: { sessionId: string }) {
   const { data, isLoading, isSuccess, isError, error, refetch } =
     api.sessions.getCurrentFreeResponseQuestion.useQuery({
       sessionId: sessionId,
+      includeAnswer: true,
+    });
+  const submitFreeResponseAnswerMutation =
+    api.sessions.submitFreeResponseAnswer.useMutation({
+      onSuccess() {
+        toast({
+          title: "Success!",
+          description: "Submitted your answer.",
+        });
+      },
     });
   useXssSocketListener({
     channel: `quorum-listen-${sessionId ?? "waiting"}`,
@@ -43,21 +53,26 @@ export function Question({ sessionId }: { sessionId: string }) {
       void refetch();
     },
   });
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       answer: "",
     },
   });
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
+  useEffect(() => {
+    form.reset({
+      answer: data?.answers?.[0]?.answer ?? "",
     });
+  }, [data, isSuccess, form]);
+  function onSubmit(formData: z.infer<typeof FormSchema>) {
+    if (isSuccess && data) {
+      submitFreeResponseAnswerMutation.mutate({
+        sessionId: sessionId,
+        questionId: data.id,
+        answer: formData.answer,
+      });
+    }
   }
 
   return (
@@ -96,7 +111,6 @@ export function Question({ sessionId }: { sessionId: string }) {
                 </form>
               </Form>
             </CardContent>
-            <CardFooter></CardFooter>
           </Card>
         ) : (
           <div>Question does not exist.</div>

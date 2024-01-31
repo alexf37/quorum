@@ -41,13 +41,19 @@ export async function StartClassSessionModal({
                 <li key={session.id} className="group py-3 hover:bg-muted">
                   <div className="flex items-center justify-between gap-4 px-4">
                     <div>{session.title}</div>
+
+                    {session.status === "ONGOING" && (
+                      <div className="text-muted-foreground group-hover:hidden">
+                        Ongoing
+                      </div>
+                    )}
                     <Button
                       variant="link"
                       className="hidden h-min p-0 group-hover:flex"
                       asChild
                     >
                       <Link href={`/session/${session.id}`}>
-                        Start
+                        {session.status === "ONGOING" ? "Rejoin" : "Start"}
                         <ChevronRight className="ml-2 size-4" />
                       </Link>
                     </Button>
