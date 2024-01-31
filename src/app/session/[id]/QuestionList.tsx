@@ -74,12 +74,22 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
     data: currentAnswerCount,
     isSuccess: currentAnswerIsSuccess,
     refetch: refetchAnswerCount,
-  } = api.sessions.getCurrentAnswerCount.useQuery({ sessionId });
+  } = api.sessions.getCurrentAnswerCount.useQuery(
+    { sessionId },
+    {
+      refetchInterval: 5000,
+    },
+  );
   const {
     data: currentStudentCount,
     isSuccess: currentStudentCountIsSuccess,
     refetch: refetchStudentCount,
-  } = api.sessions.getCurrentStudentCount.useQuery({ sessionId });
+  } = api.sessions.getCurrentStudentCount.useQuery(
+    { sessionId },
+    {
+      refetchInterval: 5000,
+    },
+  );
   useEffect(() => {
     void refetchAnswerCount();
     void refetchStudentCount();
