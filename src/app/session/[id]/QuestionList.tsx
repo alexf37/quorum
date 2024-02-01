@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { api } from "@/trpc/react";
 import io from "socket.io-client";
 import { useEffect } from "react";
+import { AddQuestionModal } from "@/components/AddQuestionModal";
 
 function sendSocketMessage({
   room,
@@ -104,42 +105,49 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
               Select a question to view or release it.
             </h2>
           </div>
-          <ul className="flex flex-col gap-2 px-2">
-            {questions?.map((question) => (
-              <Tooltip key={question.id}>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant={
-                      question.id === currentQuestion?.id
-                        ? "secondary"
-                        : "ghost"
-                    }
-                    className="h-min justify-start overflow-hidden"
-                    disabled={
-                      setCurrentQuestionMutation.isLoading ||
-                      currentQuestionIsLoading
-                    }
-                    onClick={() => {
-                      setCurrentQuestionMutation.mutate({
-                        sessionId,
-                        questionId:
-                          question.id === currentQuestion?.id
-                            ? undefined
-                            : question.id,
-                      });
-                    }}
-                  >
-                    <li className="basis-full overflow-hidden overflow-ellipsis whitespace-nowrap text-left">
-                      {question.question}
-                    </li>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent className="max-w-sm text-wrap">
-                  <p>{question.question}</p>
-                </TooltipContent>
-              </Tooltip>
-            ))}
-          </ul>
+          <div className="flex flex-col gap-4">
+            <ul className="flex flex-col gap-2 px-2">
+              {questions?.map((question) => (
+                <Tooltip key={question.id}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant={
+                        question.id === currentQuestion?.id
+                          ? "secondary"
+                          : "ghost"
+                      }
+                      className="h-min justify-start overflow-hidden"
+                      disabled={
+                        setCurrentQuestionMutation.isLoading ||
+                        currentQuestionIsLoading
+                      }
+                      onClick={() => {
+                        setCurrentQuestionMutation.mutate({
+                          sessionId,
+                          questionId:
+                            question.id === currentQuestion?.id
+                              ? undefined
+                              : question.id,
+                        });
+                      }}
+                    >
+                      <li className="basis-full overflow-hidden overflow-ellipsis whitespace-nowrap text-left">
+                        {question.question}
+                      </li>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-sm text-wrap">
+                    <p>{question.question}</p>
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </ul>
+            <div className="flex flex-col px-2">
+              <AddQuestionModal sessionId={sessionId}>
+                <Button variant="outline">Add a question</Button>
+              </AddQuestionModal>
+            </div>
+          </div>
         </div>
         <div className="col-span-9 grid place-content-center">
           {currentQuestionIsSuccess && currentQuestion && (
