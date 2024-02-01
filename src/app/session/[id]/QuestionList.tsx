@@ -159,21 +159,20 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Input disabled type="text" placeholder="Answer here..." />
                 {currentStudentCountIsSuccess && currentAnswerIsSuccess && (
-                  <div className="mt-2 rounded-full bg-muted-foreground">
-                    <div
-                      className="h-2 w-56 rounded-full bg-blue-500"
-                      style={{
-                        width: `${(currentAnswerCount / currentStudentCount) * 100}%`,
-                      }}
-                    ></div>
+                  <div className="space-y-2">
+                    <div className="rounded-full bg-muted">
+                      <div
+                        className="h-2 w-56 rounded-full bg-blue-500"
+                        style={{
+                          width: `${(currentAnswerCount / currentStudentCount) * 100}%`,
+                        }}
+                      ></div>
+                    </div>
+                    <p className="text-sm text-muted-foreground">{`${currentAnswerCount} of ${currentStudentCount} students have answered (${(currentAnswerCount / currentStudentCount) * 100}%).`}</p>
                   </div>
                 )}
               </CardContent>
-              <CardFooter>
-                <Button disabled>Submit Answer</Button>
-              </CardFooter>
             </Card>
           )}
         </div>
