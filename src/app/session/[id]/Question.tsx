@@ -26,9 +26,14 @@ import { toast } from "@/components/ui/use-toast";
 import { useEffect } from "react";
 
 const FormSchema = z.object({
-  answer: z.string().min(1, {
-    message: "Username must be at least 1 character.",
-  }),
+  answer: z
+    .string()
+    .min(1, {
+      message: "Answer must be at least 1 character.",
+    })
+    .max(500, {
+      message: "Answer must be at most 500 characters.",
+    }),
 });
 
 export function Question({ sessionId }: { sessionId: string }) {
