@@ -98,7 +98,7 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
   return (
     <TooltipProvider>
       <div className="grid h-full w-full grid-cols-12">
-        <div className="col-span-3 border-r border-border bg-background lg:col-span-2">
+        <div className="col-span-3 border-r border-border bg-background">
           <div className="flex flex-col gap-2 px-6 py-6">
             <h1 className="pb-2 text-3xl font-bold text-primary">Questions</h1>
             <h2 className=" font-medium text-muted-foreground">
