@@ -230,6 +230,26 @@ export const sessionsRouter = createTRPCRouter({
       });
       return freeResponseQuestion;
     }),
+  editFreeResponseQuestion: protectedProcedure
+    .input(
+      z.object({
+        questionId: z.string(),
+        sessionId: z.string(),
+        prompt: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await checkSessionOwnership(input.sessionId, ctx.session.user.id);
+      const question = await ctx.db.freeResponseQuestion.update({
+        where: {
+          id: input.questionId,
+        },
+        data: {
+          question: input.prompt,
+        },
+      });
+      return question;
+    }),
   editSession: protectedProcedure
     .input(
       z.object({

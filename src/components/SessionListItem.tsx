@@ -1,6 +1,6 @@
 "use client";
 import { SessionListItemDropdown } from "@/components/SessionListItemDropdown";
-import { MoreVertical } from "lucide-react";
+import { MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -21,6 +21,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { EditSessionModal } from "@/components/EditSessionModal";
+
+import { DeleteQuestionModal } from "./DeleteQuestionModal";
+import { EditQuestionModal } from "./EditQuestionModal";
 
 type SessionListItemProps = {
   id: string;
@@ -115,7 +118,21 @@ export function SessionListItem({
                             </TableCell>
                             <TableCell>FRQ</TableCell>
                             <TableCell>{question.question}</TableCell>
-                            <TableCell className="text-right">N/A</TableCell>
+                            <TableCell className="flex items-center justify-end gap-4">
+                              <EditQuestionModal
+                                questionId={question.id}
+                                questionPrompt={question.question}
+                                sessionId={id}
+                              >
+                                <Pencil className="size-4 text-muted-foreground" />
+                              </EditQuestionModal>
+                              <DeleteQuestionModal
+                                questionId={question.id}
+                                sessionId={id}
+                              >
+                                <Trash2 className="size-4 text-muted-foreground" />
+                              </DeleteQuestionModal>
+                            </TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
