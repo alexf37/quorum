@@ -86,7 +86,7 @@ export function Question({ sessionId }: { sessionId: string }) {
       {isError && <div>Error: {error?.message}</div>}
       {isSuccess &&
         (data ? (
-          <Card className="border-0 pt-2">
+          <Card className="max-w-prose border-0 pt-2">
             <CardHeader>
               <CardTitle>{`${data.question}`}</CardTitle>
               <CardDescription>

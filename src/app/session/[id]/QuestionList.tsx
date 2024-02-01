@@ -151,7 +151,7 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
         </div>
         <div className="col-span-9 grid place-content-center">
           {currentQuestionIsSuccess && currentQuestion && (
-            <Card className="-mt-28 w-full border-0 pt-2">
+            <Card className="-mt-28 w-full max-w-prose border-0 pt-2">
               <CardHeader>
                 <CardTitle>{`${currentQuestion?.question}`}</CardTitle>
                 <CardDescription>
