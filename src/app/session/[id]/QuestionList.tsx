@@ -169,9 +169,7 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
             <Card className="-mt-28 w-full max-w-prose border-0 pt-2">
               <CardHeader>
                 <CardTitle>{`${currentQuestion?.question}`}</CardTitle>
-                <CardDescription>
-                  Please answer in just a few sentences.
-                </CardDescription>
+                <CardDescription>Please answer appropriately.</CardDescription>
               </CardHeader>
               <CardContent>
                 {currentStudentCountIsSuccess && currentAnswerIsSuccess && (

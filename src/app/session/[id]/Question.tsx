@@ -89,9 +89,7 @@ export function Question({ sessionId }: { sessionId: string }) {
           <Card className="max-w-prose border-0 pt-2">
             <CardHeader>
               <CardTitle>{`${data.question}`}</CardTitle>
-              <CardDescription>
-                Please answer in just a few sentences.
-              </CardDescription>
+              <CardDescription>Please answer appropriately.</CardDescription>
             </CardHeader>
             <CardContent>
               <Form {...form}>
