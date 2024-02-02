@@ -118,7 +118,7 @@ export function Question({ sessionId }: { sessionId: string }) {
             </CardContent>
           </Card>
         ) : (
-          <div>Question does not exist.</div>
+          <div>No question has been released.</div>
         ))}
     </>
   );
