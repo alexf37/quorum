@@ -12,10 +12,8 @@ import {
   CardTitle,
   CardContent,
   CardHeader,
-  CardFooter,
   CardDescription,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { api } from "@/trpc/react";
 import io from "socket.io-client";
 import { useEffect } from "react";
@@ -91,10 +89,27 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
       refetchInterval: 5000,
     },
   );
+  const {
+    data: studentAnswers,
+    isSuccess: studentAnswersIsSuccess,
+    isLoading: studentAnswersIsLoading,
+    refetch: refetchStudentAnswers,
+  } = api.sessions.getStudentAnswersForCurrentQuestion.useQuery(
+    { sessionId },
+    {
+      refetchInterval: 5000,
+    },
+  );
   useEffect(() => {
     void refetchAnswerCount();
     void refetchStudentCount();
-  }, [currentQuestion?.id, refetchAnswerCount, refetchStudentCount]);
+    void refetchStudentAnswers();
+  }, [
+    currentQuestion?.id,
+    refetchAnswerCount,
+    refetchStudentCount,
+    refetchStudentAnswers,
+  ]);
   return (
     <TooltipProvider>
       <div className="grid h-full w-full grid-cols-12">
@@ -106,7 +121,7 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
             </h2>
           </div>
           <div className="flex flex-col gap-4">
-            <ul className="flex flex-col gap-2 px-2">
+            <div className="flex flex-col gap-2 px-2">
               {questions?.map((question) => (
                 <Tooltip key={question.id}>
                   <TooltipTrigger asChild>
@@ -131,9 +146,9 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
                         });
                       }}
                     >
-                      <li className="basis-full overflow-hidden overflow-ellipsis whitespace-nowrap text-left">
+                      <div className="basis-full overflow-hidden overflow-ellipsis whitespace-nowrap text-left">
                         {question.question}
-                      </li>
+                      </div>
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-sm text-wrap">
@@ -141,7 +156,7 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
                   </TooltipContent>
                 </Tooltip>
               ))}
-            </ul>
+            </div>
             <div className="flex flex-col px-2">
               <AddQuestionModal sessionId={sessionId}>
                 <Button variant="outline">Add a question</Button>
@@ -149,7 +164,7 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
             </div>
           </div>
         </div>
-        <div className="col-span-9 grid place-content-center">
+        <div className="col-span-6 grid place-content-center">
           {currentQuestionIsSuccess && currentQuestion && (
             <Card className="-mt-28 w-full max-w-prose border-0 pt-2">
               <CardHeader>
@@ -174,6 +189,43 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
                 )}
               </CardContent>
             </Card>
+          )}
+        </div>
+        <div className="col-span-3 flex h-full flex-col border-l border-border">
+          <div className="flex flex-col gap-2 px-6 py-6">
+            <h1 className="pb-2 text-3xl font-bold text-primary">Answers</h1>
+            <h2 className=" font-medium text-muted-foreground">
+              View the answers submitted for this question.
+            </h2>
+          </div>
+          {studentAnswersIsSuccess && studentAnswers.length > 0 ? (
+            <div className="flex flex-col gap-2 px-2">
+              {studentAnswers.map((answer) => (
+                <Tooltip key={answer.id}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="secondary"
+                      className="h-min justify-start overflow-hidden"
+                      disabled={
+                        setCurrentQuestionMutation.isLoading ||
+                        studentAnswersIsLoading
+                      }
+                    >
+                      <div className="basis-full overflow-hidden overflow-ellipsis whitespace-nowrap text-left">
+                        {answer.answer}
+                      </div>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-sm text-wrap">
+                    <p>{answer.answer}</p>
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </div>
+          ) : (
+            <div className="px-6">
+              <p>No answers yet.</p>
+            </div>
           )}
         </div>
       </div>

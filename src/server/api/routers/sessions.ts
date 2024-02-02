@@ -477,4 +477,25 @@ export const sessionsRouter = createTRPCRouter({
       });
       return question;
     }),
+  getStudentAnswersForCurrentQuestion: protectedProcedure
+    .input(
+      z.object({
+        sessionId: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      await checkSessionOwnership(input.sessionId, ctx.session.user.id);
+      const answers = await ctx.db.freeResponseAnswer.findMany({
+        where: {
+          freeResponseQuestion: {
+            currentInClassSession: {
+              currentQuestion: {
+                classSessionId: input.sessionId,
+              },
+            },
+          },
+        },
+      });
+      return answers;
+    }),
 });
