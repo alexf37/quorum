@@ -11,7 +11,10 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { api } from "@/trpc/react";
 import { type PropsWithChildren } from "react";
+import { toast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 type DeleteQuestionModalProps = PropsWithChildren<{
   questionId: string;
@@ -23,6 +26,18 @@ export function DeleteQuestionModal({
   questionId,
   sessionId,
 }: DeleteQuestionModalProps) {
+  const router = useRouter();
+  const utils = api.useUtils();
+  const deleteQuestionMutation =
+    api.sessions.deleteFreeResponseQuestion.useMutation({
+      onSuccess: () => {
+        void utils.sessions.getFreeResponseQuestionsBySessionId.invalidate();
+        toast({
+          title: "Success!",
+          description: "Question has been deleted",
+        });
+      },
+    });
   return (
     <AlertDialog>
       <AlertDialogTrigger>{children}</AlertDialogTrigger>
@@ -37,7 +52,17 @@ export function DeleteQuestionModal({
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
 
-          <Button variant="destructive" asChild>
+          <Button
+            variant="destructive"
+            onClick={() => {
+              deleteQuestionMutation.mutate({
+                questionId,
+                sessionId,
+              });
+            }}
+            disabled={deleteQuestionMutation.isLoading}
+            asChild
+          >
             <AlertDialogAction>Delete question</AlertDialogAction>
           </Button>
         </AlertDialogFooter>

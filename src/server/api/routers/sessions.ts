@@ -461,4 +461,20 @@ export const sessionsRouter = createTRPCRouter({
       });
       return studentCount;
     }),
+  deleteFreeResponseQuestion: protectedProcedure
+    .input(
+      z.object({
+        questionId: z.string(),
+        sessionId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await checkSessionOwnership(input.sessionId, ctx.session.user.id);
+      const question = await ctx.db.freeResponseQuestion.delete({
+        where: {
+          id: input.questionId,
+        },
+      });
+      return question;
+    }),
 });
