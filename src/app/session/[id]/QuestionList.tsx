@@ -182,7 +182,7 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
                         }}
                       ></div>
                     </div>
-                    <p className="text-sm text-muted-foreground">{`${currentAnswerCount} of ${currentStudentCount} students have answered (${(currentAnswerCount / currentStudentCount) * 100}%).`}</p>
+                    <p className="text-sm text-muted-foreground">{`${currentAnswerCount} of ${currentStudentCount} students have answered (${Math.round((currentAnswerCount / currentStudentCount) * 100)}%).`}</p>
                   </div>
                 )}
               </CardContent>
