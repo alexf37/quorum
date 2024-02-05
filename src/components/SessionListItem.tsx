@@ -24,6 +24,8 @@ import { EditSessionModal } from "@/components/EditSessionModal";
 
 import { DeleteQuestionModal } from "./DeleteQuestionModal";
 import { EditQuestionModal } from "./EditQuestionModal";
+import "katex/dist/katex.min.css";
+import Latex from "react-latex-next";
 
 type SessionListItemProps = {
   id: string;
@@ -117,7 +119,13 @@ export function SessionListItem({
                               {idx + 1}
                             </TableCell>
                             <TableCell>FRQ</TableCell>
-                            <TableCell>{question.question}</TableCell>
+                            <TableCell>
+                              {question.isLatex ? (
+                                <Latex>{question.question}</Latex>
+                              ) : (
+                                question.question
+                              )}
+                            </TableCell>
                             <TableCell className="flex items-center justify-end gap-4">
                               <EditQuestionModal
                                 questionId={question.id}
