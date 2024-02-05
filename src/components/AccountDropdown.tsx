@@ -1,3 +1,4 @@
+"use client";
 import { type PropsWithChildren } from "react";
 import {
   DropdownMenu,
@@ -7,6 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { signOut } from "next-auth/react";
 import { Github, LifeBuoy, LogOut, User, Settings } from "lucide-react";
 import Link from "next/link";
 
@@ -41,7 +43,7 @@ export function AccountDropdown({ children }: PropsWithChildren) {
           <a href="mailto:xrk4np@virginia.edu">Support</a>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={async () => await signOut()}>
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
         </DropdownMenuItem>
