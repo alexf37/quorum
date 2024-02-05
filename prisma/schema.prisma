@@ -89,6 +89,7 @@ model FreeResponseQuestion {
     classSessionId        String
     index                 Int
     question              String
+    isLatex               Boolean              @default(false)
     answers               FreeResponseAnswer[]
     currentInClassSession ClassSession?        @relation("ClassSessionCurrentQuestion")
 }

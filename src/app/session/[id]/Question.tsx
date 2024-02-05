@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
 import { useEffect } from "react";
+import "katex/dist/katex.min.css";
+import Latex from "react-latex-next";
 
 const FormSchema = z.object({
   answer: z
@@ -88,7 +90,9 @@ export function Question({ sessionId }: { sessionId: string }) {
         (data ? (
           <Card className="max-w-prose border-0 pt-2">
             <CardHeader>
-              <CardTitle>{`${data.question}`}</CardTitle>
+              <CardTitle>
+                {!data.isLatex ? data.question : <Latex>{data.question}</Latex>}
+              </CardTitle>
               <CardDescription>Please answer appropriately.</CardDescription>
             </CardHeader>
             <CardContent>

@@ -18,6 +18,8 @@ import { api } from "@/trpc/react";
 import io from "socket.io-client";
 import { useEffect } from "react";
 import { AddQuestionModal } from "@/components/AddQuestionModal";
+import "katex/dist/katex.min.css";
+import Latex from "react-latex-next";
 
 function sendSocketMessage({
   room,
@@ -147,12 +149,22 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
                       }}
                     >
                       <div className="basis-full overflow-hidden overflow-ellipsis whitespace-nowrap text-left">
-                        {question.question}
+                        {!question.isLatex ? (
+                          question.question
+                        ) : (
+                          <Latex>{question.question}</Latex>
+                        )}
                       </div>
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-sm text-wrap">
-                    <p>{question.question}</p>
+                    <p>
+                      {!question.isLatex ? (
+                        question.question
+                      ) : (
+                        <Latex>{question.question}</Latex>
+                      )}
+                    </p>
                   </TooltipContent>
                 </Tooltip>
               ))}
@@ -168,7 +180,13 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
           {currentQuestionIsSuccess && currentQuestion && (
             <Card className="-mt-28 w-full max-w-prose border-0 pt-2">
               <CardHeader>
-                <CardTitle>{`${currentQuestion?.question}`}</CardTitle>
+                <CardTitle>
+                  {!currentQuestion.isLatex ? (
+                    currentQuestion.question
+                  ) : (
+                    <Latex>{currentQuestion.question}</Latex>
+                  )}
+                </CardTitle>
                 <CardDescription>Please answer appropriately.</CardDescription>
               </CardHeader>
               <CardContent>

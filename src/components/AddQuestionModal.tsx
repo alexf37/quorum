@@ -10,6 +10,9 @@ import {
 import { useState, type PropsWithChildren } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { Checkbox } from "@/components/ui/checkbox";
+import "katex/dist/katex.min.css";
+import Latex from "react-latex-next";
 import * as z from "zod";
 import {
   Form,
@@ -30,6 +33,7 @@ const FormSchema = z.object({
   prompt: z.string().min(2, {
     message: "Prompt must be at least 2 characters.",
   }),
+  isLatex: z.boolean(),
 });
 
 type AddQuestionModalProps = PropsWithChildren<{
@@ -43,6 +47,7 @@ export function AddQuestionModal({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       prompt: "",
+      isLatex: false,
     },
   });
   const router = useRouter();
@@ -64,6 +69,7 @@ export function AddQuestionModal({
   function onSubmit(data: z.infer<typeof FormSchema>) {
     addNewQuestionMutation.mutate({
       prompt: data.prompt,
+      isLatex: data.isLatex,
       sessionId,
     });
   }
@@ -82,7 +88,7 @@ export function AddQuestionModal({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="w-2/3 space-y-6"
+            className="w-2/3 space-y-4"
           >
             <FormField
               control={form.control}
@@ -91,10 +97,43 @@ export function AddQuestionModal({
                 <FormItem>
                   <FormLabel>Prompt</FormLabel>
                   <FormControl>
-                    <Input placeholder="What is 2 + 2?" {...field} />
+                    {form.watch("isLatex") ? (
+                      <div className="flex flex-col gap-2">
+                        <div className="flex min-h-10 flex-col gap-2 rounded-md border border-input px-3 py-2 text-xs text-muted-foreground ">
+                          {form.watch("prompt") && (
+                            <Latex>{form.watch("prompt")}</Latex>
+                          )}
+
+                          <Input
+                            className="h-auto !border-0 p-0 text-primary !outline-0 !ring-0 !ring-offset-0"
+                            {...field}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <Input placeholder="What is 2 + 2?" {...field} />
+                    )}
                   </FormControl>
                   <FormDescription></FormDescription>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="isLatex"
+              render={({ field }) => (
+                <FormItem className="flex gap-3 space-y-0 pb-2">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="leading-none">
+                    <FormLabel>Use LaTeX</FormLabel>
+                  </div>
                 </FormItem>
               )}
             />

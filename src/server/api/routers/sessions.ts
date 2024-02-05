@@ -208,6 +208,7 @@ export const sessionsRouter = createTRPCRouter({
       z.object({
         sessionId: z.string(),
         prompt: z.string(),
+        isLatex: z.boolean(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -224,6 +225,7 @@ export const sessionsRouter = createTRPCRouter({
       const freeResponseQuestion = await ctx.db.freeResponseQuestion.create({
         data: {
           question: input.prompt,
+          isLatex: input.isLatex,
           classSessionId: input.sessionId,
           index: (existingFreeResponseQuestions[0]?.index ?? 0) + 1,
         },
