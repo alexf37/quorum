@@ -5,6 +5,8 @@ import { Question } from "./Question";
 import { api } from "@/trpc/server";
 import { getServerAuthSession } from "@/server/auth";
 import { QuestionList } from "./QuestionList";
+import { Button } from "@/components/ui/button";
+import { EndSessionButton } from "./EndSessionButton";
 
 export default async function Session({ params }: { params: { id: string } }) {
   const authSession = await getServerAuthSession();
@@ -48,14 +50,15 @@ export default async function Session({ params }: { params: { id: string } }) {
   }
   return (
     <div className="flex h-full flex-col items-center">
-      <div className="grid h-20 w-full grid-cols-12 items-center gap-2 bg-background px-8 pb-5 pt-6 text-primary max-sm:hidden">
-        <div className=" col-span-10 flex items-center gap-4">
+      <div className="flex h-20 w-full items-center justify-between gap-2 bg-background px-8 pb-5 pt-6 text-primary max-sm:hidden">
+        <div className="flex items-center gap-4">
           <DashboardButton
             href={isSessionHost ? "/dashboard/manage" : "/dashboard"}
           />
           <h1 className="text-2xl font-bold tracking-tight">{data?.title}</h1>
         </div>
-        <div className="col-start-12 ml-auto">
+        <div className="flex gap-4">
+          <EndSessionButton sessionId={sessionId} />
           <ModeToggle />
         </div>
       </div>

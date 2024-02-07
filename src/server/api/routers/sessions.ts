@@ -500,4 +500,22 @@ export const sessionsRouter = createTRPCRouter({
       });
       return answers;
     }),
+  endSession: protectedProcedure
+    .input(
+      z.object({
+        sessionId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await checkSessionOwnership(input.sessionId, ctx.session.user.id);
+      const session = await ctx.db.classSession.update({
+        where: {
+          id: input.sessionId,
+        },
+        data: {
+          status: "CLOSED",
+        },
+      });
+      return session;
+    }),
 });
