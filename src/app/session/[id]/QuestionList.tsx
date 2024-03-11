@@ -23,6 +23,7 @@ import Latex from "react-latex-next";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -238,6 +239,9 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
                               <DialogTitle className="text-2xl leading-none">
                                 AI Analysis
                               </DialogTitle>
+                              <DialogDescription>
+                                Summary and misconceptions
+                              </DialogDescription>
                             </DialogHeader>
                             {analysisQuery.isSuccess && (
                               <div className="flex flex-col gap-2">
