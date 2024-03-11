@@ -45,7 +45,7 @@ export async function analyzeAnswers(
 
       const rawAnalysis = JSON.parse(
         response.choices[0].message.content ?? "{}",
-      );
+      ) as unknown;
       const analysis = analysisSchema.parse(rawAnalysis);
 
       return analysis;
