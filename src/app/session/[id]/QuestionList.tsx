@@ -222,25 +222,36 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
                       ></div>
                     </div>
                     <p className="text-sm text-muted-foreground">{`${currentAnswerCount} of ${currentStudentCount} students have answered (${Math.round((currentAnswerCount / currentStudentCount) * 100)}%).`}</p>
-                    <Dialog open={analysisOpen} onOpenChange={setAnalysisOpen}>
-                      <DialogTrigger asChild>
-                        <Button variant="outline">🪄 Analyze with AI</Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle className="text-xl leading-none">
-                            AI Analysis
-                          </DialogTitle>
-                        </DialogHeader>
-                        {analysisQuery.isSuccess && (
-                          <div className="flex flex-col gap-2">
-                            <Latex>{analysisQuery.data.summary}</Latex>
-                            <Latex>{analysisQuery.data.misconception}</Latex>
-                          </div>
-                        )}
-                        {analysisQuery.isLoading && <div>Loading...</div>}
-                      </DialogContent>
-                    </Dialog>
+                    {currentQuestionIsSuccess &&
+                      studentAnswersIsSuccess &&
+                      studentAnswers.length > 0 && (
+                        <Dialog
+                          open={analysisOpen}
+                          onOpenChange={setAnalysisOpen}
+                        >
+                          <DialogTrigger asChild>
+                            <Button variant="outline">
+                              🪄 Analyze with AI
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle className="text-2xl leading-none">
+                                AI Analysis
+                              </DialogTitle>
+                            </DialogHeader>
+                            {analysisQuery.isSuccess && (
+                              <div className="flex flex-col gap-2">
+                                <Latex>{analysisQuery.data.summary}</Latex>
+                                <Latex>
+                                  {analysisQuery.data.misconception}
+                                </Latex>
+                              </div>
+                            )}
+                            {analysisQuery.isLoading && <div>Loading...</div>}
+                          </DialogContent>
+                        </Dialog>
+                      )}
                   </div>
                 )}
               </CardContent>
