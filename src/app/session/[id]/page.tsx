@@ -5,7 +5,6 @@ import { Question } from "./Question";
 import { api } from "@/trpc/server";
 import { getServerAuthSession } from "@/server/auth";
 import { QuestionList } from "./QuestionList";
-import { Button } from "@/components/ui/button";
 import { EndSessionButton } from "./EndSessionButton";
 
 export default async function Session({ params }: { params: { id: string } }) {
