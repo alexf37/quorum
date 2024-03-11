@@ -57,7 +57,7 @@ export default async function Session({ params }: { params: { id: string } }) {
           <h1 className="text-2xl font-bold tracking-tight">{data?.title}</h1>
         </div>
         <div className="flex gap-4">
-          <EndSessionButton sessionId={sessionId} />
+          {isSessionHost && <EndSessionButton sessionId={sessionId} />}
           <ModeToggle />
         </div>
       </div>
