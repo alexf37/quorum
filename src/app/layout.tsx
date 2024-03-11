@@ -7,6 +7,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { TRPCReactProvider } from "@/trpc/react";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
+export const dynamic = "force-dynamic";
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
