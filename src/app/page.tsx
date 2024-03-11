@@ -54,7 +54,7 @@ function Hero() {
         Your open-source platform for real-time polling, discussion, and
         visualisation.
       </p>
-      <div className="flex w-full max-w-xs items-center space-x-2 pt-6">
+      {/* <div className="flex w-full max-w-xs items-center space-x-2 pt-6">
         <Input type="text" placeholder="Class Code" />
         <Button type="button">Join Class</Button>
       </div>
@@ -64,7 +64,7 @@ function Hero() {
           click here
         </Link>{" "}
         instead.
-      </small>
+      </small> */}
     </div>
   );
 }
