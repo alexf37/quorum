@@ -5,7 +5,7 @@ import {
   Head,
   Heading,
   Hr,
-  Html,
+  Html as EmailHtml,
   Img,
   Link,
   Preview,
@@ -23,7 +23,7 @@ export function VerificationEmail({
   verificationLink,
 }: VerificationEmailProps) {
   return (
-    <Html>
+    <EmailHtml>
       <Head />
       <Preview>Verify your Computing ID with Quorum</Preview>
       <Tailwind>
@@ -69,6 +69,6 @@ export function VerificationEmail({
           </Container>
         </Body>
       </Tailwind>
-    </Html>
+    </EmailHtml>
   );
 }
