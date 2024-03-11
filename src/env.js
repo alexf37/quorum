@@ -35,6 +35,7 @@ export const env = createEnv({
     GOOGLE_CLIENT_SECRET: z.string(),
     GITHUB_CLIENT_ID: z.string(),
     GITHUB_CLIENT_SECRET: z.string(),
+    OPENAI_API_KEY: z.string(),
   },
 
   /**
@@ -62,6 +63,7 @@ export const env = createEnv({
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
     GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

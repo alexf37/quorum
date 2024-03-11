@@ -3,6 +3,7 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import { db } from "@/server/db";
+import { analyzeAnswers } from "../analyze-answers";
 
 async function checkSessionExists(sessionId: string) {
   const session = await db.classSession.findUnique({
@@ -517,5 +518,17 @@ export const sessionsRouter = createTRPCRouter({
         },
       });
       return session;
+    }),
+  analyzeAnswers: protectedProcedure
+    .input(
+      z.object({
+        sessionId: z.string(),
+        question: z.string(),
+        answers: z.array(z.string()),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      await checkSessionOwnership(input.sessionId, ctx.session.user.id);
+      return analyzeAnswers(input.question, input.answers);
     }),
 });

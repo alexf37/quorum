@@ -16,10 +16,18 @@ import {
 } from "@/components/ui/card";
 import { api } from "@/trpc/react";
 import io from "socket.io-client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AddQuestionModal } from "@/components/AddQuestionModal";
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useQuery } from "@tanstack/react-query";
 
 function sendSocketMessage({
   room,
@@ -112,6 +120,19 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
     refetchStudentCount,
     refetchStudentAnswers,
   ]);
+  const [analysisOpen, setAnalysisOpen] = useState(false);
+  const answers = [...(studentAnswers?.map((a) => a.answer) ?? [])];
+  const analysisQuery = api.sessions.analyzeAnswers.useQuery(
+    {
+      sessionId,
+      question: currentQuestion?.question ?? "",
+      answers,
+    },
+    {
+      enabled:
+        analysisOpen && currentQuestionIsSuccess && studentAnswersIsSuccess,
+    },
+  );
   return (
     <TooltipProvider>
       <div className="grid h-full w-full grid-cols-12">
@@ -178,7 +199,7 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
         </div>
         <div className="col-span-6 grid place-content-center">
           {currentQuestionIsSuccess && currentQuestion && (
-            <Card className="-mt-28 w-full max-w-prose border-0 pt-2">
+            <Card className="-mt-28 w-full max-w-prose border-0 pt-2 shadow-none">
               <CardHeader>
                 <CardTitle>
                   {!currentQuestion.isLatex ? (
@@ -201,6 +222,25 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
                       ></div>
                     </div>
                     <p className="text-sm text-muted-foreground">{`${currentAnswerCount} of ${currentStudentCount} students have answered (${Math.round((currentAnswerCount / currentStudentCount) * 100)}%).`}</p>
+                    <Dialog open={analysisOpen} onOpenChange={setAnalysisOpen}>
+                      <DialogTrigger asChild>
+                        <Button variant="outline">🪄 Analyze with AI</Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle className="text-xl leading-none">
+                            AI Analysis
+                          </DialogTitle>
+                        </DialogHeader>
+                        {analysisQuery.isSuccess && (
+                          <div className="flex flex-col gap-2">
+                            <Latex>{analysisQuery.data.summary}</Latex>
+                            <Latex>{analysisQuery.data.misconception}</Latex>
+                          </div>
+                        )}
+                        {analysisQuery.isLoading && <div>Loading...</div>}
+                      </DialogContent>
+                    </Dialog>
                   </div>
                 )}
               </CardContent>
