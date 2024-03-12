@@ -6,21 +6,38 @@ import { api } from "@/trpc/server";
 import { getServerAuthSession } from "@/server/auth";
 import { QuestionList } from "./QuestionList";
 import { EndSessionButton } from "./EndSessionButton";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-const cause = {
-  cause: "controlled error",
-};
+function SessionError({ error }: { error?: string }) {
+  return (
+    <div className="flex flex-col items-center gap-4 py-24">
+      <div>
+        <h1 className="text-center text-6xl font-bold text-primary drop-shadow">
+          {error ? "Error" : "Uh oh..."}
+        </h1>
+        <p className="max-w-md pt-2 text-center text-lg text-muted-foreground">
+          {error ?? "Something went wrong."}
+        </p>
+      </div>
+
+      <Button variant="outline" asChild>
+        <Link href="/">Return Home</Link>
+      </Button>
+    </div>
+  );
+}
 
 export default async function Session({ params }: { params: { id: string } }) {
   const authSession = await getServerAuthSession();
   if (!authSession) {
-    throw (new Error("Not authorized"), cause);
+    return <SessionError error="Not authorized" />;
   }
   const sessionId = params.id;
   const data = await api.sessions.getSessionInfo.query({
     sessionId: sessionId,
   });
-  if (!data) throw new Error("Session not found", cause);
+  if (!data) return <SessionError error="Session not found" />;
   const isSessionHost = data.hostUserId === authSession.user?.id;
   if (!isSessionHost) {
     try {
@@ -28,7 +45,7 @@ export default async function Session({ params }: { params: { id: string } }) {
         sessionId: sessionId,
       });
     } catch (e) {
-      throw new Error("Failed to join session. Try again.", cause);
+      return <SessionError error="Failed to join session. Try again." />;
     }
   } else {
     try {
@@ -36,7 +53,7 @@ export default async function Session({ params }: { params: { id: string } }) {
         sessionId: sessionId,
       });
     } catch (e) {
-      throw new Error("Failed to start session. Try again.", cause);
+      return <SessionError error="Failed to start session. Try again." />;
     }
   }
   return (
