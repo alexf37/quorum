@@ -7,16 +7,20 @@ import { getServerAuthSession } from "@/server/auth";
 import { QuestionList } from "./QuestionList";
 import { EndSessionButton } from "./EndSessionButton";
 
+const cause = {
+  cause: "controlled error",
+};
+
 export default async function Session({ params }: { params: { id: string } }) {
   const authSession = await getServerAuthSession();
   if (!authSession) {
-    throw new Error("Not authorized");
+    throw (new Error("Not authorized"), cause);
   }
   const sessionId = params.id;
   const data = await api.sessions.getSessionInfo.query({
     sessionId: sessionId,
   });
-  if (!data) throw new Error("Session not found");
+  if (!data) throw new Error("Session not found", cause);
   const isSessionHost = data.hostUserId === authSession.user?.id;
   if (!isSessionHost) {
     try {
@@ -24,7 +28,7 @@ export default async function Session({ params }: { params: { id: string } }) {
         sessionId: sessionId,
       });
     } catch (e) {
-      throw new Error("Failed to join session. Try again.");
+      throw new Error("Failed to join session. Try again.", cause);
     }
   } else {
     try {
@@ -32,7 +36,7 @@ export default async function Session({ params }: { params: { id: string } }) {
         sessionId: sessionId,
       });
     } catch (e) {
-      throw new Error("Failed to start session. Try again.");
+      throw new Error("Failed to start session. Try again.", cause);
     }
   }
   return (
