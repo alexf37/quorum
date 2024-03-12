@@ -10,17 +10,13 @@ import { EndSessionButton } from "./EndSessionButton";
 export default async function Session({ params }: { params: { id: string } }) {
   const authSession = await getServerAuthSession();
   if (!authSession) {
-    return (
-      <div>
-        <h1>Not authorized</h1>
-      </div>
-    );
+    throw new Error("Not authorized");
   }
   const sessionId = params.id;
   const data = await api.sessions.getSessionInfo.query({
     sessionId: sessionId,
   });
-  if (!data) return <div>Session not found</div>;
+  if (!data) throw new Error("Session not found");
   const isSessionHost = data.hostUserId === authSession.user?.id;
   if (!isSessionHost) {
     try {
@@ -28,11 +24,7 @@ export default async function Session({ params }: { params: { id: string } }) {
         sessionId: sessionId,
       });
     } catch (e) {
-      return (
-        <div>
-          <div>Failed to join session. Try again.</div>
-        </div>
-      );
+      throw new Error("Failed to join session. Try again.");
     }
   } else {
     try {
@@ -40,11 +32,7 @@ export default async function Session({ params }: { params: { id: string } }) {
         sessionId: sessionId,
       });
     } catch (e) {
-      return (
-        <div>
-          <div>Failed to start session. Try again.</div>
-        </div>
-      );
+      throw new Error("Failed to start session. Try again.");
     }
   }
   return (
