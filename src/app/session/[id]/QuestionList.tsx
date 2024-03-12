@@ -225,35 +225,37 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
                     {currentQuestionIsSuccess &&
                       studentAnswersIsSuccess &&
                       studentAnswers.length > 0 && (
-                        <Dialog
-                          open={analysisOpen}
-                          onOpenChange={setAnalysisOpen}
-                        >
-                          <DialogTrigger asChild>
-                            <Button variant="outline">
-                              🪄 Analyze with AI
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent>
-                            <DialogHeader>
-                              <DialogTitle className="text-2xl leading-none">
-                                AI Analysis
-                              </DialogTitle>
-                              <DialogDescription>
-                                Summary and misconceptions
-                              </DialogDescription>
-                            </DialogHeader>
-                            {analysisQuery.isSuccess && (
-                              <div className="flex flex-col gap-2">
-                                <Latex>{analysisQuery.data.summary}</Latex>
-                                <Latex>
-                                  {analysisQuery.data.misconception}
-                                </Latex>
-                              </div>
-                            )}
-                            {analysisQuery.isLoading && <div>Loading...</div>}
-                          </DialogContent>
-                        </Dialog>
+                        <div className="pt-2">
+                          <Dialog
+                            open={analysisOpen}
+                            onOpenChange={setAnalysisOpen}
+                          >
+                            <DialogTrigger asChild>
+                              <Button variant="outline">
+                                🪄 Analyze with AI
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle className="text-2xl leading-none">
+                                  AI Analysis
+                                </DialogTitle>
+                                <DialogDescription>
+                                  Summary and misconceptions
+                                </DialogDescription>
+                              </DialogHeader>
+                              {analysisQuery.isSuccess && (
+                                <div className="flex flex-col gap-2">
+                                  <Latex>{analysisQuery.data.summary}</Latex>
+                                  <Latex>
+                                    {analysisQuery.data.misconception}
+                                  </Latex>
+                                </div>
+                              )}
+                              {analysisQuery.isLoading && <div>Loading...</div>}
+                            </DialogContent>
+                          </Dialog>
+                        </div>
                       )}
                   </div>
                 )}
