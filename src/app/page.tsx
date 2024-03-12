@@ -1,6 +1,5 @@
 import { LogoSvg } from "@/components/LogoSvg";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { getServerAuthSession } from "@/server/auth";
 import Link from "next/link";
 import { AuthButton } from "@/components/AuthButton";
@@ -8,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { GithubIcon } from "@/components/icons/GithubIcon";
 import { SignUpModal } from "@/components/SignUpModal";
 import { ModeToggle } from "@/components/ModeToggle";
+import { ChevronRight } from "lucide-react";
 
 async function AuthButtons() {
   const session = await getServerAuthSession();
@@ -54,6 +54,14 @@ function Hero() {
         Your open-source platform for real-time polling, discussion, and
         visualisation.
       </p>
+      <div className="pt-8">
+        <Button type="button" asChild>
+          <Link href="/dashboard">
+            Try it out
+            <ChevronRight className="ml-2 size-5" />
+          </Link>
+        </Button>
+      </div>
       {/* <div className="flex w-full max-w-xs items-center space-x-2 pt-6">
         <Input type="text" placeholder="Class Code" />
         <Button type="button">Join Class</Button>

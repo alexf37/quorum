@@ -40,7 +40,7 @@ function AccountDropdownButton({ session }: { session: Session }) {
 export default async function DashboardLayout({ children }: PropsWithChildren) {
   const session = await getServerAuthSession();
   if (!session) {
-    redirect("/");
+    redirect("/?login");
   }
   return (
     <>

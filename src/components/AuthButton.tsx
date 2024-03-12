@@ -2,8 +2,11 @@
 import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { LoginModal } from "./LoginModal";
+import { useSearchParams } from "next/navigation";
 
 export function AuthButton({ authed }: { authed: boolean }) {
+  const searchParams = useSearchParams();
+  const shouldLogin = searchParams.has("login");
   if (authed) {
     return (
       <Button
@@ -18,7 +21,7 @@ export function AuthButton({ authed }: { authed: boolean }) {
     );
   }
   return (
-    <LoginModal>
+    <LoginModal defaultOpen={shouldLogin}>
       <Button type="button" variant="ghost">
         Sign In
       </Button>

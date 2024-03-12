@@ -13,9 +13,14 @@ import { Input } from "@/components/ui/input";
 import { OauthButtons } from "./OauthButtons";
 import { Button } from "@/components/ui/button";
 
-export function LoginModal({ children }: PropsWithChildren) {
+export function LoginModal({
+  children,
+  defaultOpen,
+}: PropsWithChildren<{
+  defaultOpen?: boolean;
+}>) {
   return (
-    <Dialog>
+    <Dialog defaultOpen={defaultOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-sm">
         <DialogHeader className="space-y-1">
