@@ -501,6 +501,55 @@ export const sessionsRouter = createTRPCRouter({
       });
       return answers;
     }),
+  getAnswersForQuestion: protectedProcedure
+    .input(
+      z.object({
+        questionId: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const questionWithHostId = await ctx.db.freeResponseQuestion.findUnique({
+        where: {
+          id: input.questionId,
+        },
+        select: {
+          ClassSession: {
+            select: {
+              hostUserId: true,
+            },
+          },
+        },
+      });
+      if (!questionWithHostId)
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "No such question exists.",
+        });
+      const hostId = questionWithHostId.ClassSession.hostUserId;
+      if (hostId !== ctx.session.user.id)
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "You are not the owner of this question.",
+        });
+      const answers = await ctx.db.freeResponseAnswer.findMany({
+        where: {
+          freeResponseQuestionId: input.questionId,
+        },
+        select: {
+          id: true,
+          answer: true,
+          user: {
+            select: {
+              name: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "asc",
+        },
+      });
+      return answers;
+    }),
   endSession: protectedProcedure
     .input(
       z.object({

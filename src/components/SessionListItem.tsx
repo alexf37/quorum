@@ -1,6 +1,6 @@
 "use client";
 import { SessionListItemDropdown } from "@/components/SessionListItemDropdown";
-import { MoreVertical, Pencil, Trash2 } from "lucide-react";
+import { Expand, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -26,6 +26,7 @@ import { DeleteQuestionModal } from "./DeleteQuestionModal";
 import { EditQuestionModal } from "./EditQuestionModal";
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
+import { ViewQuestionModal } from "./ViewQuestionModal";
 
 type SessionListItemProps = {
   id: string;
@@ -127,6 +128,13 @@ export function SessionListItem({
                               )}
                             </TableCell>
                             <TableCell className="flex items-center justify-end gap-4">
+                              <ViewQuestionModal
+                                questionId={question.id}
+                                questionNumber={idx + 1}
+                                questionContent={question.question}
+                              >
+                                <Expand className="size-4 text-muted-foreground" />
+                              </ViewQuestionModal>
                               <EditQuestionModal
                                 questionId={question.id}
                                 questionPrompt={question.question}
