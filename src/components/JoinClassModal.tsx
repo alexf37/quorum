@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState, type PropsWithChildren } from "react";
+import { useState, type PropsWithChildren, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
 import { api } from "@/trpc/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const FormSchema = z.object({
   classCode: z.string().min(4, {
@@ -33,10 +33,12 @@ const FormSchema = z.object({
 
 export function JoinClassModal({ children }: PropsWithChildren) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const autofillCode = searchParams.get("join");
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      classCode: "",
+      classCode: autofillCode ?? "",
     },
   });
 
@@ -60,6 +62,12 @@ export function JoinClassModal({ children }: PropsWithChildren) {
       });
     },
   });
+
+  useEffect(() => {
+    if (autofillCode) {
+      setOpen(!!autofillCode);
+    }
+  }, [autofillCode]);
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     registerMutation.mutate(data);
