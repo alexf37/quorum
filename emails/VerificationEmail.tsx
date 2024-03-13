@@ -11,7 +11,7 @@ import {
   Section,
   Text,
 } from "@react-email/components";
-import { default as EmailHtml } from "@react-email/html";
+import EmailHtml from "@react-email/html";
 import { Tailwind } from "@react-email/tailwind";
 import * as React from "react";
 

@@ -43,7 +43,13 @@ export function AccountDropdown({ children }: PropsWithChildren) {
           <a href="mailto:xrk4np@virginia.edu">Support</a>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={async () => await signOut()}>
+        <DropdownMenuItem
+          onClick={async () => {
+            await signOut({
+              callbackUrl: "/",
+            });
+          }}
+        >
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
         </DropdownMenuItem>
