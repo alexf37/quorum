@@ -58,7 +58,7 @@ export function LoginModal({
                   <Input disabled id="password" type="password" />
                 </div>
                 <Button disabled className="w-full">
-                  Create account
+                  Sign in
                 </Button>
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">
