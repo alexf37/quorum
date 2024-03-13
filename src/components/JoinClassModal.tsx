@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { type PropsWithChildren } from "react";
+import { useState, type PropsWithChildren } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -40,6 +40,8 @@ export function JoinClassModal({ children }: PropsWithChildren) {
     },
   });
 
+  const [open, setOpen] = useState(false);
+
   const registerMutation = api.classes.registerForClassByCode.useMutation({
     onSuccess: () => {
       toast({
@@ -47,6 +49,8 @@ export function JoinClassModal({ children }: PropsWithChildren) {
         description: "You have successfully joined this class.",
       });
       router.refresh();
+      setOpen(false);
+      form.reset();
     },
     onError: (err) => {
       toast({
@@ -61,7 +65,7 @@ export function JoinClassModal({ children }: PropsWithChildren) {
     registerMutation.mutate(data);
   }
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -89,7 +93,9 @@ export function JoinClassModal({ children }: PropsWithChildren) {
                 </FormItem>
               )}
             />
-            <Button type="submit">Join</Button>
+            <Button disabled={registerMutation.isLoading} type="submit">
+              Join
+            </Button>
           </form>
         </Form>
       </DialogContent>

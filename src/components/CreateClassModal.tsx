@@ -142,7 +142,9 @@ export function CreateClassModal({ children }: PropsWithChildren) {
               )}
             />
             <DialogFooter className="pt-2">
-              <Button type="submit">Create Class</Button>
+              <Button disabled={registerMutation.isLoading} type="submit">
+                Create Class
+              </Button>
             </DialogFooter>
           </form>
         </Form>
