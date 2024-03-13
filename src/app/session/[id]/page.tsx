@@ -22,7 +22,7 @@ function SessionError({ error }: { error?: string }) {
       </div>
 
       <Button variant="outline" asChild>
-        <Link href="/">Return Home</Link>
+        <Link href="/dashboard">Return to Dashboard</Link>
       </Button>
     </div>
   );
