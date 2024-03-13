@@ -11,7 +11,7 @@ import {
   Section,
   Text,
 } from "@react-email/components";
-import EmailHtml from "@react-email/html";
+import { Html as EmailHtml } from "@react-email/html";
 import { Tailwind } from "@react-email/tailwind";
 import * as React from "react";
 
@@ -23,7 +23,7 @@ export function VerificationEmail({
   verificationLink,
 }: VerificationEmailProps) {
   return (
-    <EmailHtml.Html>
+    <EmailHtml>
       <Head />
       <Preview>Verify your Computing ID with Quorum</Preview>
       <Tailwind>
@@ -69,6 +69,6 @@ export function VerificationEmail({
           </Container>
         </Body>
       </Tailwind>
-    </EmailHtml.Html>
+    </EmailHtml>
   );
 }
