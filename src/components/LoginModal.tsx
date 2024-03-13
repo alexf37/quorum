@@ -1,5 +1,5 @@
 "use client";
-import { type PropsWithChildren } from "react";
+import { useState, type PropsWithChildren, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -19,8 +19,12 @@ export function LoginModal({
 }: PropsWithChildren<{
   defaultOpen?: boolean;
 }>) {
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    setOpen(!!defaultOpen);
+  }, [defaultOpen]);
   return (
-    <Dialog defaultOpen={defaultOpen}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-sm">
         <DialogHeader className="space-y-1">
