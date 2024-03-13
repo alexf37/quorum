@@ -11,6 +11,7 @@ import {
 import { api } from "@/trpc/react";
 import { ScrollArea } from "./ui/scroll-area";
 import Latex from "react-latex-next";
+import { useState } from "react";
 
 type ViewQuestionModalProps = React.PropsWithChildren<{
   questionNumber: number;
@@ -24,11 +25,17 @@ export function ViewQuestionModal({
   questionNumber,
   children,
 }: ViewQuestionModalProps) {
-  const answersQuery = api.sessions.getAnswersForQuestion.useQuery({
-    questionId,
-  });
+  const [open, setOpen] = useState(false);
+  const answersQuery = api.sessions.getAnswersForQuestion.useQuery(
+    {
+      questionId,
+    },
+    {
+      enabled: open,
+    },
+  );
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -37,16 +44,29 @@ export function ViewQuestionModal({
             <Latex>{questionContent}</Latex>
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="h-72 w-full rounded-md border">
-          <ul className="divide-y border-border">
-            {answersQuery.isSuccess &&
-              answersQuery.data.map((answer) => (
-                <li key={answer.id} className="flex justify-between p-3">
-                  <h3>{answer.user.name}</h3>
-                  <p>{answer.answer}</p>
-                </li>
-              ))}
-          </ul>
+        <ScrollArea className="h-fit max-h-96 w-full rounded-md border">
+          {answersQuery.isSuccess &&
+            (answersQuery.data.length === 0 ? (
+              <div className="grid h-24 place-content-center">
+                <p className="p-3 text-muted-foreground">
+                  No answers submitted.
+                </p>
+              </div>
+            ) : (
+              <ul className="divide-y border-border">
+                {answersQuery.data.map((answer) => (
+                  <li key={answer.id} className="flex justify-between p-3">
+                    <h3>{answer.user.name}</h3>
+                    <p>{answer.answer}</p>
+                  </li>
+                ))}
+              </ul>
+            ))}
+          {answersQuery.isLoading && (
+            <div className="grid h-24 place-content-center">
+              <p className="p-3 text-muted-foreground">Loading...</p>
+            </div>
+          )}
         </ScrollArea>
       </DialogContent>
     </Dialog>
