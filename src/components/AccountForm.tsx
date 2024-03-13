@@ -105,7 +105,7 @@ export function AccountForm({
             <FormItem>
               <FormLabel>Computing ID</FormLabel>
               <FormControl>
-                <Input placeholder="xrk4np" {...field} />
+                <Input placeholder="mst3k" {...field} />
               </FormControl>
               <FormDescription>
                 We'll send an email to your university email to verify this. It
