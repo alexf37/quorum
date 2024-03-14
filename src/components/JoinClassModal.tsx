@@ -13,6 +13,7 @@ import { useState, type PropsWithChildren, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import confetti from "canvas-confetti";
 import {
   Form,
   FormControl,
@@ -46,6 +47,11 @@ export function JoinClassModal({ children }: PropsWithChildren) {
 
   const registerMutation = api.classes.registerForClassByCode.useMutation({
     onSuccess: () => {
+      void confetti({
+        particleCount: 100,
+        spread: 100,
+        zIndex: 2000,
+      });
       toast({
         title: "Success!",
         description: "You have successfully joined this class.",
