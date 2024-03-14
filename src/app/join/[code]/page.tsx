@@ -32,9 +32,9 @@ export default async function JoinCodePage({
     <div className="grid h-full place-content-center">
       <Card className="max-w-sm">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardTitle className="text-2xl">Login or sign up</CardTitle>
           <CardDescription>
-            Enter your email and password below to login
+            Enter your email and password or choose a provider below.
           </CardDescription>
         </CardHeader>
         <CardContent className=" flex flex-col gap-4">
