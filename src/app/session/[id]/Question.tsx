@@ -26,6 +26,7 @@ import { toast } from "@/components/ui/use-toast";
 import { useEffect } from "react";
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 
 const FormSchema = z.object({
   answer: z
@@ -84,7 +85,14 @@ export function Question({ sessionId }: { sessionId: string }) {
 
   return (
     <>
-      {isLoading && <div>Loading...</div>}
+      {isLoading && (
+        <div className="flex flex-col items-center gap-2">
+          <LoadingSpinner className="mb-2 size-12" />
+          <h1 className="text-center text-xl font-semibold text-primary drop-shadow">
+            Fetching question...
+          </h1>
+        </div>
+      )}
       {isError && <div>Error: {error?.message}</div>}
       {isSuccess &&
         (data ? (
