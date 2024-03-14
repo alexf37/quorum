@@ -55,10 +55,10 @@ export function AccountForm({
   });
 
   const settingsMutation = api.settings.updateFormData.useMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast({
         title: "Success!",
-        description: "Your account details have been updated.",
+        description: data.message,
       });
       router.refresh();
     },

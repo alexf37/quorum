@@ -3,6 +3,7 @@ import { z } from "zod";
 import { env } from "@/env";
 import { Resend } from "resend";
 import { VerificationEmail } from "emails/VerificationEmail";
+import { TRPCError } from "@trpc/server";
 
 export const settingsRouter = createTRPCRouter({
   getExistingFormData: protectedProcedure.query(async ({ ctx }) => {
@@ -33,7 +34,16 @@ export const settingsRouter = createTRPCRouter({
           displayName: input.displayName,
         },
       });
-      if (user.computingId === input.computingId) return user;
+      console.log(user);
+      console.log(input);
+      if (
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+        user.computingId == (input.computingId || undefined) &&
+        user.displayName == input.displayName
+      )
+        return {
+          message: "No changes have been made.",
+        };
       // if user submits empty or nulling computingId, just remove it (no effect if already null in db)
       if (!input.computingId) {
         const userWithoutComputingId = await ctx.db.user.update({
@@ -44,7 +54,9 @@ export const settingsRouter = createTRPCRouter({
             computingId: null,
           },
         });
-        return userWithoutComputingId;
+        return {
+          message: "Your account details have been updated.",
+        };
       }
 
       // only if computingId is nonempty and has changed
@@ -89,9 +101,15 @@ export const settingsRouter = createTRPCRouter({
             verificationLink: `${baseHref}/verify/${verificationRecord.id}`,
           }),
         });
-        return verificationRecord;
+        return {
+          message:
+            "Account details have been updated. Please check your inbox for a verification email.",
+        };
       } catch (error) {
-        return error;
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to send verification email.",
+        });
       }
       // on verification, just expire verification record and update computingId on user after removing it from any existing verified users.
     }),
