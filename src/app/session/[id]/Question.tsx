@@ -17,6 +17,7 @@ import { z } from "zod";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -118,6 +119,9 @@ export function Question({ sessionId }: { sessionId: string }) {
                         <FormControl>
                           <Input placeholder="Answer here..." {...field} />
                         </FormControl>
+                        <FormDescription className="pt-2">
+                          You may change your answer as many times as you want.
+                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
