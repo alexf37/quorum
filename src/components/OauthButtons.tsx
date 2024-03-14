@@ -20,15 +20,6 @@ export function OauthButtons({ redirect }: { redirect?: string }) {
       <Button
         variant="outline"
         onClick={async () => {
-          await signIn("discord", { callbackUrl: redirect ?? "/dashboard" });
-        }}
-      >
-        <DiscordIcon className="mr-2 h-4 w-4" />
-        Discord
-      </Button>
-      <Button
-        variant="outline"
-        onClick={async () => {
           await signIn("github", { callbackUrl: redirect ?? "/dashboard" });
         }}
       >

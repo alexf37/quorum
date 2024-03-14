@@ -66,7 +66,7 @@ export function AccountForm({
 
   function onSubmit(data: AccountFormValues) {
     settingsMutation.mutate({
-      displayName: data.name,
+      name: data.name,
       computingId: data.computingId,
     });
     // toast({

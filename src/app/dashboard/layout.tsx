@@ -29,7 +29,7 @@ function AccountDropdownButton({ session }: { session: Session }) {
           <AvatarFallback>AF</AvatarFallback>
         </Avatar>
         <div className="basis-full overflow-hidden overflow-ellipsis whitespace-nowrap text-primary">
-          {session?.user.displayName ?? session?.user.email}
+          {session?.user.name ?? session?.user.email}
         </div>
       </div>
       <ChevronDown className="h-4 w-4 text-muted-foreground" />

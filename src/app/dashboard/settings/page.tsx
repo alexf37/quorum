@@ -9,7 +9,7 @@ export const metadata = {
 export default async function Settings() {
   const user = await api.settings.getExistingFormData.query();
   const defaultValues = {
-    name: user?.displayName ?? "",
+    name: user?.name ?? "",
     computingId: user?.computingId ?? "",
   };
   return (

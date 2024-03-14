@@ -12,7 +12,7 @@ export const settingsRouter = createTRPCRouter({
         id: ctx.session.user.id,
       },
       select: {
-        displayName: true,
+        name: true,
         computingId: true,
       },
     });
@@ -21,7 +21,7 @@ export const settingsRouter = createTRPCRouter({
   updateFormData: protectedProcedure
     .input(
       z.object({
-        displayName: z.string().optional(),
+        name: z.string().optional(),
         computingId: z.string().optional(),
       }),
     )
@@ -31,7 +31,7 @@ export const settingsRouter = createTRPCRouter({
           id: ctx.session.user.id,
         },
         data: {
-          displayName: input.displayName,
+          name: input.name,
         },
       });
       console.log(user);
@@ -39,7 +39,7 @@ export const settingsRouter = createTRPCRouter({
       if (
         // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         user.computingId == (input.computingId || undefined) &&
-        user.displayName == input.displayName
+        user.name == input.name
       )
         return {
           message: "No changes have been made.",

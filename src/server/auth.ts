@@ -4,7 +4,6 @@ import {
   type DefaultSession,
   type NextAuthOptions,
 } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -22,7 +21,6 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      displayName?: string;
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
@@ -51,20 +49,11 @@ export const authOptions: NextAuthOptions = {
           },
         };
       } else {
-        const dbUser = await db.user.findUnique({
-          where: {
-            id: user.id,
-          },
-          select: {
-            displayName: true,
-          },
-        });
         return {
           ...session,
           user: {
             ...session.user,
             id: user.id,
-            displayName: dbUser?.displayName,
           },
         };
       }
@@ -72,10 +61,6 @@ export const authOptions: NextAuthOptions = {
   },
   adapter: PrismaAdapter(db),
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
-    }),
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
