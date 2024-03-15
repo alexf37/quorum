@@ -25,27 +25,7 @@ import { useRouter } from "next/navigation";
 import { type PropsWithChildren } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { api } from "@/trpc/react";
-
-function downloadBlob(blob: Blob, name = "file.txt") {
-  const blobUrl = URL.createObjectURL(blob);
-
-  const link = document.createElement("a");
-
-  link.href = blobUrl;
-  link.download = name;
-
-  document.body.appendChild(link);
-
-  link.dispatchEvent(
-    new MouseEvent("click", {
-      bubbles: true,
-      cancelable: true,
-      view: window,
-    }),
-  );
-
-  document.body.removeChild(link);
-}
+import { mkConfig, generateCsv, download } from "export-to-csv";
 
 type ExportSessionWrapperProps = PropsWithChildren<{ sessionId: string }>;
 
@@ -55,10 +35,13 @@ function ExportSessionWrapper({
 }: ExportSessionWrapperProps) {
   const exportMutation = api.sessions.exportSession.useMutation({
     onSuccess: (data) => {
-      const dataText = JSON.stringify(data.studentsWhoAnswered, null, 2);
-      downloadBlob(new Blob([dataText]), `session-${sessionId}.txt`);
+      const csvConfig = mkConfig({ useKeysAsHeaders: true });
+      const csv = generateCsv(csvConfig)(data.studentsWhoAnswered);
+
+      download(csvConfig)(csv);
     },
   });
+
   return (
     <div
       onClick={() =>
