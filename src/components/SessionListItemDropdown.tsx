@@ -26,6 +26,7 @@ import { type PropsWithChildren } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { api } from "@/trpc/react";
 import { mkConfig, generateCsv, download } from "export-to-csv";
+import { useToast } from "@/components/ui/use-toast";
 
 type ExportSessionWrapperProps = PropsWithChildren<{ sessionId: string }>;
 
@@ -33,8 +34,16 @@ function ExportSessionWrapper({
   sessionId,
   children,
 }: ExportSessionWrapperProps) {
+  const { toast } = useToast();
   const exportMutation = api.sessions.exportSession.useMutation({
     onSuccess: (data) => {
+      if (data.studentsWhoAnswered.length === 0) {
+        toast({
+          title: "No data to export",
+          description: "No students have answered this session",
+        });
+        return;
+      }
       const csvConfig = mkConfig({ useKeysAsHeaders: true });
       const csv = generateCsv(csvConfig)(data.studentsWhoAnswered);
 
