@@ -72,8 +72,10 @@ export default async function Classes() {
               </CardHeader>
               <CardFooter className="mt-auto grid w-full grid-cols-2 gap-2">
                 {clazz.classSession ? (
-                  <Button variant="outline" className="col-span-2">
-                    Join Session
+                  <Button variant="outline" className="col-span-2" asChild>
+                    <Link href={`/session/${clazz.classSession.id}`}>
+                      Join Session
+                    </Link>
                   </Button>
                 ) : (
                   <Button variant="ghost" className="group col-span-2" asChild>
