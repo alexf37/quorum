@@ -5,16 +5,19 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { set } from "zod";
 
 export function LandingForm() {
   const router = useRouter();
   const [code, setCode] = useState("");
+  const [loading, setLoading] = useState(false);
   return (
     <>
       <form
         onSubmit={(e) => {
           e.preventDefault();
           if (code) {
+            setLoading(true);
             router.push(`/join/${encodeURIComponent(code)}`);
           }
         }}
@@ -26,7 +29,7 @@ export function LandingForm() {
           type="text"
           placeholder="Class Code"
         />
-        <Button>Join Class</Button>
+        <Button disabled={loading}>Join Class</Button>
       </form>
       <small className="pt-2 text-slate-400">
         If you're managing a class,{" "}
