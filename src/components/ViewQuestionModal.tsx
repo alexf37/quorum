@@ -44,7 +44,7 @@ export function ViewQuestionModal({
             <Latex>{questionContent}</Latex>
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="h-fit max-h-96 w-full rounded-md border">
+        <ScrollArea className="h-fit  w-full rounded-md border">
           {answersQuery.isSuccess &&
             (answersQuery.data.length === 0 ? (
               <div className="grid h-24 place-content-center">
@@ -53,7 +53,7 @@ export function ViewQuestionModal({
                 </p>
               </div>
             ) : (
-              <ul className="divide-y border-border">
+              <ul className="max-h-96 divide-y border-border">
                 {answersQuery.data.map((answer) => (
                   <li key={answer.id} className="flex justify-between p-3">
                     <h3>{answer.user.name}</h3>
