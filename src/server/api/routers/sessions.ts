@@ -580,4 +580,68 @@ export const sessionsRouter = createTRPCRouter({
       await checkSessionOwnership(input.sessionId, ctx.session.user.id);
       return analyzeAnswers(input.question, input.answers);
     }),
+  exportSession: protectedProcedure
+    .input(
+      z.object({
+        sessionId: z.string(),
+        threshold: z.number(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await checkSessionOwnership(input.sessionId, ctx.session.user.id);
+      const session = await ctx.db.classSession.findUnique({
+        where: {
+          id: input.sessionId,
+        },
+        select: {
+          students: {
+            select: {
+              computingId: true,
+              name: true,
+              email: true,
+              _count: {
+                select: {
+                  freeResponseAnswers: {
+                    where: {
+                      freeResponseQuestion: {
+                        classSessionId: input.sessionId,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          _count: {
+            select: {
+              questions: true,
+            },
+          },
+        },
+      });
+
+      if (!session) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "No such session exists.",
+        });
+      }
+      const questionCount = session._count.questions;
+      const studentsWhoAnswered = session.students
+        .filter(
+          (student) =>
+            student._count.freeResponseAnswers / questionCount >
+            input.threshold,
+        )
+        .map(
+          ({ name, email, computingId, _count: { freeResponseAnswers } }) => ({
+            name,
+            email,
+            computingId,
+            questionsAnswered: freeResponseAnswers,
+          }),
+        );
+
+      return { studentsWhoAnswered };
+    }),
 });
