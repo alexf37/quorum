@@ -44,7 +44,10 @@ function ExportSessionWrapper({
         });
         return;
       }
-      const csvConfig = mkConfig({ useKeysAsHeaders: true });
+      const csvConfig = mkConfig({
+        useKeysAsHeaders: true,
+        filename: `session-${sessionId}`,
+      });
       const csv = generateCsv(csvConfig)(data.studentsWhoAnswered);
 
       download(csvConfig)(csv);

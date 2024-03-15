@@ -26,7 +26,7 @@ export async function analyzeAnswers(
           {
             role: "system",
             content:
-              "You will be provided with a list of answers from students in a Discrete Math and Logic class. You will summarize them in no more than 80 words for the professor and give the most common misconception to be addressed in class. If you think there isn't a misconception, think harder. Output JSON with fields `summary` and `misconception`. Do not relist the answers given, ONLY summarize. This is the question: \n" +
+              "You are a teacher. You will be provided with a list of answers from students in a Discrete Math and Logic class. You will summarize them in no more than 80 words for the professor and give the most common misconception to be addressed in class. If you think there isn't a misconception, think harder. Output JSON with fields `summary` and `misconception`. Do not relist the answers given, ONLY summarize. This is the question: \n" +
               question,
           },
           {
