@@ -18,6 +18,8 @@ export const metadata = {
 };
 
 function AccountDropdownButton({ session }: { session: Session }) {
+  const initials = session?.user.name?.split(" ").map((n) => n[0]);
+  const firstTwoInitials = initials?.slice(0, 2).join("");
   return (
     <Button variant="outline" className="mb-2 flex justify-between gap-4">
       <div className="flex items-center gap-2 overflow-hidden">
@@ -26,7 +28,7 @@ function AccountDropdownButton({ session }: { session: Session }) {
             src={session?.user.image ?? ""}
             alt={session?.user.name ?? "Profile image"}
           />
-          <AvatarFallback>AF</AvatarFallback>
+          <AvatarFallback>{firstTwoInitials}</AvatarFallback>
         </Avatar>
         <div className="basis-full overflow-hidden overflow-ellipsis whitespace-nowrap text-primary">
           {session?.user.name ?? session?.user.email}
