@@ -14,7 +14,6 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/trpc/react";
 import { type PropsWithChildren } from "react";
 import { toast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
 
 type DeleteQuestionModalProps = PropsWithChildren<{
   questionId: string;
@@ -26,7 +25,6 @@ export function DeleteQuestionModal({
   questionId,
   sessionId,
 }: DeleteQuestionModalProps) {
-  const router = useRouter();
   const utils = api.useUtils();
   const deleteQuestionMutation =
     api.sessions.deleteFreeResponseQuestion.useMutation({

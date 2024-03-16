@@ -1,7 +1,6 @@
 "use client";
 import { GithubIcon } from "./icons/GithubIcon";
 import { GoogleIcon } from "./icons/GoogleIcon";
-import { DiscordIcon } from "./icons/DiscordIcon";
 import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
 

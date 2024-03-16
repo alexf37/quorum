@@ -46,7 +46,7 @@ export const settingsRouter = createTRPCRouter({
         };
       // if user submits empty or nulling computingId, just remove it (no effect if already null in db)
       if (!input.computingId) {
-        const userWithoutComputingId = await ctx.db.user.update({
+        await ctx.db.user.update({
           where: {
             id: ctx.session.user.id,
           },
@@ -62,7 +62,7 @@ export const settingsRouter = createTRPCRouter({
       // only if computingId is nonempty and has changed
       // expire all other verification records for this user
       const now = Date.now();
-      const expiredRecords = await ctx.db.computingIdVerification.updateMany({
+      await ctx.db.computingIdVerification.updateMany({
         where: {
           userId: user.id,
           expires: {
@@ -93,7 +93,7 @@ export const settingsRouter = createTRPCRouter({
           ? "https://quorum.alexfoster.dev"
           : "http://localhost:3000";
       try {
-        const data = await resend.emails.send({
+        await resend.emails.send({
           from: "Quorum <noreply@quorum.alexfoster.dev>",
           to: [verificationRecord.computingId + "@virginia.edu"],
           subject: "Verify your Computing ID",

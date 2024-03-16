@@ -7,8 +7,6 @@ import { Separator } from "@/components/ui/separator";
 import { GithubIcon } from "@/components/icons/GithubIcon";
 import { SignUpModal } from "@/components/SignUpModal";
 import { ModeToggle } from "@/components/ModeToggle";
-import { ChevronRight } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { LandingForm } from "./LandingForm";
 
 async function AuthButtons() {

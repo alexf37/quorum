@@ -36,7 +36,7 @@ export default async function VerifyWithId({
   }
 
   // removing computing id from any existing users, since latest user is the last to verify it
-  const existingUserWithComputingId = await db.user.updateMany({
+  await db.user.updateMany({
     where: {
       computingId: verificationRecord.computingId,
     },
@@ -59,7 +59,7 @@ export default async function VerifyWithId({
   }
 
   // expire verification record that we just used
-  const verificationRecordExpired = await db.computingIdVerification.update({
+  await db.computingIdVerification.update({
     where: {
       id: verificationRecord.id,
     },

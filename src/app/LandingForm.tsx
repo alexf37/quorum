@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { set } from "zod";
 
 export function LandingForm() {
   const router = useRouter();
