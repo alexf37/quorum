@@ -39,6 +39,20 @@ function AccountDropdownButton({ session }: { session: Session }) {
   );
 }
 
+function MobileAccountDropdownButton({ session }: { session: Session }) {
+  const initials = session?.user.name?.split(" ").map((n) => n[0]);
+  const firstTwoInitials = initials?.slice(0, 2).join("");
+  return (
+    <Avatar className="size-9">
+      <AvatarImage
+        src={session?.user.image ?? ""}
+        alt={session?.user.name ?? "Profile image"}
+      />
+      <AvatarFallback>{firstTwoInitials}</AvatarFallback>
+    </Avatar>
+  );
+}
+
 export default async function DashboardLayout({ children }: PropsWithChildren) {
   const session = await getServerAuthSession();
   if (!session) {
@@ -48,18 +62,27 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
     <>
       <div className="flex h-full max-sm:flex-col">
         <div className="flex flex-col gap-2 border-r py-6 sm:w-64">
-          <Link
-            href="/"
-            className="flex max-w-screen-sm items-center gap-2 px-8 pb-3 text-primary"
-          >
-            <LogoSvg className="size-9" />
-            <h1 className="text-3xl font-bold tracking-tight">Quorum</h1>
-          </Link>
-          <Separator className="mb-1" />
-          <div className="flex h-full flex-col items-stretch gap-2 px-6">
+          <div className="flex justify-between gap-4">
+            <Link
+              href="/"
+              className="flex max-w-screen-sm items-center gap-2 px-8 pb-3 text-primary"
+            >
+              <LogoSvg className="size-9" />
+              <h1 className="text-3xl font-bold tracking-tight">Quorum</h1>
+            </Link>
+            <div className="flex items-center gap-2 px-6 pb-3 sm:hidden">
+              <AccountDropdown>
+                <MobileAccountDropdownButton session={session} />
+              </AccountDropdown>
+            </div>
+          </div>
+          <Separator className="mb-1 " />
+          <div className="flex flex-col items-stretch gap-2 px-6 max-sm:hidden">
             <AccountDropdown>
               <AccountDropdownButton session={session} />
             </AccountDropdown>
+          </div>
+          <div className="flex h-full flex-col items-stretch gap-2 px-6 ">
             <Nav />
           </div>
         </div>
