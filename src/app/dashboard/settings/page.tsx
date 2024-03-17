@@ -1,7 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import { AccountForm } from "@/components/AccountForm";
 import { api } from "@/trpc/server";
-import { Button } from "@/components/ui/button";
 import { DeleteAccountButton } from "./DeleteAccountButton";
 
 export const metadata = {
