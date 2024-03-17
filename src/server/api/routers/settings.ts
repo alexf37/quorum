@@ -113,4 +113,14 @@ export const settingsRouter = createTRPCRouter({
       }
       // on verification, just expire verification record and update computingId on user after removing it from any existing verified users.
     }),
+  deleteAccount: protectedProcedure.mutation(async ({ ctx }) => {
+    await ctx.db.user.delete({
+      where: {
+        id: ctx.session.user.id,
+      },
+    });
+    return {
+      message: "Your account has been deleted.",
+    };
+  }),
 });
