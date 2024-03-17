@@ -33,8 +33,8 @@ export default async function Classes() {
   return (
     <div className="flex w-full flex-wrap gap-4 max-sm:justify-center">
       {classes.length === 0 && (
-        <div className="absolute inset-0 grid h-full w-full place-content-center">
-          <div className="mx-auto flex max-w-[420px] flex-col items-center justify-center text-center">
+        <div className="pointer-events-none absolute inset-0 grid h-full w-full place-content-center">
+          <div className="pointer-events-auto mx-auto flex max-w-[420px] flex-col items-center justify-center text-center">
             <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted">
               <HeartCrack className="h-10 w-10" />
             </div>
