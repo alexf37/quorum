@@ -30,8 +30,8 @@ const accountFormSchema = z.object({
     }),
   computingId: z
     .string()
-    .min(6, {
-      message: "Computing ID must be at least 6 characters.",
+    .min(4, {
+      message: "Computing ID must be at least 4 characters.",
     })
     .max(7, {
       message: "Computing ID must be at most 7 characters.",
