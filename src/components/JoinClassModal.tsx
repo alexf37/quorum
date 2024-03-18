@@ -56,6 +56,7 @@ export function JoinClassModal({ children }: PropsWithChildren) {
         title: "Success!",
         description: "You have successfully joined this class.",
       });
+      router.replace("/dashboard");
       router.refresh();
       setOpen(false);
       form.reset();
