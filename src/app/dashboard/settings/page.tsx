@@ -3,6 +3,7 @@ import { AccountForm } from "@/components/AccountForm";
 import { api } from "@/trpc/server";
 import { DeleteAccountModal } from "@/components/DeleteAccountModal";
 import { Button } from "@/components/ui/button";
+import { OrganizationForm } from "./OrganizationForm";
 
 export const metadata = {
   title: "Settings",
@@ -26,6 +27,18 @@ export default async function Settings() {
           </div>
           <Separator />
           <AccountForm defaultValues={defaultValues} />
+        </div>
+      </div>
+      <div className="flex flex-col gap-2 rounded-lg border border-border bg-background px-8 py-6">
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-lg font-medium">Organization</h3>
+            <p className="text-sm text-muted-foreground">
+              Settings related to your school or organization
+            </p>
+          </div>
+          <Separator />
+          <OrganizationForm />
         </div>
       </div>
       <div className="flex flex-col gap-2 rounded-lg border border-border bg-background px-8 py-6">
