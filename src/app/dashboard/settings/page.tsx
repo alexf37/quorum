@@ -1,7 +1,8 @@
 import { Separator } from "@/components/ui/separator";
 import { AccountForm } from "@/components/AccountForm";
 import { api } from "@/trpc/server";
-import { DeleteAccountButton } from "./DeleteAccountButton";
+import { DeleteAccountModal } from "@/components/DeleteAccountModal";
+import { Button } from "@/components/ui/button";
 
 export const metadata = {
   title: "Settings",
@@ -36,7 +37,9 @@ export default async function Settings() {
               This action is irreversible — please continue with caution.
             </p>
           </div>
-          <DeleteAccountButton>Delete account</DeleteAccountButton>
+          <DeleteAccountModal>
+            <Button variant="destructive">Delete account</Button>
+          </DeleteAccountModal>
         </div>
       </div>
     </div>
