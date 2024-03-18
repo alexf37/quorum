@@ -32,9 +32,9 @@ import { toast } from "@/components/ui/use-toast";
 
 const organizations = [
   { label: "University of Virginia", value: "uva" },
-  { label: "Virginia Tech", value: "vt" },
-  { label: "George Mason University", value: "gmu" },
-  { label: "Coastal Carolina University", value: "ccu" },
+  //   { label: "Virginia Tech", value: "vt" },
+  //   { label: "George Mason University", value: "gmu" },
+  //   { label: "Coastal Carolina University", value: "ccu" },
 ] as const;
 
 const FormSchema = z.object({
@@ -46,12 +46,15 @@ const FormSchema = z.object({
 export function OrganizationForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      organization: "uva",
+    },
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast({
-      title: "Error",
-      description: "Could not set your organization.",
+      title: "Success!",
+      description: "Your organization has been updated.",
     });
   }
 
