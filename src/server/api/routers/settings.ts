@@ -123,4 +123,71 @@ export const settingsRouter = createTRPCRouter({
       message: "Your account has been deleted.",
     };
   }),
+  verifyComputingId: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      // fetch verification record
+      const verificationRecord = await ctx.db.computingIdVerification.findFirst(
+        {
+          where: {
+            id: input.id,
+          },
+        },
+      );
+
+      // if somehow verification record doesn't exist, say so
+      if (!verificationRecord) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Verification request not found.",
+        });
+      }
+
+      // if verification record is expired, say so
+      if (verificationRecord.expires < new Date(Date.now())) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Verification has expired.",
+        });
+      }
+
+      // removing computing id from any existing users, since latest user is the last to verify it
+      await ctx.db.user.updateMany({
+        where: {
+          computingId: verificationRecord.computingId,
+        },
+        data: {
+          computingId: null,
+        },
+      });
+
+      // now verified, so add computing id to user
+      const userWithComputingId = await ctx.db.user.update({
+        where: {
+          id: verificationRecord.userId,
+        },
+        data: {
+          computingId: verificationRecord.computingId,
+        },
+      });
+      if (!userWithComputingId) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "User not found.",
+        });
+      }
+
+      // expire verification record that we just used
+      await ctx.db.computingIdVerification.update({
+        where: {
+          id: verificationRecord.id,
+        },
+        data: {
+          expires: new Date(),
+        },
+      });
+      return {
+        message: "Your Computing ID has been verified.",
+      };
+    }),
 });
