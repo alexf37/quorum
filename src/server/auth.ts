@@ -6,6 +6,7 @@ import {
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
+// import CredentialsProvider from "next-auth/providers/credentials";
 
 import { env } from "@/env";
 import { db } from "@/server/db";
@@ -39,23 +40,13 @@ declare module "next-auth" {
 export const authOptions: NextAuthOptions = {
   callbacks: {
     session: async ({ session, user }) => {
-      if (!user.id) {
-        return {
-          ...session,
-          user: {
-            ...session.user,
-            id: user.id,
-          },
-        };
-      } else {
-        return {
-          ...session,
-          user: {
-            ...session.user,
-            id: user.id,
-          },
-        };
-      }
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: user.id,
+        },
+      };
     },
   },
   adapter: PrismaAdapter(db),
@@ -92,25 +83,26 @@ export const authOptions: NextAuthOptions = {
     //     // (i.e., the request IP address)
     //     if (!credentials) return null;
 
-    //     const existingUser = await db.user.findUnique({
+    //     let user = await db.user.findUnique({
     //       where: {
     //         email: credentials.email,
     //       },
     //     });
-    //     if (!existingUser) {
-    //       // TODO: create user
-    //       // const newUser = await db.user.create({
-    //       //   data: {
-    //       //     email: credentials.email,
-    //       //     password: undefined,
-    //       //   },
-    //       // });
-    //     } else {
-    //     }
-    //     // TODO: check password
 
-    //     // Return null if user data could not be retrieved
-    //     return null;
+    //     if (!user) {
+    //       user = await db.user.create({
+    //         data: {
+    //           email: credentials.email,
+    //           password: credentials.password,
+    //         },
+    //       });
+    //     } else {
+    //       if (user.password !== credentials.password) {
+    //         return null;
+    //       }
+    //     }
+
+    //     return user;
     //   },
     // }),
   ],
