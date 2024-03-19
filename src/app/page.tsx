@@ -132,7 +132,7 @@ function Features() {
         {features.map((feature, idx) => (
           <div
             key={idx}
-            className="flex w-full rounded-xl border border-border"
+            className="flex w-full rounded-xl border border-border bg-background drop-shadow-md"
           >
             <div className="flex aspect-square h-full items-center justify-center border-0 border-border max-sm:hidden">
               {feature.icon}

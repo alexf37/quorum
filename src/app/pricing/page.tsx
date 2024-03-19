@@ -99,7 +99,7 @@ export default function Example() {
                 tier.mostPopular ? "shadow-2xl lg:z-10 lg:-mb-8" : "lg:mt-8",
                 tierIdx === 0 ? "lg:rounded-r-none" : "",
                 tierIdx === tiers.length - 1 ? "lg:rounded-l-none" : "",
-                "flex flex-col justify-between rounded-3xl border border-border bg-primary-foreground p-8 xl:p-10",
+                "flex flex-col justify-between rounded-3xl border border-border bg-primary-foreground p-8 drop-shadow-lg xl:p-10",
               )}
             >
               <div>
