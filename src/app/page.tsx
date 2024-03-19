@@ -9,6 +9,7 @@ import { SignUpModal } from "@/components/SignUpModal";
 import { ModeToggle } from "@/components/ModeToggle";
 import { LandingForm } from "./LandingForm";
 import Pricing from "@/app/pricing/page";
+import { LineChart, TrendingUp, Zap } from "lucide-react";
 
 async function AuthButtons() {
   const session = await getServerAuthSession();
@@ -90,6 +91,29 @@ function Footer() {
   );
 }
 
+const features = [
+  {
+    title: "Boost Engagement",
+    icon: <TrendingUp className="size-14" />,
+    description: `Quorum creates an interactive and dynamic learning environment,
+      helping educators and students connect more effectively, fostering
+      collaboration, and enhancing the educational experience.`,
+  },
+  {
+    title: "Real-time Feedback",
+    icon: <Zap className="size-14" />,
+    description: `Instant, live poll results show you how your students are doing, and
+      help you identify areas of confusion and misunderstanding.`,
+  },
+  {
+    title: "Track Participation",
+    icon: <LineChart className="size-14" />,
+    description: `Quorum tracks student participation, helping you identify students
+      who may be struggling, and helping you understand how your students
+      are engaging with the material.`,
+  },
+];
+
 function Features() {
   return (
     <section id="features" className="space-y-16 py-24">
@@ -104,36 +128,24 @@ function Features() {
           easy-to-use polls in your classroom or organization.
         </p>
       </div>
-      <div className="mx-auto flex max-w-screen-lg justify-center gap-8 px-16 max-sm:flex-col">
-        <div className="w-full space-y-3">
-          <h2 className="text-2xl font-semibold text-primary">
-            Boost Engagement
-          </h2>
-          <p>
-            Quorum creates an interactive and dynamic learning environment,
-            helping educators and students connect more effectively, fostering
-            collaboration, and enhancing the educational experience.
-          </p>
-        </div>
-        <div className="w-full space-y-3">
-          <h2 className="text-2xl font-semibold text-primary">
-            Real-time Feedback
-          </h2>
-          <p>
-            Instant, live poll results show you how your students are doing, and
-            help you identify areas of confusion and misunderstanding.
-          </p>
-        </div>
-        <div className="w-full space-y-3">
-          <h2 className="text-2xl font-semibold text-primary">
-            Track Participation
-          </h2>
-          <p>
-            Quorum tracks student participation, helping you identify students
-            who may be struggling, and helping you understand how your students
-            are engaging with the material.
-          </p>
-        </div>
+      <div className="mx-auto grid max-w-screen-lg grid-flow-row auto-rows-auto justify-center gap-8 px-16">
+        {features.map((feature, idx) => (
+          <div
+            key={idx}
+            className="flex w-full rounded-xl border border-border"
+          >
+            <div className="flex aspect-square h-full items-center justify-center border-0 border-border max-sm:hidden">
+              {feature.icon}
+            </div>
+
+            <div className="mb-6 space-y-2 py-6 pr-6 max-sm:pl-6">
+              <h2 className="text-2xl font-semibold text-primary">
+                {feature.title}
+              </h2>
+              <p>{feature.description}</p>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
