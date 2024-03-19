@@ -38,7 +38,7 @@ function NavBar() {
         <h1 className="text-3xl font-bold tracking-tight max-sm:hidden">
           Quorum
         </h1>
-        <nav className="-mb-0.5 flex items-center gap-8 pl-10 text-sm tracking-wide text-muted-foreground">
+        <nav className="-mb-0.5 flex items-center gap-8 pl-10 text-sm tracking-wide text-muted-foreground max-md:hidden">
           <Link className="transition-all hover:text-foreground" href="#">
             Home
           </Link>
