@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 import Link from "next/link";
 
@@ -159,7 +160,10 @@ export default function Example() {
                     tier.id === "tier-professional" ||
                     tier.id === "tier-enterprise"
                   }
-                  className="w-full"
+                  className={cn(
+                    "w-full",
+                    !tier.mostPopular && "border border-border bg-background",
+                  )}
                   variant={tier.mostPopular ? "default" : "secondary"}
                 >
                   {tier.id === "tier-basic" && "Get started"}
