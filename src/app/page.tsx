@@ -128,7 +128,7 @@ function Features() {
           easy-to-use polls in your classroom or organization.
         </p>
       </div>
-      <div className="mx-auto grid max-w-screen-lg grid-flow-row auto-rows-fr justify-center gap-8 px-16">
+      <div className="mx-auto grid max-w-screen-lg grid-flow-row auto-rows-fr justify-center gap-8 px-6 sm:px-16">
         {features.map((feature, idx) => (
           <div
             key={idx}
