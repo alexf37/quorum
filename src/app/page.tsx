@@ -8,6 +8,7 @@ import { GithubIcon } from "@/components/icons/GithubIcon";
 import { SignUpModal } from "@/components/SignUpModal";
 import { ModeToggle } from "@/components/ModeToggle";
 import { LandingForm } from "./LandingForm";
+import Pricing from "@/app/pricing/page";
 
 async function AuthButtons() {
   const session = await getServerAuthSession();
@@ -36,6 +37,23 @@ function NavBar() {
         <h1 className="text-3xl font-bold tracking-tight max-sm:hidden">
           Quorum
         </h1>
+        <nav className="-mb-0.5 flex items-center gap-8 pl-10 text-sm tracking-wide text-muted-foreground">
+          <Link className="transition-all hover:text-foreground" href="#">
+            Home
+          </Link>
+          <Link
+            className="transition-all hover:text-foreground"
+            href="#features"
+          >
+            Features
+          </Link>
+          <Link
+            className="transition-all hover:text-foreground"
+            href="#pricing"
+          >
+            Pricing
+          </Link>
+        </nav>
       </div>
       <div className="flex gap-2">
         <AuthButtons />
@@ -46,11 +64,11 @@ function NavBar() {
 
 function Hero() {
   return (
-    <div className="flex flex-col items-center px-8 py-28">
-      <h1 className="text-center text-6xl font-bold text-primary drop-shadow">
+    <div className="mb-24 mt-8 flex flex-col items-center px-8 py-36">
+      <h1 className="text-center text-6xl font-bold text-primary drop-shadow lg:text-7xl">
         Meet Quorum
       </h1>
-      <p className="max-w-md pt-3 text-center text-lg text-muted-foreground">
+      <p className="max-w-md pt-3 text-center text-lg text-muted-foreground lg:text-xl">
         Your dedicated platform for real-time polling, discussion, and
         visualisation.
       </p>
@@ -74,35 +92,48 @@ function Footer() {
 
 function Features() {
   return (
-    <div className="mx-auto flex max-w-screen-lg justify-center gap-8 px-16 py-24 max-sm:flex-col">
-      <div className="w-full space-y-3">
-        <h2 className="text-2xl font-semibold text-primary">
-          Boost Engagement
-        </h2>
-        <p>
-          Quorum creates an interactive and dynamic learning environment,
-          helping educators and students connect more effectively, fostering
-          collaboration, and enhancing the educational experience.
+    <div className="space-y-16 pb-24">
+      <div>
+        <div className="mx-auto max-w-4xl text-center">
+          <h2 className="mt-2 text-4xl font-bold tracking-tight text-primary sm:text-5xl">
+            Features
+          </h2>
+        </div>
+        <p className="mx-auto mt-6 max-w-2xl px-8 text-center text-lg leading-8 text-muted-foreground">
+          Quorum offers everything you need to implement live, interactive,
+          easy-to-use polls in your classroom or organization.
         </p>
       </div>
-      <div className="w-full space-y-3">
-        <h2 className="text-2xl font-semibold text-primary">
-          Real-time Feedback
-        </h2>
-        <p>
-          Instant, live poll results show you how your students are doing, and
-          help you identify areas of confusion and misunderstanding.
-        </p>
-      </div>
-      <div className="w-full space-y-3">
-        <h2 className="text-2xl font-semibold text-primary">
-          Track Participation
-        </h2>
-        <p>
-          Quorum tracks student participation, helping you identify students who
-          may be struggling, and helping you understand how your students are
-          engaging with the material.
-        </p>
+      <div className="mx-auto flex max-w-screen-lg justify-center gap-8 px-16 max-sm:flex-col">
+        <div className="w-full space-y-3">
+          <h2 className="text-2xl font-semibold text-primary">
+            Boost Engagement
+          </h2>
+          <p>
+            Quorum creates an interactive and dynamic learning environment,
+            helping educators and students connect more effectively, fostering
+            collaboration, and enhancing the educational experience.
+          </p>
+        </div>
+        <div className="w-full space-y-3">
+          <h2 className="text-2xl font-semibold text-primary">
+            Real-time Feedback
+          </h2>
+          <p>
+            Instant, live poll results show you how your students are doing, and
+            help you identify areas of confusion and misunderstanding.
+          </p>
+        </div>
+        <div className="w-full space-y-3">
+          <h2 className="text-2xl font-semibold text-primary">
+            Track Participation
+          </h2>
+          <p>
+            Quorum tracks student participation, helping you identify students
+            who may be struggling, and helping you understand how your students
+            are engaging with the material.
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -146,6 +177,7 @@ export default function App() {
       <NavBar />
       <Hero />
       <Features />
+      <Pricing />
       <Separator className="mt-auto" />
       <Footer />
     </div>
