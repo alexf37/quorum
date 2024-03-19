@@ -95,9 +95,7 @@ export default function Example() {
             <div
               key={tier.id}
               className={classNames(
-                tier.mostPopular
-                  ? "shadow-2xl lg:z-10 lg:rounded-b-none"
-                  : "lg:mt-8",
+                tier.mostPopular ? "shadow-2xl lg:z-10 lg:-mb-8" : "lg:mt-8",
                 tierIdx === 0 ? "lg:rounded-r-none" : "",
                 tierIdx === tiers.length - 1 ? "lg:rounded-l-none" : "",
                 "flex flex-col justify-between rounded-3xl border border-border bg-primary-foreground p-8 xl:p-10",
