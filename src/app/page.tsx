@@ -64,7 +64,7 @@ function NavBar() {
 
 function Hero() {
   return (
-    <div className="mb-24 mt-8 flex flex-col items-center px-8 py-36">
+    <div className="mt-8 flex flex-col items-center px-8 py-36">
       <h1 className="text-center text-6xl font-bold text-primary drop-shadow lg:text-7xl">
         Meet Quorum
       </h1>
@@ -92,7 +92,7 @@ function Footer() {
 
 function Features() {
   return (
-    <div className="space-y-16 pb-24">
+    <section id="features" className="space-y-16 py-24">
       <div>
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="mt-2 text-4xl font-bold tracking-tight text-primary sm:text-5xl">
@@ -135,7 +135,7 @@ function Features() {
           </p>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

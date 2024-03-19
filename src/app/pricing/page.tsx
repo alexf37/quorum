@@ -56,7 +56,7 @@ function classNames(...classes: string[]) {
 
 export default function Example() {
   return (
-    <div className="relative overflow-visible py-24 sm:py-32">
+    <section id="pricing" className="relative overflow-visible py-24 sm:py-32">
       <svg
         className="absolute bottom-0 left-0 -z-10 h-full w-full stroke-border [mask-image:radial-gradient(70%_70%_at_left,white,transparent)]"
         aria-hidden="true"
@@ -173,6 +173,6 @@ export default function Example() {
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }
