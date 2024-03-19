@@ -83,7 +83,7 @@ export default function Example() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="mt-2 text-4xl font-bold tracking-tight text-primary sm:text-5xl">
-            Pricing plans for all budgets
+            Pricing for all budgets
           </h2>
         </div>
         <p className="mx-auto mt-6 max-w-2xl text-pretty text-center text-lg leading-8 text-muted-foreground">
