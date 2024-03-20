@@ -6,7 +6,7 @@ import {
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
-import CredentialsProvider from "next-auth/providers/credentials";
+// import CredentialsProvider from "next-auth/providers/credentials";
 
 import { env } from "@/env";
 import { db } from "@/server/db";
@@ -39,24 +39,15 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: async ({ session, token }) => {
+    session: async ({ session, user }) => {
       return {
         ...session,
         user: {
           ...session.user,
-          id: token.sub,
+          id: user.id,
         },
       };
     },
-    jwt: async ({ user, token }) => {
-      if (user) {
-        token.uid = user.id;
-      }
-      return token;
-    },
-  },
-  session: {
-    strategy: "jwt",
   },
   adapter: PrismaAdapter(db),
   providers: [
@@ -68,54 +59,52 @@ export const authOptions: NextAuthOptions = {
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
     }),
-    CredentialsProvider({
-      // The name to display on the sign in form (e.g. 'Sign in with...')
-      name: "UVA Email",
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
-      credentials: {
-        email: {
-          label: "Username",
-          type: "text",
-          placeholder: "xrk4np@virginia.edu",
-        },
-        password: { label: "Password", type: "text", placeholder: "********" },
-      },
-      authorize: async (credentials) => {
-        if (!credentials) throw new Error("No credentials provided.");
+    // CredentialsProvider({
+    //   // The name to display on the sign in form (e.g. 'Sign in with...')
+    //   name: "Sign in with UVA Email",
+    //   // The credentials is used to generate a suitable form on the sign in page.
+    //   // You can specify whatever fields you are expecting to be submitted.
+    //   // e.g. domain, username, password, 2FA token, etc.
+    //   // You can pass any HTML attribute to the <input> tag through the object.
+    //   credentials: {
+    //     email: {
+    //       label: "Username",
+    //       type: "text",
+    //       placeholder: "xrk4np@virginia.edu",
+    //     },
+    //     password: { label: "Password", type: "text", placeholder: "********" },
+    //   },
+    //   authorize: async (credentials, req) => {
+    //     // You need to provide your own logic here that takes the credentials
+    //     // submitted and returns either a object representing a user or value
+    //     // that is false/null if the credentials are invalid.
+    //     // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
+    //     // You can also use the `req` object to obtain additional parameters
+    //     // (i.e., the request IP address)
+    //     if (!credentials) return null;
 
-        // const hash = await Bun.password.hash(credentials.password);
-        const user = await db.user.findUnique({
-          where: {
-            email: credentials.email,
-          },
-        });
+    //     let user = await db.user.findUnique({
+    //       where: {
+    //         email: credentials.email,
+    //       },
+    //     });
 
-        if (!user) {
-          throw new Error("User not found");
-          // user = await db.user.create({
-          //   data: {
-          //     email: credentials.email,
-          //     password: hash,
-          //   },
-          // });
-        } else {
-          if (!user.password)
-            throw new Error("Account uses Google or GitHub login");
-          const isMatch = await Bun.password.verify(
-            credentials.password,
-            user.password,
-          );
-          if (!isMatch) {
-            throw new Error("Incorrect password.");
-          }
-        }
+    //     if (!user) {
+    //       user = await db.user.create({
+    //         data: {
+    //           email: credentials.email,
+    //           password: credentials.password,
+    //         },
+    //       });
+    //     } else {
+    //       if (user.password !== credentials.password) {
+    //         return null;
+    //       }
+    //     }
 
-        return user;
-      },
-    }),
+    //     return user;
+    //   },
+    // }),
   ],
 };
 
