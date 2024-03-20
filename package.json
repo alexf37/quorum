@@ -72,6 +72,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/bun": "^1.0.10",
     "@types/canvas-confetti": "^1.6.4",
     "@types/eslint": "^8.44.7",
     "@types/node": "^18.17.0",
