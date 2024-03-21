@@ -115,7 +115,9 @@ export function AccountForm({
             </FormItem>
           )}
         />
-        <Button type="submit">Save Details</Button>
+        <Button disabled={settingsMutation.isLoading} type="submit">
+          Save Details
+        </Button>
       </form>
     </Form>
   );
