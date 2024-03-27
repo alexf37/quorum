@@ -56,6 +56,7 @@ function sendSocketMessage({
 }
 
 export function QuestionList({ sessionId }: { sessionId: string }) {
+  const [analysisOpen, setAnalysisOpen] = useState(false);
   const { data: questions } =
     api.sessions.getFreeResponseQuestionsBySessionId.useQuery({
       sessionId,
@@ -108,6 +109,7 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
     { sessionId },
     {
       refetchInterval: 5000,
+      enabled: !analysisOpen,
     },
   );
   useEffect(() => {
@@ -120,7 +122,7 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
     refetchStudentCount,
     refetchStudentAnswers,
   ]);
-  const [analysisOpen, setAnalysisOpen] = useState(false);
+
   const answers = [...(studentAnswers?.map((a) => a.answer) ?? [])];
   const analysisQuery = api.sessions.analyzeAnswers.useQuery(
     {
@@ -197,7 +199,7 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
             </div>
           </div>
         </div>
-        <div className="col-span-6 grid place-content-center">
+        <div className="col-span-6 grid max-h-screen place-content-center">
           {currentQuestionIsSuccess && currentQuestion && (
             <Card className="-mt-28 w-full max-w-prose border-0 pt-2 shadow-none">
               <CardHeader>
