@@ -31,7 +31,7 @@ export function VerificationEmail({
           <Container className="mx-auto my-[40px] max-w-[465px] rounded-lg border border-solid border-[#eaeaea] p-[20px]">
             <Section className="mt-[32px]">
               <Img
-                src={`https://quorum.alexfoster.dev/favicon.svg`}
+                src={`https://quorumed.com/favicon.svg`}
                 width="40"
                 height="37"
                 alt="Quorum"

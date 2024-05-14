@@ -90,11 +90,11 @@ export const settingsRouter = createTRPCRouter({
       const resend = new Resend(env.RESEND_API_KEY);
       const baseHref =
         env.NODE_ENV === "production"
-          ? "https://quorum.alexfoster.dev"
+          ? "https://quorumed.com"
           : "http://localhost:3000";
       try {
         await resend.emails.send({
-          from: "Quorum <noreply@quorum.alexfoster.dev>",
+          from: "Quorum <noreply@quorumed.com>",
           to: [verificationRecord.computingId + "@virginia.edu"],
           subject: "Verify your Computing ID",
           react: VerificationEmail({
