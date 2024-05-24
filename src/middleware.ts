@@ -1,10 +1,12 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
-// This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
-  if (request.method === "HEAD") {
-    return NextResponse.redirect(new URL(request.url).host);
+  const { method } = request;
+  const { pathname } = request.nextUrl;
+
+  if (method === "HEAD" && pathname.startsWith("/api")) {
+    return new Response(null, { status: 200 });
   }
+
   return NextResponse.next();
 }
