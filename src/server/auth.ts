@@ -7,7 +7,6 @@ import {
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import EmailProvider from "next-auth/providers/email";
-import nodemailer from "nodemailer";
 import { env } from "@/env";
 // import CredentialsProvider from "next-auth/providers/credentials";
 
