@@ -6,9 +6,11 @@ import {
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
+import EmailProvider from "next-auth/providers/email";
+import nodemailer from "nodemailer";
+import { env } from "@/env";
 // import CredentialsProvider from "next-auth/providers/credentials";
 
-import { env } from "@/env";
 import { db } from "@/server/db";
 
 /**
@@ -58,6 +60,18 @@ export const authOptions: NextAuthOptions = {
     GithubProvider({
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
+    }),
+
+    EmailProvider({
+      server: {
+        host: env.EMAIL_SERVER_HOST,
+        port: env.EMAIL_SERVER_PORT,
+        auth: {
+          user: env.EMAIL_SERVER_USER,
+          pass: env.EMAIL_SERVER_PASSWORD,
+        },
+      },
+      from: env.EMAIL_FROM,
     }),
     // CredentialsProvider({
     //   // The name to display on the sign in form (e.g. 'Sign in with...')
