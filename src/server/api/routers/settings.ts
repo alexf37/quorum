@@ -37,9 +37,8 @@ export const settingsRouter = createTRPCRouter({
       console.log(user);
       console.log(input);
       if (
-        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-        user.computingId == (input.computingId || undefined) &&
-        user.name == input.name
+        user.computingId === (input.computingId ?? undefined) &&
+        user.name === input.name
       )
         return {
           message: "No changes have been made.",
