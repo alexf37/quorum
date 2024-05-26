@@ -13,10 +13,6 @@ export default function EmailVerificationPage() {
     return <p>Invalid URL</p>;
   }
 
-  if (typeof window === "undefined") {
-    return <p>No browser detected.</p>;
-  }
-
   return (
     <div className="grid h-full place-content-center">
       <div className="space-y-2 text-center">
