@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 function useDelayedRender() {
@@ -18,33 +18,35 @@ function useDelayedRender() {
 }
 
 export default function EmailVerificationPage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const email = searchParams.get("email");
   const callbackUrl = searchParams.get("callbackUrl");
 
-  const shouldRender = useDelayedRender();
+  //   const shouldRender = useDelayedRender();
 
   if (!token || !email || !callbackUrl) {
     return <p>Invalid URL</p>;
   }
 
-  if (!shouldRender) {
-    return <p>Checking if you're human...</p>;
+  if (window === undefined) {
+    return <p>No browser detected.</p>;
   }
+
+  //   if (!shouldRender) {
+  //     return <p>Checking if you're human...</p>;
+  //   }
   return (
     <div className="grid h-full place-content-center">
-      <Button
-        type="button"
-        onClick={() => {
-          router.replace(
-            `/api/auth/callback/email?token=${token}&email=${email}&callbackUrl=${callbackUrl}`,
-          );
-        }}
+      <form
+        method="GET"
+        action={`/api/auth/callback/email?token=${token}&email=${email}&callbackUrl=${callbackUrl}`}
       >
-        Click to Login
-      </Button>
+        <input type="hidden" name="token" value={token} />
+        <input type="hidden" name="callbackUrl" value={callbackUrl} />
+        <input type="hidden" name="email" value={email} />
+        <Button>Click to Login</Button>
+      </form>
     </div>
   );
 }
