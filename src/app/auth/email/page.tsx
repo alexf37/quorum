@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function EmailVerificationPage() {
@@ -10,16 +10,21 @@ export default function EmailVerificationPage() {
   const email = searchParams.get("email");
   const callbackUrl = searchParams.get("callbackUrl");
 
-  useEffect(() => {
-    if (!token || !email || !callbackUrl) return;
-    router.replace(
-      `/api/auth/callback/email?token=${token}&email=${email}&callbackUrl=${callbackUrl}`,
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   if (!token || !email || !callbackUrl) {
     return <p>Invalid URL</p>;
   }
-  return <p>Verifying...</p>;
+  return (
+    <div className="grid h-full place-content-center">
+      <Button
+        type="button"
+        onClick={() => {
+          router.replace(
+            `/api/auth/callback/email?token=${token}&email=${email}&callbackUrl=${callbackUrl}`,
+          );
+        }}
+      >
+        Click to Login
+      </Button>
+    </div>
+  );
 }
