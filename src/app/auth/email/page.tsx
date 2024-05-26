@@ -13,7 +13,7 @@ export default function EmailVerificationPage() {
     return <p>Invalid URL</p>;
   }
 
-  if (window === undefined) {
+  if (typeof window === "undefined") {
     return <p>No browser detected.</p>;
   }
 
