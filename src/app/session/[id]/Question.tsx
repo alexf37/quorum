@@ -97,7 +97,7 @@ export function Question({ sessionId }: { sessionId: string }) {
       {isError && <div>Error: {error?.message}</div>}
       {isSuccess &&
         (data ? (
-          <Card className="max-w-prose border-0 pt-2">
+          <Card className="max-w-prose border-0 pt-2 shadow-none">
             <CardHeader>
               <CardTitle>
                 {!data.isLatex ? data.question : <Latex>{data.question}</Latex>}
