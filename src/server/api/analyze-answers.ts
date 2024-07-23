@@ -21,7 +21,7 @@ export async function analyzeAnswers(
   while (attemptCount < 4) {
     try {
       const response = await openai.chat.completions.create({
-        model: "gpt-4",
+        model: "gpt-4o-mini",
         messages: [
           {
             role: "system",
@@ -36,6 +36,7 @@ export async function analyzeAnswers(
               answers.join(",\n"),
           },
         ],
+        response_format: { type: "json_object" },
         temperature: 0.1,
         max_tokens: 200,
         top_p: 1,
