@@ -48,12 +48,12 @@ function NavBar() {
           >
             Features
           </Link>
-          <Link
+          {/* <Link
             className="transition-all hover:text-foreground"
             href="#pricing"
           >
             Pricing
-          </Link>
+          </Link> */}
         </nav>
       </div>
       <div className="flex gap-2">
