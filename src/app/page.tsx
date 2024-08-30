@@ -189,7 +189,7 @@ export default function App() {
       <NavBar />
       <Hero />
       <Features />
-      <Pricing />
+      {/* <Pricing /> */}
       <Separator className="mt-auto" />
       <Footer />
     </div>
