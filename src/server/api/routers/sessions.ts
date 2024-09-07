@@ -573,12 +573,23 @@ export const sessionsRouter = createTRPCRouter({
       z.object({
         sessionId: z.string(),
         question: z.string(),
-        answers: z.array(z.string()),
       }),
     )
     .query(async ({ ctx, input }) => {
       await checkSessionOwnership(input.sessionId, ctx.session.user.id);
-      return analyzeAnswers(input.question, input.answers);
+      const answersForQuestion = (
+        await ctx.db.freeResponseAnswer.findMany({
+          where: {
+            freeResponseQuestion: {
+              id: input.question,
+            },
+          },
+          select: {
+            answer: true,
+          },
+        })
+      ).map((a) => a.answer);
+      return analyzeAnswers(input.question, answersForQuestion);
     }),
   exportSession: protectedProcedure
     .input(

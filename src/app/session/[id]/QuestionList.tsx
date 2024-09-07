@@ -123,16 +123,13 @@ export function QuestionList({ sessionId }: { sessionId: string }) {
     refetchStudentAnswers,
   ]);
 
-  const answers = [...(studentAnswers?.map((a) => a.answer) ?? [])];
   const analysisQuery = api.sessions.analyzeAnswers.useQuery(
     {
       sessionId,
-      question: currentQuestion?.question ?? "",
-      answers,
+      question: currentQuestion?.id ?? "",
     },
     {
-      enabled:
-        analysisOpen && currentQuestionIsSuccess && studentAnswersIsSuccess,
+      enabled: analysisOpen && currentQuestionIsSuccess,
     },
   );
   return (
