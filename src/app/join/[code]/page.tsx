@@ -40,9 +40,7 @@ export default async function JoinCodePage({
           <EmailLogin />
 
           <div className="flex flex-col gap-3">
-            <OauthButtons
-              redirect={`/dashboard?join=${encodeURIComponent(code)}`}
-            />
+            <OauthButtons redirect={`/join/${encodeURIComponent(code)}`} />
           </div>
         </CardContent>
       </Card>
