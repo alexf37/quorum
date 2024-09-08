@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getServerAuthSession } from "@/server/auth";
+import { api } from "@/trpc/server";
 import { redirect } from "next/navigation";
 
 export default async function JoinCodePage({
@@ -19,6 +20,11 @@ export default async function JoinCodePage({
   const code = params.code;
   const session = await getServerAuthSession();
   if (session) {
+    const classes = await api.classes.getJoinedClasses.query();
+    const classWithCode = classes.find((c) => c.code === code);
+    if (classWithCode?.classSession?.id !== undefined) {
+      redirect(`/session/${encodeURIComponent(classWithCode.classSession.id)}`);
+    }
     redirect(`/dashboard?join=${encodeURIComponent(code)}`);
   }
   return (
