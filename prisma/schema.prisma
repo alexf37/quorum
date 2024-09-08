@@ -50,7 +50,6 @@ model User {
     computingIdVerifications ComputingIdVerification[]
     ownedClasses             Class[]
     classes                  Class[]                   @relation("ClassStudents")
-    hostedClassSessions      ClassSession[]
     classSessions            ClassSession[]            @relation("ClassSessionStudents")
     freeResponseAnswers      FreeResponseAnswer[]
 }
@@ -117,8 +116,6 @@ model ClassSession {
     createdAt         DateTime
     scheduledFor      DateTime?
     status            ClassSessionStatus     @default(PLANNED)
-    hostUser          User                   @relation(fields: [hostUserId], references: [id], onDelete: Cascade)
-    hostUserId        String
     class             Class                  @relation(fields: [classId], references: [id], onDelete: Cascade)
     classId           String
     students          User[]                 @relation("ClassSessionStudents")

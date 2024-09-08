@@ -38,7 +38,7 @@ export default async function Session({ params }: { params: { id: string } }) {
     sessionId: sessionId,
   });
   if (!data) return <SessionError error="Session not found" />;
-  const isSessionHost = data.hostUserId === authSession.user?.id;
+  const isSessionHost = data.class.ownerUserId === authSession.user?.id;
   if (!isSessionHost) {
     try {
       await api.sessions.joinSessionAsStudent.mutate({

@@ -25,7 +25,11 @@ async function checkSessionMembership(sessionId: string, userId: string) {
       id: sessionId,
     },
     select: {
-      hostUserId: true,
+      class: {
+        select: {
+          ownerUserId: true,
+        },
+      },
       students: {
         where: {
           id: userId,
@@ -39,7 +43,7 @@ async function checkSessionMembership(sessionId: string, userId: string) {
       message: "No such session exists.",
     });
   }
-  if (session.hostUserId !== userId && session.students.length === 0) {
+  if (session.class.ownerUserId !== userId && session.students.length === 0) {
     throw new TRPCError({
       code: "BAD_REQUEST",
       message: "You are not a member of this session.",
@@ -103,7 +107,11 @@ async function checkSessionOwnership(sessionId: string, userId: string) {
       id: sessionId,
     },
     select: {
-      hostUserId: true,
+      class: {
+        select: {
+          ownerUserId: true,
+        },
+      },
     },
   });
   if (!session) {
@@ -112,7 +120,7 @@ async function checkSessionOwnership(sessionId: string, userId: string) {
       message: "No such session exists.",
     });
   }
-  if (session.hostUserId !== userId) {
+  if (session.class.ownerUserId !== userId) {
     throw new TRPCError({
       code: "BAD_REQUEST",
       message: "You are not the owner of this session.",
@@ -151,7 +159,6 @@ export const sessionsRouter = createTRPCRouter({
         data: {
           title: input.title,
           createdAt: new Date(),
-          hostUserId: ctx.session.user.id,
           classId: input.classId,
         },
       });
@@ -310,6 +317,13 @@ export const sessionsRouter = createTRPCRouter({
       const session = await ctx.db.classSession.findUnique({
         where: {
           id: input.sessionId,
+        },
+        include: {
+          class: {
+            select: {
+              ownerUserId: true,
+            },
+          },
         },
       });
       return session;
@@ -515,7 +529,11 @@ export const sessionsRouter = createTRPCRouter({
         select: {
           ClassSession: {
             select: {
-              hostUserId: true,
+              class: {
+                select: {
+                  ownerUserId: true,
+                },
+              },
             },
           },
         },
@@ -525,7 +543,7 @@ export const sessionsRouter = createTRPCRouter({
           code: "BAD_REQUEST",
           message: "No such question exists.",
         });
-      const hostId = questionWithHostId.ClassSession.hostUserId;
+      const hostId = questionWithHostId.ClassSession.class.ownerUserId;
       if (hostId !== ctx.session.user.id)
         throw new TRPCError({
           code: "BAD_REQUEST",
