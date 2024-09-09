@@ -24,7 +24,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
@@ -52,6 +52,13 @@ export function Question({ sessionId }: { sessionId: string }) {
         toast({
           title: "Success!",
           description: "Submitted your answer.",
+        });
+      },
+      onError() {
+        toast({
+          title: "Error",
+          description: "Failed to submit answer.",
+          className: "border-destructive",
         });
       },
     });
