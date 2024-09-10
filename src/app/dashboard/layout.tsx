@@ -12,6 +12,8 @@ import { Nav } from "@/components/Nav";
 import { AccountDropdown } from "@/components/AccountDropdown";
 import { type Session } from "next-auth";
 import { DashboardPageHead } from "@/components/DashboardPageHead";
+import { ComputingIdPopup } from "./ComputingIdPopup";
+import { db } from "@/server/db";
 
 export const metadata = {
   title: "Dashboard",
@@ -58,9 +60,18 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
   if (!session) {
     redirect("/?login");
   }
+  const { computingId } = (await db.user.findUnique({
+    where: {
+      id: session.user.id,
+    },
+    select: {
+      computingId: true,
+    },
+  })) ?? { computingId: null };
   return (
     <>
       <div className="flex h-full max-sm:flex-col">
+        {session && !computingId && <ComputingIdPopup />}
         <div className="flex flex-col gap-2 border-r py-6 sm:w-64">
           <div className="flex justify-between gap-4">
             <Link

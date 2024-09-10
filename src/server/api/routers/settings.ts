@@ -189,4 +189,25 @@ export const settingsRouter = createTRPCRouter({
         message: "Your Computing ID has been verified.",
       };
     }),
+  setComputingId: protectedProcedure
+    .input(
+      z.object({
+        computingId: z.string().min(4, {
+          message: "Computing ID must be at least 4 characters long",
+        }),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.user.update({
+        where: {
+          id: ctx.session.user.id,
+        },
+        data: {
+          computingId: input.computingId,
+        },
+      });
+      return {
+        message: "Your computing ID has been updated.",
+      };
+    }),
 });
