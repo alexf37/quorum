@@ -240,7 +240,7 @@ export const settingsRouter = createTRPCRouter({
         });
         return {
           message:
-            "Account details have been updated. Please check your inbox for a verification email.",
+            "Your computing ID has been set. Remember to check your inbox for a verification email.",
         };
       } catch (error) {
         throw new TRPCError({

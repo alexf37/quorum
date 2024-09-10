@@ -46,19 +46,19 @@ export function ComputingIdPopup() {
   }, []);
 
   const cidMutation = api.settings.setComputingId.useMutation({
-    onSuccess: () => {
+    onSuccess: (res) => {
       toast({
         title: "Success!",
-        description: "Your computing ID has been set.",
+        description: res.message,
       });
       router.replace("/dashboard");
       router.refresh();
       setOpen(false);
     },
-    onError: () => {
+    onError: (err) => {
       toast({
         title: "Error",
-        description: "Something went wrong. Try again in settings.",
+        description: err.message,
         className: "border-destructive",
       });
     },
