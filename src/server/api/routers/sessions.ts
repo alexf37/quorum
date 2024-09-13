@@ -305,7 +305,19 @@ export const sessionsRouter = createTRPCRouter({
           },
         },
       });
-      return sessionWithCurrentQuestion?.currentQuestion ?? null;
+      if (!sessionWithCurrentQuestion)
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "No session exists.",
+        });
+      const res = sessionWithCurrentQuestion.currentQuestion
+        ? {
+            ...sessionWithCurrentQuestion.currentQuestion,
+            answer: sessionWithCurrentQuestion.currentQuestion.answers[0],
+            answers: undefined,
+          }
+        : null;
+      return res;
     }),
   getSessionInfo: protectedProcedure
     .input(

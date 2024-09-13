@@ -24,10 +24,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { cn } from "@/lib/utils";
+import { Check } from "lucide-react";
 
 const FormSchema = z.object({
   answer: z
@@ -41,27 +43,13 @@ const FormSchema = z.object({
 });
 
 export function Question({ sessionId }: { sessionId: string }) {
+  const utils = api.useUtils();
   const { data, isLoading, isSuccess, isError, error, refetch } =
     api.sessions.getCurrentFreeResponseQuestion.useQuery({
       sessionId: sessionId,
       includeAnswer: true,
     });
-  const submitFreeResponseAnswerMutation =
-    api.sessions.submitFreeResponseAnswer.useMutation({
-      onSuccess() {
-        toast({
-          title: "Success!",
-          description: "Submitted your answer.",
-        });
-      },
-      onError() {
-        toast({
-          title: "Error",
-          description: "Failed to submit answer.",
-          className: "border-destructive",
-        });
-      },
-    });
+
   useXssSocketListener({
     channel: `quorum-listen-${sessionId ?? "waiting"}`,
     onData: (sender, data) => {
@@ -76,11 +64,31 @@ export function Question({ sessionId }: { sessionId: string }) {
       answer: "",
     },
   });
+  const submitFreeResponseAnswerMutation =
+    api.sessions.submitFreeResponseAnswer.useMutation({
+      onSuccess(ans) {
+        toast({
+          title: "Success!",
+          description: "Submitted your answer.",
+        });
+        form.reset({
+          answer: ans.answer,
+        });
+      },
+      onError() {
+        toast({
+          title: "Error",
+          description: "Failed to submit answer.",
+          className: "border-destructive",
+        });
+      },
+    });
   useEffect(() => {
     form.reset({
-      answer: data?.answers?.[0]?.answer ?? "",
+      answer: data?.answer?.answer ?? "",
     });
-  }, [data, isSuccess, form]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess, form]);
   function onSubmit(formData: z.infer<typeof FormSchema>) {
     if (isSuccess && data) {
       submitFreeResponseAnswerMutation.mutate({
@@ -88,6 +96,9 @@ export function Question({ sessionId }: { sessionId: string }) {
         questionId: data.id,
         answer: formData.answer,
       });
+    }
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
     }
   }
 
@@ -123,8 +134,35 @@ export function Question({ sessionId }: { sessionId: string }) {
                     render={({ field }) => (
                       <FormItem className="space-y-0">
                         <FormLabel className="sr-only">Answer</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Answer here..." {...field} />
+                        <FormControl className="relative">
+                          <div>
+                            <Input
+                              className={cn(
+                                "focus:text-primary",
+                                !form.formState.isDirty &&
+                                  "text-muted-foreground",
+                              )}
+                              placeholder="Answer here..."
+                              {...field}
+                            />
+                            {!form.formState.isDirty ? (
+                              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                <span className="mr-2 text-sm text-muted-foreground">
+                                  Saved
+                                </span>
+                                <Check
+                                  className="h-5 w-5 text-green-500"
+                                  aria-hidden="true"
+                                />
+                              </div>
+                            ) : (
+                              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                <span className="text-sm text-muted-foreground">
+                                  Unsaved
+                                </span>
+                              </div>
+                            )}
+                          </div>
                         </FormControl>
                         <FormDescription className="pt-2">
                           You may change your answer as many times as you want.
@@ -133,7 +171,17 @@ export function Question({ sessionId }: { sessionId: string }) {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit">Submit Answer</Button>
+                  <Button
+                    disabled={
+                      submitFreeResponseAnswerMutation.isLoading ||
+                      !form.formState.isDirty
+                    }
+                    type="submit"
+                  >
+                    {submitFreeResponseAnswerMutation.isLoading
+                      ? "Submitting..."
+                      : "Submit Answer"}
+                  </Button>
                 </form>
               </Form>
             </CardContent>
